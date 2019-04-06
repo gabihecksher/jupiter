@@ -6,7 +6,7 @@ install:
 	tar zxf julia-1.0.0-linux-x86_64.tar.gz
 	rm julia-1.0.0-linux-x86_64.tar.gz
 	echo "Adding to path....."
-	ln -s /julia/julia-1.0.0/bin/julia /usr/local/bin
+	ln -s /julia/julia-1.0.0/bin/julia /usr/local/bin julia
 	
 clean:
 	rm -r julia
