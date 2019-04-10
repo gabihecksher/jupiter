@@ -5,5 +5,13 @@ install:
 	ln -s julia-1.0.0/bin/julia /usr/local/bin/julia
 	ln -s julia-1.0.0/bin/julia /usr/local/sbin/julia
 	echo $(PATH)
+run:
+	cd julia-1.0.0/bin
+	./julia
+	using Pkg
+	Pkg.add("ParserCombinator")
+	exit()
+	cd ../../
+	julia-1.0.0/bin/julia main.jl 
 clean:
 	rm -r julia-1.0.0
