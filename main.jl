@@ -62,7 +62,7 @@ test_soma_mul = positivo + multiplicacao + Eos()
 
 #TENTANDO FAZER O BOOLEANO FUNCIONAR
 bool_exp = Delayed()
-bool_exp.matcher = (E"Eq(" + (positivo|multiplicacao) + E"," + (positivo|multiplicacao)[0:end] + E")") |> Bool #  | "Not(" + positivo + ")"
+bool_exp.matcher = (E"Eq(" + (positivo|multiplicacao) + E"," + (positivo|multiplicacao)[0:end] + E")") | (E"Not(" + (positivo|multiplicacao)[0:end] + E")") |> Bool
 teste_bool = bool_exp + Eos()
 
 # println(parse_one("2/-2", test_div))
@@ -70,5 +70,6 @@ teste_bool = bool_exp + Eos()
 
 #println(parse_one("1+2/3", test_soma_mul))
 #println(parse_one("4+1==3-9", teste_bool))
-println(parse_one("Eq(2-1,3/4)", teste_bool))
+#println(parse_one("Eq(2-1,3/4)", teste_bool))
+println(parse_one("Not(3*4)", teste_bool))
 #parse_dbg("1+2/3", Trace(test_soma_mul))
