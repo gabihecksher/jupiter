@@ -17,12 +17,14 @@ mutable struct Inv children end #onde inv = inverso do numero
 mutable struct Sum children end
 mutable struct Mul children end
 mutable struct Bool children end
+mutable struct Assign children end
+mutable struct Exp children end
 
 ##A GRAMATICA:
 positivo = Delayed()
 #Delayed() define um loop na gramatica
 
-valor = E"(" + positivo + E")" | PFloat64()
+valor = (E"(" + positivo + E")") | PFloat64()
 #O E determina expressao enquanto o + seria juntar as expressoes numa lista. E o | seria um ou.
 #ou seja o valor pode ser uma expressao (positiva) ou um numero ponto flutuante
 
@@ -58,18 +60,29 @@ test_soma = positivo + Eos()
 test_mul = multiplicacao + Eos()
 #O Eos() faz a checagem se a entrada que eu dei faz sentido com o que eu defini na gramatica
 
-test_soma_mul = positivo + multiplicacao + Eos()
+aritmetico = positivo + multiplicacao + Eos()
 
 #TENTANDO FAZER O BOOLEANO FUNCIONAR
 bool_exp = Delayed()
+
 bool_exp.matcher = (E"Eq(" + (positivo|multiplicacao) + E"," + (positivo|multiplicacao)[0:end] + E")") | (E"Not(" + (positivo|multiplicacao)[0:end] + E")") |> Bool
+
+string = Word()
+
+cmd_assign = Delayed()
+
+cmd_assign = (E"Assign(" + string + E"," + (positivo|multiplicacao|bool_exp)[0:end] + E")") |> Assign  
+
 teste_bool = bool_exp + Eos()
+
+teste_assign = cmd_assign + Eos()
 
 # println(parse_one("2/-2", test_div))
 # println(parse_one("1*2", test_mul))
 
-#println(parse_one("1+2/3", test_soma_mul))
+# println(parse_one("1+", test_soma_mul))
 #println(parse_one("4+1==3-9", teste_bool))
-#println(parse_one("Eq(2-1,3/4)", teste_bool))
-println(parse_one("Not(3*4)", teste_bool))
+# println(parse_one("Eq(2-1,3/4)", teste_bool))
+println(parse_one("Assign(a,3/8)", cmd_assign))
+# println(parse_one("Eq((3*4)+1,13)", teste_bool))
 #parse_dbg("1+2/3", Trace(test_soma_mul))
