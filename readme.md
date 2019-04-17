@@ -6,7 +6,7 @@ Install environment:
 `make install`
 
 Run file:
-`julia "filename".jl`
+`julia-1.0.0/bin/julia  "filename".jl`
 
 Clean environment:
 `make clean`
