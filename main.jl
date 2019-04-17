@@ -19,6 +19,9 @@ calc(p::Mul) = signed_prod(map(calc, p.val))
 mutable struct Sum<:Node val end
 calc(s::Sum) = signed_sum(map(calc, s.val))
 mutable struct Bool<:Node val end
+mutable struct Eq<:Node val end
+mutable struct Not<:Node val end
+
 mutable struct Assign<:Node val end
 
 @with_names begin
@@ -62,10 +65,15 @@ mutable struct Assign<:Node val end
 
         aritmetico = spc + positivo  + Eos()
 
+
         # #TENTANDO FAZER O BOOLEANO FUNCIONAR
         bool_exp = Delayed()
 
-        bool_exp.matcher = (E"Eq(" + (positivo) + E"," + (positivo)[0:end] + E")") | (E"Not(" + (positivo)[0:end] + E")") |> Bool
+        eq = (E"Eq(" + (positivo) + E"," + (positivo)[0:end] + E")") |> Eq
+
+        not = (E"Not(" + (positivo)[0:end] + E")") |> Not
+
+        bool_exp.matcher = eq | not |> Bool
 
         string = Word()
 
@@ -74,6 +82,8 @@ mutable struct Assign<:Node val end
         cmd_assign = (E"Assign(" + string + E"," + (positivo|bool_exp)[0:end] + E")") |> Assign
 
         teste_bool = bool_exp + Eos()
+
+        input = aritmetico | teste_bool
 
         # teste_assign = cmd_assign + Eos()
     end
@@ -97,7 +107,13 @@ function pega_entrada(mensagem)
  entrada = pega_entrada("Escreva a expressão: ")
  println("Você digitou $entrada")
 
+parse = parse_one(entrada, input)
+println(parse)
+println(typeof(parse[1]))
 
-println(parse_one(entrada, aritmetico))
-println("Resposta:")
-println(calc(parse_one(entrada, aritmetico)[1]))
+if isa(parse[1], Bool)
+    println("E booleano")
+else
+    println("Nao e booleano")
+    println("Resposta: ", calc(parse_one(entrada, input)[1]))
+end
