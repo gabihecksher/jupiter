@@ -10,8 +10,9 @@ run:
 	./julia
 	using Pkg
 	Pkg.add("ParserCombinator")
+	Pkg.add("Nullables")
 	exit()
 	cd ../../
-	julia-1.0.0/bin/julia main.jl 
+	julia-1.0.0/bin/julia main.jl
 clean:
 	rm -r julia-1.0.0
