@@ -19,6 +19,7 @@ calc(p::Mul) = signed_prod(map(calc, p.val))
 mutable struct Sum<:Node val end
 calc(s::Sum) = signed_sum(map(calc, s.val))
 mutable struct Bool<:Node val end
+mutable struct Loop<:Node val end
 mutable struct Eq<:Node val end
 mutable struct Not<:Node val end
 
@@ -79,11 +80,15 @@ mutable struct Assign<:Node val end
 
         cmd_assign = Delayed()
 
-        cmd_assign = (E"Assign(" + string + E"," + (positivo|bool_exp)[0:end] + E")") |> Assign
+        cmd_assign = (string + spc + E"::=" + spc + (positivo|bool_exp)[0:end]) |> Assign
+
+        # cmd_assign = (E"Assign(" + string + E"," + (positivo|bool_exp)[0:end] + E")") |> Assign
+
+        cmd_loop = (E"while(" + spc + bool_exp[0:end] + spc + E")") |> Loop
 
         teste_bool = bool_exp + Eos()
 
-        input = aritmetico | teste_bool
+        input = aritmetico | teste_bool | cmd_assign | cmd_loop
 
         # teste_assign = cmd_assign + Eos()
     end
@@ -111,9 +116,8 @@ parse = parse_one(entrada, input)
 println(parse)
 println(typeof(parse[1]))
 
-if isa(parse[1], Bool)
-    println("E booleano")
-else
-    println("Nao e booleano")
+if isa(parse[1], Sum)
     println("Resposta: ", calc(parse_one(entrada, input)[1]))
+else
+    println(typeof(parse[1]))
 end
