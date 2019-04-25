@@ -80,11 +80,13 @@ mutable struct Assign<:Node val end
 
         cmd_assign = Delayed()
 
-        cmd_assign = (string + spc + E"::=" + spc + (positivo|bool_exp)[0:end]) |> Assign
+        cmd_assign = (string + spc + E":=" + spc + (positivo|bool_exp)[0:end]) |> Assign
 
         # cmd_assign = (E"Assign(" + string + E"," + (positivo|bool_exp)[0:end] + E")") |> Assign
 
-        cmd_loop = (E"while(" + spc + bool_exp[0:end] + spc + E")") |> Loop
+        cmd_loop = Delayed()
+
+        cmd_loop = (E"while(" + spc + bool_exp[0:end] + spc + E")" + spc + E"do" + (cmd_assign)[0:end]) |> Loop
 
         teste_bool = bool_exp + Eos()
 
