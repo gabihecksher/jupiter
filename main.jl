@@ -121,3 +121,5 @@ if isa(parse[1], Sum)
 else
     println(typeof(parse[1]))
 end
+
+#FAZER RECONHECER O IF
