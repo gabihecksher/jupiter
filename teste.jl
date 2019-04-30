@@ -18,24 +18,25 @@ mutable struct Div<:Node val end
 
         Exp = Delayed()
 
-        digits = PFloat64() |> Num
+        digits = PFloat64() > Num
+        sum = (Exp+spc + E"+" + spc+ Exp) | digits |> Sum
 
-        sum = (Exp + E"+" + Exp) |> Sum
-#        sub =  (Exp + spc + E"-" + spc + Exp) |> Sub
-#        mul = (Exp + spc + E"*" + spc + Exp) |> Mul
-#        div = (Exp + spc + E"/" + spc + Exp) |> Div
+        # sum = (Exp + E"+" + Exp) |> Sum
+        sub =  (Exp + spc + E"-" + spc + Exp) |> Sub
+        mul = (Exp + spc + E"*" + spc + Exp) |> Mul
+        div = (Exp + spc + E"/" + spc + Exp) |> Div
 
-        ArithExp = sum | digits # | sub | mul | div | digits
         # nos slides tem <exp> ao inves de <arithexp> mas nao sei se poderia por exemplo somar duas expressoes booleanas
+        ArithExp = (sum | sub | mul | div | digits) + Eos() # | sub | mul | div | digits
 
-        Exp.matcher = Nullable{Matcher}(ArithExp) # | BoolExp
+        Exp.matcher = Nullable{Matcher}(digits[0:end]) # | BoolExp
 
 
 
-        teste_digits = digits + Eos()
-        teste_sum = Exp + Eos()
+        teste_digits = ArithExp
+        # teste_sum = Exp + Eos()
 
-        teste = teste_digits | teste_sum
+        teste =  teste_digits
 
     end
 end
