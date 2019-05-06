@@ -17,6 +17,8 @@ mutable struct ArithExp<:Node val end
 mutable struct BoolExp<:Node val end
 mutable struct Exp<:Node val end
 mutable struct Eq<:Node val end
+mutable struct Boo<:Node val end
+
 
 
 
@@ -66,11 +68,13 @@ mutable struct Eq<:Node val end
 
         equality = spc + (aritmetico) + spc + E"==" + spc + (aritmetico)[0:end] |> Eq
 
-        bool_exp.matcher =  Nullable{Matcher}((equality | negation))
+        truth = E"True" | E"False" |>Boo
+
+
+        bool_exp.matcher =  Nullable{Matcher}((equality | negation | truth))
 
         # id = Word()[0:end] |> Id 
 
-        # truth = E"True" | E"False"
 
 
         booleano = bool_exp + Eos() > BoolExp
