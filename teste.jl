@@ -26,7 +26,7 @@ mutable struct And<:Node val end
 @with_names begin
     spc = Drop(Star(Space()))
     # isso permite que eu bote ou nao espacos entre operacoes
-   
+
     @with_pre spc begin
 
 
@@ -36,7 +36,7 @@ mutable struct And<:Node val end
 
         # num = (E"(" + spc + aexp + spc + E")") | PFloat64() > Num
         num = (E"(" + spc + PFloat64() + spc + E")") | PFloat64() > Num
-        
+
         multiplication = E"*" + num
 
         division = E"/" + num
@@ -45,7 +45,7 @@ mutable struct And<:Node val end
 
         div = (num + (division)[0:end] |> Div)
 
-        add = E"+" + num 
+        add = E"+" + num
         sub = E"-" + num
 
         soma = (num + (add)[0:end] |> Sum)
@@ -60,7 +60,7 @@ mutable struct And<:Node val end
         # teste = aritmetico
 
         ############################ BOOL EXP ##################################
-        
+
         bool_exp = Delayed()
 
         expression = Delayed()
@@ -81,7 +81,7 @@ mutable struct And<:Node val end
 
         bool_exp.matcher =  Nullable{Matcher}((equality | negation | truth|lower_equal|lower_than|greater_equal|greater_than))
 
-        # id = Word()[0:end] |> Id 
+        # id = Word()[0:end] |> Id
 
         booleano = bool_exp
 
@@ -103,4 +103,3 @@ println("Você digitou $entrada")
 
 parse = parse_one(entrada, teste)
 println(parse)
-
