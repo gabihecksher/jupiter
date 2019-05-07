@@ -98,7 +98,7 @@ end
 
 function handle_Num(element, control_pile, value_pile, env, store)
     value_pile = push(value_pile, element[5:end-1]) #coloca o numero no topo da pilha de valores
-	
+
 	automaton(control_pile, value_pile, env, store)
 end
 
@@ -151,18 +151,9 @@ function handle_Div(element, control_pile, value_pile, env, store)
 	automaton(control_pile, value_pile, env, store)
 end
 
-function main()
-    control_pile = []
-    value_pile = []
-    control_pile = push(control_pile, 4)
-    println(control_pile)
-    control_pile = push(control_pile, 5)
-    println(control_pile)
-    control_pile = pop(control_pile)
-    println(control_pile)
+function main()	
+	#automaton(["Num(23)"],[],[],[])
+    automaton(["Mul(Num(5),Sum(Num(3),Num(2)))"],[],[],[])
 end
 
-#main()
-
-automaton(["Mul(Num(5),Sum(Num(3),Num(2)))"],[],[],[])
-#automaton(["Num(23)"],[],[],[])
+main()
