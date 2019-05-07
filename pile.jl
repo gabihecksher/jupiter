@@ -7,11 +7,39 @@ function check_automaton(control_pile, value_pile, env, store)
     end
 end
 
+function handle(element, control_pile, value_pile, env, store)
+
+	println("######################")
+
+	println(element)
+
+	println("CONTROL PILE:")
+	print_pile(control_pile)
+
+	println("VALUE PILE:")
+	print_pile(value_pile)
+
+	op = element[1:3]
+	if op == "Num"
+		handle_Num(element, control_pile, value_pile, env, store)
+	elseif op == "Sum"
+		handle_Sum(element, control_pile, value_pile, env, store)
+	elseif op == "Sub"
+		handle_Sub(element, control_pile, value_pile, env, store)
+	elseif op == "Mul"
+		handle_Mul(element, control_pile, value_pile, env, store)
+	elseif op == "Div"
+		handle_Div(element, control_pile, value_pile, env, store)
+	end
+
+end
+
+
 function automaton(control_pile, value_pile, env, store)
 	if length(control_pile) == 0
 		return value_pile[1]
 	else
-		handle(pop!(control_pile), control_pile, value_pile, env, store)
+		handle(control_pile[1], control_pile, value_pile, env, store)
 	end
 end
 
@@ -76,36 +104,8 @@ function middle(element)
 	end
 end
 
-function handle(element, control_pile, value_pile, env, store)
-
-	println("######################")
-
-	println(element)
-
-	println("CONTROL PILE:")
-	print_pile(control_pile)
-
-	println("VALUE PILE:")
-	print_pile(value_pile)
-
-	op = element[1:3]
-	if op == "Num"
-		handle_Num(element, control_pile, value_pile, env, store)
-	elseif op == "Sum"
-		handle_Sum(element, control_pile, value_pile, env, store)
-	elseif op == "Sub"
-		handle_Sub(element, control_pile, value_pile, env, store)
-	elseif op == "Mul"
-		handle_Mul(element, control_pile, value_pile, env, store)
-	elseif op == "Div"
-		handle_Div(element, control_pile, value_pile, env, store)
-	end
-
-
-end
-
 function handle_Num(element, control_pile, value_pile, env, store)
-    value_pile = push(value_pile, element) #coloca o numero no topo da pilha de valores
+    value_pile = push(value_pile[5:end-1], element) #coloca o numero no topo da pilha de valores
 	control_pile = pop(control_pile)
 end
 
@@ -173,4 +173,5 @@ end
 
 #main()
 
-automaton(["Mul(Num(5),Sum(Num(3),Num(2)))"],[],[],[])
+#automaton(["Mul(Num(5),Sum(Num(3),Num(2)))"],[],[],[])
+automaton(["Num(23)"],[],[],[])
