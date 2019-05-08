@@ -1,0 +1,18 @@
+Testes que funcionam:
+
+ARITH
+2+3
+(2+3)
+--------> os testes acima funcionam para todas as operacoes
+(3*2)+(2+4)
+(2*3)+3
+2*2+3 --> imprime a pilha na ordem certa, priorizando a multiplicacao primeiro
+
+BOOL
+ not(2+3==3+2)
+ Todas as comparacoes (>,>=,<,<=)
+
+
+Testes que nao funcionam
+2*(2+3) -> nao entendi o pq
+and e or bugando

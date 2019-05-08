@@ -12,13 +12,15 @@ mutable struct Mul<:Node val end
 mutable struct Div<:Node val end
 mutable struct Id<:Node val end
 mutable struct Not<:Node val end
-mutable struct Exp<:Node val end
 mutable struct Eq<:Node val end
 mutable struct Lt<:Node val end
 mutable struct Le<:Node val end
 mutable struct Gt<:Node val end
 mutable struct Ge<:Node val end
 mutable struct And<:Node val end
+mutable struct Or<:Node val end
+
+
 
 
 
@@ -32,12 +34,12 @@ mutable struct And<:Node val end
         number = (E"(" + spc + PFloat64() + spc + E")") | PFloat64() > Num
 
         # FAZER O IDENTIFIER FUNCIONAR
-        # identifier = r"/(?!\d)\w+/" > Id
+        identifier = (E"(" + spc + Word() + spc + E")") | Word() > Id
 
         # ACHAR UM EQUIVALENTE DE PFloat64() PRA ELE LER BOOLEAN
         # truth = (E"(" + spc + PBool() + spc + E")") | PBool() > Boo
 
-        atom = number # | identifier # truth #
+        atom = number  | identifier 
 
 
         multiplication = Delayed()
@@ -46,32 +48,57 @@ mutable struct And<:Node val end
         subtraction = Delayed()
 
 
-        mult_expression = multiplication | division | atom # | <parentesisexp>
+        mult_expression = (multiplication | division | atom) # | <parentesisexp>
 
-        #multiplication.matcher = Nullable{Matcher}(E"(" + spc + mult_expression + E"*" + mult_expression + spc + E")" |> Mul) # ARRANJAR UMA FORMA DE FUNCIONAR SEM OS PARENTESES
+        # multiplication.matcher = Nullable{Matcher}(E"(" + spc + mult_expression + E"*" + mult_expression + spc + E")"[0:end] |> Mul) # ARRANJAR UMA FORMA DE FUNCIONAR SEM OS PARENTESES
 
         ### TENTANDO FAZER DA MANEIRA DO IMP ###
 
-        multiplication.matcher = Nullable{Matcher}(atom + E"*" + mult_expression |> Mul)
-        division.matcher = Nullable{Matcher}(atom + E"/" + mult_expression |> Div)
+        multiplication.matcher = Nullable{Matcher}((atom + E"*" + mult_expression) | (E"(" + atom + E"*" + mult_expression + E")") |> Mul)
+        division.matcher = Nullable{Matcher}((atom + E"/" + mult_expression) | (E"(" + atom + E"/" + mult_expression + E")") |> Div)
 
 
-        arith_expression = addition | subtraction | mult_expression | division # DUVIDA: PQ TEM QUE TER ESSE DIVISION SE EM MULT_EXPRESSION JA CHAMA DIVISION?
+        arith_expression = ((addition | subtraction | mult_expression | division) | (E"(" + (addition | subtraction | mult_expression | division) + E")")) # DUVIDA: PQ TEM QUE TER ESSE DIVISION SE EM MULT_EXPRESSION JA CHAMA DIVISION?
 
-        addition = mult_expression + E"+" + arith_expression |> Sum
-        subtraction = mult_expression + E"-" + arith_expression |> Sub
-
-
-        ##################### ARIT EXPRESSION ########################################333
-        #Delayed() define um loop na gramatica
-
-        # num = (E"(" + spc + aexp + spc + E")") | PFloat64() > Num
-
-
-        teste = mult_expression + Eos()
+        addition.matcher = Nullable{Matcher}((mult_expression + E"+" + arith_expression) | (E"(" + mult_expression + E"+" + arith_expression + E")") |> Sum)
+        subtraction.matcher = Nullable{Matcher}((mult_expression + E"-" + arith_expression) | (E"(" + mult_expression + E"-" + arith_expression + E")") |> Sub)
 
         ############################ BOOL EXP ##################################
 
+        equality = Delayed()
+        negation = Delayed()
+        
+        conjunction = Delayed()
+        disjuction = Delayed()
+        
+        lower_eq = Delayed()
+        greater_eq = Delayed()
+        lower_than = Delayed()
+        greater_than = Delayed()
+
+        # bool_expression = ((equality | negation | conjunction | disjuction | lower_eq | lower_than | greater_eq | greater_than) | (E"(" + (equality | negation | conjunction | disjuction | lower_eq | lower_than | greater_eq | greater_than) + E")"))
+
+
+        ##AND E OR NAO FUNCIONANDO AINDA E FALTANDO O BOO TRUE AND FALSE
+        bool_expression = ((equality | negation | lower_eq | lower_than | greater_eq | greater_than) | (E"(" + (equality | negation |  lower_eq | lower_than | greater_eq | greater_than) + E")"))
+
+        expression = (arith_expression | bool_expression)
+
+        
+        equality.matcher = Nullable{Matcher}((arith_expression + E"==" + expression) | (E"(" + arith_expression + E"==" + expression + E")") |> Eq)
+        negation.matcher = Nullable{Matcher}((E"not"+bool_expression) | (E"(" + E"not" + bool_expression+ E")") |> Not)
+        conjunction.matcher = Nullable{Matcher}((bool_expression + E"and" + bool_expression) | (E"(" + bool_expression + E"and" + bool_expression + E")") |> And)
+        disjuction.matcher = Nullable{Matcher}((bool_expression + E"or" + bool_expression) | (E"(" + bool_expression + E"or" + bool_expression + E")") |> Or)
+        
+        lower_eq.matcher = Nullable{Matcher}((arith_expression + E"<=" + arith_expression) | (E"(" + arith_expression + E"<=" + arith_expression + E")") |> Le)
+        lower_than.matcher = Nullable{Matcher}((arith_expression + E"<" + arith_expression) | (E"(" + arith_expression + E"<" + arith_expression + E")") |> Lt)
+        greater_eq.matcher = Nullable{Matcher}((arith_expression + E">=" + arith_expression) | (E"(" + arith_expression + E">=" + arith_expression + E")") |> Ge)
+        greater_than.matcher = Nullable{Matcher}((arith_expression + E">" + arith_expression) | (E"(" + arith_expression + E">" + arith_expression + E")") |> Gt)
+
+
+        
+
+        teste = expression + Eos()
 
 
     end
@@ -87,3 +114,4 @@ println("Você digitou $entrada")
 
 parse = parse_one(entrada, teste)
 println(parse)
+
