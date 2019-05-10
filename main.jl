@@ -1,3 +1,4 @@
+
 using ParserCombinator
 using Nullables
 
@@ -21,6 +22,7 @@ mutable struct Or<:Node val end
 mutable struct Boo<:Node val end
 mutable struct Assign<:Node val end
 mutable struct Loop<:Node val end
+mutable struct Cond<:Node val end
 
 
 
@@ -38,8 +40,7 @@ mutable struct Loop<:Node val end
 
         truth = (E"(" + spc + p"([Tt][Rr][Uu][Ee])|([Ff][Aa][Ll][Ss][Ee])" + spc + E")") | p"([Tt][Rr][Uu][Ee])|([Ff][Aa][Ll][Ss][Ee])" > Boo
 
-
-        atom = number | truth | identifier 
+        atom = number | truth | identifier
 
 
         multiplication = Delayed()
@@ -64,10 +65,10 @@ mutable struct Loop<:Node val end
 
         equality = Delayed()
         negation = Delayed()
-        
+
         conjunction = Delayed()
         disjuction = Delayed()
-        
+
         lower_eq = Delayed()
         greater_eq = Delayed()
         lower_than = Delayed()
@@ -78,12 +79,12 @@ mutable struct Loop<:Node val end
 
         expression = (arith_expression | bool_expression | and_or)
 
-        
+
         equality.matcher = Nullable{Matcher}((arith_expression + E"==" + expression) | (E"(" + arith_expression + E"==" + expression + E")") |> Eq)
         negation.matcher = Nullable{Matcher}((E"not"+bool_expression) | (E"(" + E"not" + bool_expression+ E")") |> Not)
         conjunction.matcher = Nullable{Matcher}((bool_expression + spc + E"and" + spc + bool_expression) | (E"(" + bool_expression + spc + E"and" + spc + bool_expression + E")") |> And)
         disjuction.matcher = Nullable{Matcher}((bool_expression + spc + E"or" + bool_expression) | (E"(" + bool_expression + spc + E"or" + spc + bool_expression + E")") |> Or)
-        
+
         lower_eq.matcher = Nullable{Matcher}((arith_expression + E"<=" + arith_expression) | (E"(" + arith_expression + E"<=" + arith_expression + E")") |> Le)
         lower_than.matcher = Nullable{Matcher}((arith_expression + E"<" + arith_expression) | (E"(" + arith_expression + E"<" + arith_expression + E")") |> Lt)
         greater_eq.matcher = Nullable{Matcher}((arith_expression + E">=" + arith_expression) | (E"(" + arith_expression + E">=" + arith_expression + E")") |> Ge)
@@ -92,10 +93,18 @@ mutable struct Loop<:Node val end
 
     ############################ COMAND ##################################
 
+        # FAZER O CSEQ
+
         assign = Delayed()
         loop = Delayed()
+        cseq = Delayed()
+        conditional = Delayed()
 
-        cmd = assign | loop
+
+        cmd = assign | loop | conditional
+
+        #testar se funciona
+        conditional.matcher = Nullable{Matcher}((E"if" + spc + bool_expression + spc + E"then" + spc + cmd + spc + E"else" + spc + cmd + spc + E"end") | (E"if" + spc + bool_expression + spc + E"then" + spc + cmd + spc + E"end") |> Cond)
 
         assign.matcher = Nullable{Matcher}((identifier + E":=" + expression) | (E"(" + identifier + E":=" + expression + E")") |> Assign)
 
@@ -120,4 +129,3 @@ parser_string = (string.(parse))
 println(parser_string)
 println(typeof(parser_string))
 # println(parse)
-
