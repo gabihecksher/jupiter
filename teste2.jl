@@ -5,7 +5,6 @@ abstract type Node end
 ==(n1::Node, n2::Node) = isequal(n1.val, n2.val)
 
 mutable struct Num<:Node val end
-mutable struct Boo<:Node val end
 mutable struct Sum<:Node val end
 mutable struct Sub<:Node val end
 mutable struct Mul<:Node val end
@@ -19,8 +18,9 @@ mutable struct Gt<:Node val end
 mutable struct Ge<:Node val end
 mutable struct And<:Node val end
 mutable struct Or<:Node val end
-
-
+mutable struct Boo<:Node val end
+mutable struct Assign<:Node val end
+mutable struct Loop<:Node val end
 
 
 
@@ -36,10 +36,10 @@ mutable struct Or<:Node val end
         # FAZER O IDENTIFIER FUNCIONAR
         identifier = (E"(" + spc + Word() + spc + E")") | Word() > Id
 
-        # ACHAR UM EQUIVALENTE DE PFloat64() PRA ELE LER BOOLEAN
-        # truth = (E"(" + spc + PBool() + spc + E")") | PBool() > Boo
+        truth = (E"(" + spc + p"([Tt][Rr][Uu][Ee])|([Ff][Aa][Ll][Ss][Ee])" + spc + E")") | p"([Tt][Rr][Uu][Ee])|([Ff][Aa][Ll][Ss][Ee])" > Boo
 
-        atom = number  | identifier 
+
+        atom = number | truth | identifier 
 
 
         multiplication = Delayed()
@@ -50,9 +50,6 @@ mutable struct Or<:Node val end
 
         mult_expression = (multiplication | division | atom) # | <parentesisexp>
 
-        # multiplication.matcher = Nullable{Matcher}(E"(" + spc + mult_expression + E"*" + mult_expression + spc + E")"[0:end] |> Mul) # ARRANJAR UMA FORMA DE FUNCIONAR SEM OS PARENTESES
-
-        ### TENTANDO FAZER DA MANEIRA DO IMP ###
 
         multiplication.matcher = Nullable{Matcher}((atom + E"*" + mult_expression) | (E"(" + atom + E"*" + mult_expression + E")") |> Mul)
         division.matcher = Nullable{Matcher}((atom + E"/" + mult_expression) | (E"(" + atom + E"/" + mult_expression + E")") |> Div)
@@ -76,19 +73,16 @@ mutable struct Or<:Node val end
         lower_than = Delayed()
         greater_than = Delayed()
 
-        # bool_expression = ((equality | negation | conjunction | disjuction | lower_eq | lower_than | greater_eq | greater_than) | (E"(" + (equality | negation | conjunction | disjuction | lower_eq | lower_than | greater_eq | greater_than) + E")"))
-
-
-        ##AND E OR NAO FUNCIONANDO AINDA E FALTANDO O BOO TRUE AND FALSE
+        and_or = (conjunction | disjuction)
         bool_expression = ((equality | negation | lower_eq | lower_than | greater_eq | greater_than) | (E"(" + (equality | negation |  lower_eq | lower_than | greater_eq | greater_than) + E")"))
 
-        expression = (arith_expression | bool_expression)
+        expression = (arith_expression | bool_expression | and_or)
 
         
         equality.matcher = Nullable{Matcher}((arith_expression + E"==" + expression) | (E"(" + arith_expression + E"==" + expression + E")") |> Eq)
         negation.matcher = Nullable{Matcher}((E"not"+bool_expression) | (E"(" + E"not" + bool_expression+ E")") |> Not)
-        conjunction.matcher = Nullable{Matcher}((bool_expression + E"and" + bool_expression) | (E"(" + bool_expression + E"and" + bool_expression + E")") |> And)
-        disjuction.matcher = Nullable{Matcher}((bool_expression + E"or" + bool_expression) | (E"(" + bool_expression + E"or" + bool_expression + E")") |> Or)
+        conjunction.matcher = Nullable{Matcher}((bool_expression + spc + E"and" + spc + bool_expression) | (E"(" + bool_expression + spc + E"and" + spc + bool_expression + E")") |> And)
+        disjuction.matcher = Nullable{Matcher}((bool_expression + spc + E"or" + bool_expression) | (E"(" + bool_expression + spc + E"or" + spc + bool_expression + E")") |> Or)
         
         lower_eq.matcher = Nullable{Matcher}((arith_expression + E"<=" + arith_expression) | (E"(" + arith_expression + E"<=" + arith_expression + E")") |> Le)
         lower_than.matcher = Nullable{Matcher}((arith_expression + E"<" + arith_expression) | (E"(" + arith_expression + E"<" + arith_expression + E")") |> Lt)
@@ -96,9 +90,18 @@ mutable struct Or<:Node val end
         greater_than.matcher = Nullable{Matcher}((arith_expression + E">" + arith_expression) | (E"(" + arith_expression + E">" + arith_expression + E")") |> Gt)
 
 
-        
+    ############################ COMAND ##################################
 
-        teste = expression + Eos()
+        assign = Delayed()
+        loop = Delayed()
+
+        cmd = assign | loop
+
+        assign.matcher = Nullable{Matcher}((identifier + E":=" + expression) | (E"(" + identifier + E":=" + expression + E")") |> Assign)
+
+        loop.matcher = Nullable{Matcher}((E"while" + spc + expression + spc + E"do" + spc + cmd) | (E"(" + E"while" + spc + expression + spc + E"do" + spc + cmd + E")") |> Loop)
+
+        teste = cmd + Eos()
 
 
     end
@@ -113,5 +116,8 @@ entrada = pega_entrada()
 println("Você digitou $entrada")
 
 parse = parse_one(entrada, teste)
-println(parse)
+parser_string = (string.(parse))
+println(parser_string)
+println(typeof(parser_string))
+# println(parse)
 
