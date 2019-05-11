@@ -23,6 +23,8 @@ mutable struct Boo<:Node val end
 mutable struct Assign<:Node val end
 mutable struct Loop<:Node val end
 mutable struct Cond<:Node val end
+mutable struct CSeq<:Node val end
+
 
 
 
@@ -80,8 +82,8 @@ mutable struct Cond<:Node val end
         expression = (arith_expression | bool_expression | and_or)
 
 
-        equality.matcher = Nullable{Matcher}((arith_expression + E"==" + expression) | (E"(" + arith_expression + E"==" + expression + E")") |> Eq)
-        negation.matcher = Nullable{Matcher}((E"not"+bool_expression) | (E"(" + E"not" + bool_expression+ E")") |> Not)
+        equality.matcher = Nullable{Matcher}((arith_expression + spc + E"==" +spc +  expression) | (E"(" + arith_expression + spc + E"==" + spc + expression + E")") |> Eq)
+        negation.matcher = Nullable{Matcher}((E"not"+ spc + E"(" + bool_expression  + E")") | (E"(" + E"not" + E"(" + bool_expression+ E")" + E")") |> Not)
         conjunction.matcher = Nullable{Matcher}((bool_expression + spc + E"and" + spc + bool_expression) | (E"(" + bool_expression + spc + E"and" + spc + bool_expression + E")") |> And)
         disjuction.matcher = Nullable{Matcher}((bool_expression + spc + E"or" + bool_expression) | (E"(" + bool_expression + spc + E"or" + spc + bool_expression + E")") |> Or)
 
@@ -99,16 +101,18 @@ mutable struct Cond<:Node val end
         loop = Delayed()
         cseq = Delayed()
         conditional = Delayed()
+        call = Delayed()
 
 
-        cmd = assign | loop | conditional
+        cmd = assign | loop | expression | conditional | cseq
 
-        #testar se funciona
         conditional.matcher = Nullable{Matcher}((E"if" + spc + bool_expression + spc + E"then" + spc + cmd + spc + E"else" + spc + cmd + spc + E"end") | (E"if" + spc + bool_expression + spc + E"then" + spc + cmd + spc + E"end") |> Cond)
 
         assign.matcher = Nullable{Matcher}((identifier + E":=" + expression) | (E"(" + identifier + E":=" + expression + E")") |> Assign)
 
         loop.matcher = Nullable{Matcher}((E"while" + spc + expression + spc + E"do" + spc + cmd) | (E"(" + E"while" + spc + expression + spc + E"do" + spc + cmd + E")") |> Loop)
+        
+        cseq.matcher = Nullable{Matcher}((cmd + spc + cmd) |> CSeq)
 
         teste = cmd + Eos()
 
@@ -121,11 +125,12 @@ function pega_entrada()
      readline()
  end
 
-entrada = pega_entrada()
-println("Você digitou $entrada")
+# entrada = pega_entrada()
+# println("Você digitou $entrada")
 
-parse = parse_one(entrada, teste)
+teste_str = "while not (y == 0) do z:=z*y z:=y-1"
+println(teste_str)
+parse = parse_one(teste_str, teste)
 parser_string = (string.(parse))
+parser_string = replace(parser_string[1], "Any"=> "")
 println(parser_string)
-println(typeof(parser_string))
-# println(parse)
