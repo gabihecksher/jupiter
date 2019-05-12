@@ -13,8 +13,7 @@ function handle(element, control_pile, value_pile, env, store)
 	end
 end
 
-
-function automaton(control_pile, value_pile, env, store)
+function print_piles(control_pile, value_pile)
 	println("######################")
 
 	println("CONTROL PILE:")
@@ -25,12 +24,20 @@ function automaton(control_pile, value_pile, env, store)
 
 	println("######################")
 
+end
 
+function automaton(control_pile, value_pile, env, store)
+	print_piles(control_pile, value_pile)
 	if length(control_pile) == 0
-		println("Resultado: ",value_pile[1])
-		return value_pile[1]
+		println("Resultado: ",popfirst!(value_pile))
+		return 0
 	else
-		handle(popfirst!(control_pile), control_pile, value_pile, env, store)
+		op = control_pile[1]
+		if op[1] === '#'
+			calc(op, control_pile, value_pile, env, store)
+		else
+			handle(popfirst!(control_pile), control_pile, value_pile, env, store)
+		end
 	end
 end
 
@@ -97,7 +104,7 @@ function middle(element)
 end
 
 function handle_Num(element, control_pile, value_pile, env, store)
-    value_pile = push(value_pile, element[5:end-1]) #coloca o numero no topo da pilha de valores
+    value_pile = push(value_pile, parse(Float64, element[5:end-1])) #coloca o numero no topo da pilha de valores
 
 	automaton(control_pile, value_pile, env, store)
 end
@@ -112,6 +119,7 @@ function handle_Sum(element, control_pile, value_pile, env, store)
 	control_pile = push(control_pile, first_value)
 
 	automaton(control_pile, value_pile, env, store)
+	#calc(control_pile[end], control_pile, value_pile, env, store)
 
 end
 
@@ -137,6 +145,7 @@ function handle_Mul(element, control_pile, value_pile, env, store)
 	control_pile = push(control_pile, first_value)
 
 	automaton(control_pile, value_pile, env, store)
+	#calc(control_pile[end], control_pile, value_pile, env, store)
 end
 
 function handle_Div(element, control_pile, value_pile, env, store)
@@ -151,9 +160,54 @@ function handle_Div(element, control_pile, value_pile, env, store)
 	automaton(control_pile, value_pile, env, store)
 end
 
-function main()	
+function calc(op, control_pile, value_pile, env, store)
+	if op === "#SUM"
+		calc_sum(control_pile, value_pile, env, store)
+	elseif op === "#MUL"
+		calc_mul(control_pile, value_pile, env, store)
+	elseif op === "#SUB"
+		calc_sub(control_pile, value_pile, env, store)
+	elseif op === "#DIV"
+		calc_div(control_pile, value_pile, env, store)
+	end
+
+end
+
+function calc_sum(control_pile, value_pile, env, store)
+	value1 = popfirst!(value_pile)
+	value2 = popfirst!(value_pile)
+	result = value1 + value2
+	value_pile = push(value_pile, result)
+	automaton(pop(control_pile), value_pile, env, store)
+end
+
+function calc_sub(control_pile, value_pile, env, store)
+	value1 = popfirst!(value_pile)
+	value2 = popfirst!(value_pile)
+	result = value1 - value2
+	value_pile = push(value_pile, result)
+	automaton(pop(control_pile), value_pile, env, store)
+end
+
+function calc_mul(control_pile, value_pile, env, store)
+	value1 = popfirst!(value_pile)
+	value2 = popfirst!(value_pile)
+	result = value1 * value2
+	value_pile = push(value_pile, result)
+	automaton(pop(control_pile), value_pile, env, store)
+end
+
+function calc_div(control_pile, value_pile, env, store)
+	value1 = popfirst!(value_pile)
+	value2 = popfirst!(value_pile)
+	result = value1 / value2
+	value_pile = push(value_pile, result)
+	automaton(pop(control_pile), value_pile, env, store)
+end
+
+function main()
 	#automaton(["Num(23)"],[],[],[])
-    automaton(["Mul(Num(5),Sum(Num(3),Num(2)))"],[],[],[])
+    automaton(["Div(Num(5),Sub(Num(5),Num(15)))"],[],[],[])
 end
 
 main()
