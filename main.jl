@@ -37,7 +37,6 @@ mutable struct CSeq<:Node val end
 
         number = (E"(" + spc + PFloat64() + spc + E")") | PFloat64() > Num
 
-        # FAZER O IDENTIFIER FUNCIONAR
         identifier = (E"(" + spc + Word() + spc + E")") | Word() > Id
 
         truth = (E"(" + spc + p"([Tt][Rr][Uu][Ee])|([Ff][Aa][Ll][Ss][Ee])" + spc + E")") | p"([Tt][Rr][Uu][Ee])|([Ff][Aa][Ll][Ss][Ee])" > Boo
@@ -51,14 +50,14 @@ mutable struct CSeq<:Node val end
         subtraction = Delayed()
 
 
-        mult_expression = (multiplication | division | atom) # | <parentesisexp>
+        mult_expression = (multiplication | division | atom)
 
 
         multiplication.matcher = Nullable{Matcher}((atom + E"*" + mult_expression) | (E"(" + atom + E"*" + mult_expression + E")") |> Mul)
         division.matcher = Nullable{Matcher}((atom + E"/" + mult_expression) | (E"(" + atom + E"/" + mult_expression + E")") |> Div)
 
 
-        arith_expression = ((addition | subtraction | mult_expression | division) | (E"(" + (addition | subtraction | mult_expression | division) + E")")) # DUVIDA: PQ TEM QUE TER ESSE DIVISION SE EM MULT_EXPRESSION JA CHAMA DIVISION?
+        arith_expression = ((addition | subtraction | mult_expression | division) | (E"(" + (addition | subtraction | mult_expression | division) + E")"))
 
         addition.matcher = Nullable{Matcher}((mult_expression + E"+" + arith_expression) | (E"(" + mult_expression + E"+" + arith_expression + E")") |> Sum)
         subtraction.matcher = Nullable{Matcher}((mult_expression + E"-" + arith_expression) | (E"(" + mult_expression + E"-" + arith_expression + E")") |> Sub)
@@ -111,7 +110,7 @@ mutable struct CSeq<:Node val end
         assign.matcher = Nullable{Matcher}((identifier + E":=" + expression) | (E"(" + identifier + E":=" + expression + E")") |> Assign)
 
         loop.matcher = Nullable{Matcher}((E"while" + spc + expression + spc + E"do" + spc + cmd) | (E"(" + E"while" + spc + expression + spc + E"do" + spc + cmd + E")") |> Loop)
-        
+
         cseq.matcher = Nullable{Matcher}((cmd + spc + cmd) |> CSeq)
 
         teste = cmd + Eos()
