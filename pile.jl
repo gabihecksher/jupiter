@@ -1,4 +1,17 @@
 function handle(element, control_pile, value_pile, env, store)
+	op = element[1:2]
+	if op == "Eq"
+		handle_Eq(element, control_pile, value_pile, env, store)
+	elseif op == "Lt"
+		handle_Lt(element, control_pile, value_pile, env, store)
+	elseif op == "Gt"
+		handle_Gt(element, control_pile, value_pile, env, store)
+	elseif op == "Le"
+		handle_Le(element, control_pile, value_pile, env, store)
+	elseif op == "Ge"
+		handle_Ge(element, control_pile, value_pile, env, store)
+	end
+
 	op = element[1:3]
 	if op == "Num"
 		handle_Num(element, control_pile, value_pile, env, store)
@@ -10,6 +23,8 @@ function handle(element, control_pile, value_pile, env, store)
 		handle_Mul(element, control_pile, value_pile, env, store)
 	elseif op == "Div"
 		handle_Div(element, control_pile, value_pile, env, store)
+	elseif op == "Boo"
+		handle_Boo(element, control_pile, value_pile, env, store)
 	end
 end
 
@@ -109,6 +124,12 @@ function handle_Num(element, control_pile, value_pile, env, store)
 	automaton(control_pile, value_pile, env, store)
 end
 
+function handle_Boo(element, control_pile, value_pile, env, store)
+	value_pile = push(value_pile, inside(element)) #coloca o numero no topo da pilha de valores
+
+	automaton(control_pile, value_pile, env, store)
+end
+
 function handle_Sum(element, control_pile, value_pile, env, store)
 	control_pile = push(control_pile, "#SUM")
 	values = inside(element)
@@ -160,6 +181,68 @@ function handle_Div(element, control_pile, value_pile, env, store)
 	automaton(control_pile, value_pile, env, store)
 end
 
+function handle_Eq(element, control_pile, value_pile, env, store)
+	control_pile = push(control_pile, "#EQ")
+	values = inside(element)
+	first_value = values[1:middle(values)]
+	second_value = values[middle(values)+2:end]
+
+	control_pile = push(control_pile, second_value)
+	control_pile = push(control_pile, first_value)
+
+	automaton(control_pile, value_pile, env, store)
+end
+
+function handle_Lt(element, control_pile, value_pile, env, store)
+	control_pile = push(control_pile, "#LT")
+	values = inside(element)
+	first_value = values[1:middle(values)]
+	second_value = values[middle(values)+2:end]
+
+	control_pile = push(control_pile, second_value)
+	control_pile = push(control_pile, first_value)
+
+	automaton(control_pile, value_pile, env, store)
+end
+
+function handle_Le(element, control_pile, value_pile, env, store)
+	control_pile = push(control_pile, "#LE")
+	values = inside(element)
+	first_value = values[1:middle(values)]
+	second_value = values[middle(values)+2:end]
+
+	control_pile = push(control_pile, second_value)
+	control_pile = push(control_pile, first_value)
+
+	automaton(control_pile, value_pile, env, store)
+end
+
+function handle_Gt(element, control_pile, value_pile, env, store)
+	control_pile = push(control_pile, "#GT")
+	values = inside(element)
+	first_value = values[1:middle(values)]
+	second_value = values[middle(values)+2:end]
+
+	control_pile = push(control_pile, second_value)
+	control_pile = push(control_pile, first_value)
+
+	automaton(control_pile, value_pile, env, store)
+end
+
+function handle_Ge(element, control_pile, value_pile, env, store)
+	control_pile = push(control_pile, "#GE")
+	values = inside(element)
+	first_value = values[1:middle(values)]
+	second_value = values[middle(values)+2:end]
+
+	control_pile = push(control_pile, second_value)
+	control_pile = push(control_pile, first_value)
+
+	automaton(control_pile, value_pile, env, store)
+end
+
+
+
 function calc(op, control_pile, value_pile, env, store)
 	if op === "#SUM"
 		calc_sum(control_pile, value_pile, env, store)
@@ -207,7 +290,8 @@ end
 
 function main()
 	#automaton(["Num(23)"],[],[],[])
-    automaton(["Div(Num(5),Sub(Num(5),Num(15)))"],[],[],[])
+    #automaton(["Div(Num(5),Sub(Num(5),Num(15)))"],[],[],[])
+	automaton(["Gt(Num(5),Mul(Num(2),Num(3)))"],[],[],[])
 end
 
 main()
