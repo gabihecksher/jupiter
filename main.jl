@@ -34,31 +34,31 @@ mutable struct CSeq<:Node val end
 
     @with_pre spc begin
 
-
+        #definicao de numero pela gramatica onde PFloat64 faz parte do Parser
         number = (E"(" + spc + PFloat64() + spc + E")") | PFloat64() > Num
 
-        # FAZER O IDENTIFIER FUNCIONAR
+        #definicao de identificador pela gramatica onde Word faz parte do Parser
         identifier = (E"(" + spc + Word() + spc + E")") | Word() > Id
 
+        #unica coisa que eu achei no parser combinator que parseia true e false (nao sei o que significa isso, caso duvidas consultar biblioteca ParserCombinator)
         truth = (E"(" + spc + p"([Tt][Rr][Uu][Ee])|([Ff][Aa][Ll][Ss][Ee])" + spc + E")") | p"([Tt][Rr][Uu][Ee])|([Ff][Aa][Ll][Ss][Ee])" > Boo
 
         atom = number | truth | identifier
 
-
+        #O Delayed serve como uma inicializacao da variavel para que eu possa atribuir ela a uma outra variavel sem que eu defina o que ela eh
         multiplication = Delayed()
         division = Delayed()
         addition = Delayed()
         subtraction = Delayed()
 
-
-        mult_expression = (multiplication | division | atom) # | <parentesisexp>
-
+        #aqui por exemplo eu botei o multiplication no mult_expression mas eu so defino o que eh na linha abaixo.
+        mult_expression = (multiplication | division | atom) 
 
         multiplication.matcher = Nullable{Matcher}((atom + E"*" + mult_expression) | (E"(" + atom + E"*" + mult_expression + E")") |> Mul)
         division.matcher = Nullable{Matcher}((atom + E"/" + mult_expression) | (E"(" + atom + E"/" + mult_expression + E")") |> Div)
 
 
-        arith_expression = ((addition | subtraction | mult_expression | division) | (E"(" + (addition | subtraction | mult_expression | division) + E")")) # DUVIDA: PQ TEM QUE TER ESSE DIVISION SE EM MULT_EXPRESSION JA CHAMA DIVISION?
+        arith_expression = ((addition | subtraction | mult_expression | division) | (E"(" + (addition | subtraction | mult_expression | division) + E")"))
 
         addition.matcher = Nullable{Matcher}((mult_expression + E"+" + arith_expression) | (E"(" + mult_expression + E"+" + arith_expression + E")") |> Sum)
         subtraction.matcher = Nullable{Matcher}((mult_expression + E"-" + arith_expression) | (E"(" + mult_expression + E"-" + arith_expression + E")") |> Sub)
@@ -76,6 +76,7 @@ mutable struct CSeq<:Node val end
         lower_than = Delayed()
         greater_than = Delayed()
 
+        #o conjunction e disjuction tive que fazer fora do bool_expression pois o PEG entrava em loop infinito em sua recursao
         and_or = (conjunction | disjuction)
         bool_expression = ((equality | negation | lower_eq | lower_than | greater_eq | greater_than) | (E"(" + (equality | negation |  lower_eq | lower_than | greater_eq | greater_than) + E")"))
 
@@ -94,9 +95,6 @@ mutable struct CSeq<:Node val end
 
 
     ############################ COMAND ##################################
-
-        # FAZER O CSEQ
-
         assign = Delayed()
         loop = Delayed()
         cseq = Delayed()
@@ -106,7 +104,9 @@ mutable struct CSeq<:Node val end
 
         cmd = assign | loop | expression | conditional | cseq
 
-        conditional.matcher = Nullable{Matcher}((E"if" + spc + bool_expression + spc + E"then" + spc + cmd + spc + E"else" + spc + cmd + spc + E"end") | (E"if" + spc + bool_expression + spc + E"then" + spc + cmd + spc + E"end") |> Cond)
+        # conditional.matcher = Nullable{Matcher}((E"if" + spc + bool_expression + spc + E"then" + spc + cmd + spc + E"end") | (E"if" + spc + bool_expression + spc + E"then" + spc + cmd + spc + E"else" + spc + cmd + spc + E"end") |> Cond)
+
+        conditional.matcher = Nullable{Matcher}((E"if" + spc + bool_expression + spc + E"then" + spc + cmd + spc + E"else" + spc + cmd + spc + E"end") |> Cond)
 
         assign.matcher = Nullable{Matcher}((identifier + E":=" + expression) | (E"(" + identifier + E":=" + expression + E")") |> Assign)
 
@@ -125,12 +125,15 @@ function pega_entrada()
      readline()
  end
 
-# entrada = pega_entrada()
-# println("Você digitou $entrada")
+entrada = pega_entrada()
+println("Você digitou $entrada")
 
 teste_str = "while not (y == 0) do z:=z*y z:=y-1"
-println(teste_str)
-parse = parse_one(teste_str, teste)
+# println(teste_str)
+parse = parse_one(entrada, teste)
 parser_string = (string.(parse))
 parser_string = replace(parser_string[1], "Any"=> "")
+parser_string = replace(parser_string, "["=> "")
+parser_string = replace(parser_string, "]"=> "")
+
 println(parser_string)
