@@ -62,6 +62,8 @@ function handle(element, control_pile, value_pile, env, store)
 		handle_Loop(element, control_pile, value_pile, env, store)
 	elseif op == "CSeq"
 		handle_CSeq(element, control_pile, value_pile, env, store)
+	elseif op == "Cond"
+		handle_Cond(element, control_pile, value_pile, env, store)
 	end
 
 	op = element[1:6]
@@ -287,6 +289,24 @@ function handle_Loop(element, control_pile, value_pile, env, store)
 
 	automaton(control_pile, value_pile, env, store)
 end
+
+function handle_Cond(element, control_pile, value_pile, env, store)
+	control_pile = push(control_pile, "#COND")
+	values = inside(element)
+	first_value = values[1:middle(values)]
+	part_two = values[middle(values)+2:end]
+
+	second_value = values[middle(values)+2:middle(part_two)+middle(values)+1]
+	third_value = values[middle(part_two)+middle(values)+3:end]
+
+	 
+	control_pile = push(control_pile, first_value)
+
+	value_pile = push(value_pile, element)
+
+	automaton(control_pile, value_pile, env, store)
+end
+
 
 function handle_Not(element, control_pile, value_pile, env, store)
 	control_pile = push(control_pile, "#NOT")
