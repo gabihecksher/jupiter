@@ -1,3 +1,5 @@
+include("calc.jl")
+
 function handle(element, control_pile, value_pile, env, store)
 	op = element[1:2]
 	if op == "Eq"
@@ -10,6 +12,8 @@ function handle(element, control_pile, value_pile, env, store)
 		handle_Le(element, control_pile, value_pile, env, store)
 	elseif op == "Ge"
 		handle_Ge(element, control_pile, value_pile, env, store)
+	elseif op == "Or"
+		handle_Or(element, control_pile, value_pile, env, store)
 	end
 
 	op = element[1:3]
@@ -25,6 +29,10 @@ function handle(element, control_pile, value_pile, env, store)
 		handle_Div(element, control_pile, value_pile, env, store)
 	elseif op == "Boo"
 		handle_Boo(element, control_pile, value_pile, env, store)
+	elseif op == "Not"
+		handle_Not(element, control_pile, value_pile, env, store)
+	elseif op == "And"
+		handle_And(element, control_pile, value_pile, env, store)
 	end
 end
 
@@ -140,7 +148,6 @@ function handle_Sum(element, control_pile, value_pile, env, store)
 	control_pile = push(control_pile, first_value)
 
 	automaton(control_pile, value_pile, env, store)
-	#calc(control_pile[end], control_pile, value_pile, env, store)
 
 end
 
@@ -166,7 +173,6 @@ function handle_Mul(element, control_pile, value_pile, env, store)
 	control_pile = push(control_pile, first_value)
 
 	automaton(control_pile, value_pile, env, store)
-	#calc(control_pile[end], control_pile, value_pile, env, store)
 end
 
 function handle_Div(element, control_pile, value_pile, env, store)
@@ -242,56 +248,44 @@ function handle_Ge(element, control_pile, value_pile, env, store)
 end
 
 
+function handle_And(element, control_pile, value_pile, env, store)
+	control_pile = push(control_pile, "#AND")
+	values = inside(element)
+	first_value = values[1:middle(values)]
+	second_value = values[middle(values)+2:end]
 
-function calc(op, control_pile, value_pile, env, store)
-	if op === "#SUM"
-		calc_sum(control_pile, value_pile, env, store)
-	elseif op === "#MUL"
-		calc_mul(control_pile, value_pile, env, store)
-	elseif op === "#SUB"
-		calc_sub(control_pile, value_pile, env, store)
-	elseif op === "#DIV"
-		calc_div(control_pile, value_pile, env, store)
-	end
+	control_pile = push(control_pile, second_value)
+	control_pile = push(control_pile, first_value)
 
+	automaton(control_pile, value_pile, env, store)
 end
 
-function calc_sum(control_pile, value_pile, env, store)
-	value1 = popfirst!(value_pile)
-	value2 = popfirst!(value_pile)
-	result = value1 + value2
-	value_pile = push(value_pile, result)
-	automaton(pop(control_pile), value_pile, env, store)
+function handle_Or(element, control_pile, value_pile, env, store)
+	control_pile = push(control_pile, "#OR")
+	values = inside(element)
+	first_value = values[1:middle(values)]
+	second_value = values[middle(values)+2:end]
+
+	control_pile = push(control_pile, second_value)
+	control_pile = push(control_pile, first_value)
+
+	automaton(control_pile, value_pile, env, store)
 end
 
-function calc_sub(control_pile, value_pile, env, store)
-	value1 = popfirst!(value_pile)
-	value2 = popfirst!(value_pile)
-	result = value1 - value2
-	value_pile = push(value_pile, result)
-	automaton(pop(control_pile), value_pile, env, store)
-end
+function handle_Not(element, control_pile, value_pile, env, store)
+	control_pile = push(control_pile, "#NOT")
+	value = inside(element)
 
-function calc_mul(control_pile, value_pile, env, store)
-	value1 = popfirst!(value_pile)
-	value2 = popfirst!(value_pile)
-	result = value1 * value2
-	value_pile = push(value_pile, result)
-	automaton(pop(control_pile), value_pile, env, store)
-end
+	control_pile = push(control_pile, value)
 
-function calc_div(control_pile, value_pile, env, store)
-	value1 = popfirst!(value_pile)
-	value2 = popfirst!(value_pile)
-	result = value1 / value2
-	value_pile = push(value_pile, result)
-	automaton(pop(control_pile), value_pile, env, store)
+	automaton(control_pile, value_pile, env, store)
 end
 
 function main()
 	#automaton(["Num(23)"],[],[],[])
-    #automaton(["Div(Num(5),Sub(Num(5),Num(15)))"],[],[],[])
-	automaton(["Gt(Num(5),Mul(Num(2),Num(3)))"],[],[],[])
+    #automaton(["Div(Mul(Num(1),Num(4)),Sub(Num(5),Num(15)))"],[],[],[])
+	automaton(["Or(Not(Lt(Num(20),Num(10))),Eq(Num(2),Num(5)))"],[],[],[])
+
 end
 
 main()

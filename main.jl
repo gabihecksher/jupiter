@@ -5,21 +5,21 @@ using Nullables
 abstract type Node end
 ==(n1::Node, n2::Node) = isequal(n1.val, n2.val)
 
-mutable struct Num<:Node val end
-mutable struct Sum<:Node val end
-mutable struct Sub<:Node val end
-mutable struct Mul<:Node val end
-mutable struct Div<:Node val end
+mutable struct Num<:Node val end #ok
+mutable struct Sum<:Node val end #ok
+mutable struct Sub<:Node val end #ok
+mutable struct Mul<:Node val end #ok
+mutable struct Div<:Node val end #ok
 mutable struct Id<:Node val end
-mutable struct Not<:Node val end
-mutable struct Eq<:Node val end
-mutable struct Lt<:Node val end
-mutable struct Le<:Node val end
-mutable struct Gt<:Node val end
-mutable struct Ge<:Node val end
-mutable struct And<:Node val end
-mutable struct Or<:Node val end
-mutable struct Boo<:Node val end
+mutable struct Not<:Node val end #ok
+mutable struct Eq<:Node val end #ok
+mutable struct Lt<:Node val end #ok
+mutable struct Le<:Node val end #ok
+mutable struct Gt<:Node val end #ok
+mutable struct Ge<:Node val end #ok
+mutable struct And<:Node val end #ok
+mutable struct Or<:Node val end #ok
+mutable struct Boo<:Node val end #ok
 mutable struct Assign<:Node val end
 mutable struct Loop<:Node val end
 mutable struct Cond<:Node val end
