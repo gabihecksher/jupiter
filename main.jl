@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+=======
+include("pile.jl")
+
+>>>>>>> 09de36905fa8496d180e41e4e6f5819591bc4408
 using ParserCombinator
 using Nullables
 
@@ -13,7 +18,7 @@ mutable struct Sum<:Node val end #ok
 mutable struct Sub<:Node val end #ok
 mutable struct Mul<:Node val end #ok
 mutable struct Div<:Node val end #ok
-mutable struct Id<:Node val end
+mutable struct Id<:Node val end #ok
 mutable struct Not<:Node val end #ok
 mutable struct Eq<:Node val end #ok
 mutable struct Lt<:Node val end #ok
@@ -23,7 +28,7 @@ mutable struct Ge<:Node val end #ok
 mutable struct And<:Node val end #ok
 mutable struct Or<:Node val end #ok
 mutable struct Boo<:Node val end #ok
-mutable struct Assign<:Node val end
+mutable struct Assign<:Node val end #ok
 mutable struct Loop<:Node val end
 mutable struct Cond<:Node val end
 mutable struct CSeq<:Node val end
@@ -55,7 +60,7 @@ mutable struct CSeq<:Node val end
         subtraction = Delayed()
 
         #aqui por exemplo eu botei o multiplication no mult_expression mas eu so defino o que eh na linha abaixo.
-        mult_expression = (multiplication | division | atom) 
+        mult_expression = (multiplication | division | atom)
 
         multiplication.matcher = Nullable{Matcher}((atom + E"*" + mult_expression) | (E"(" + atom + E"*" + mult_expression + E")") |> Mul)
         division.matcher = Nullable{Matcher}((atom + E"/" + mult_expression) | (E"(" + atom + E"/" + mult_expression + E")") |> Div)
@@ -141,6 +146,12 @@ parser_string = replace(parser_string, "]"=> "")
 parser_string = replace(parser_string, " "=> "")
 
 println(parser_string)
+<<<<<<< HEAD
 println(typeof(parser_string))
 
 pile.main(parser_string)
+=======
+
+
+#parser_to_aut(parser_string)
+>>>>>>> 09de36905fa8496d180e41e4e6f5819591bc4408

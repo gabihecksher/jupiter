@@ -1,4 +1,23 @@
 include("calc.jl")
+
+function automaton(control_pile, value_pile, env, store)
+	print_piles(control_pile, value_pile)
+	if length(control_pile) == 0
+		if length(value_pile) == 1
+			println("Resultado: ",popfirst!(value_pile))
+		end
+		return 0
+	else
+		op = control_pile[1]
+		if op[1] === '#'
+			calc(op, control_pile, value_pile, env, store)
+		else
+			handle(popfirst!(control_pile), control_pile, value_pile, env, store)
+		end
+	end
+end
+
+
 function handle(element, control_pile, value_pile, env, store)
 	op = element[1:2]
 	if op == "Eq"
@@ -13,6 +32,8 @@ function handle(element, control_pile, value_pile, env, store)
 		handle_Ge(element, control_pile, value_pile, env, store)
 	elseif op == "Or"
 		handle_Or(element, control_pile, value_pile, env, store)
+	elseif op == "Id"
+		handle_Id(element, control_pile, value_pile, env, store)
 	end
 
 	op = element[1:3]
@@ -33,6 +54,11 @@ function handle(element, control_pile, value_pile, env, store)
 	elseif op == "And"
 		handle_And(element, control_pile, value_pile, env, store)
 	end
+
+	op = element[1:6]
+	if op == "Assign"
+		handle_Assign(element, control_pile, value_pile, env, store)
+	end
 end
 
 function print_piles(control_pile, value_pile)
@@ -46,21 +72,6 @@ function print_piles(control_pile, value_pile)
 
 	println("######################")
 
-end
-
-function automaton(control_pile, value_pile, env, store)
-	print_piles(control_pile, value_pile)
-	if length(control_pile) == 0
-		println("Resultado: ",popfirst!(value_pile))
-		return 0
-	else
-		op = control_pile[1]
-		if op[1] === '#'
-			calc(op, control_pile, value_pile, env, store)
-		else
-			handle(popfirst!(control_pile), control_pile, value_pile, env, store)
-		end
-	end
 end
 
 function push(pile, element)
@@ -132,6 +143,12 @@ function handle_Num(element, control_pile, value_pile, env, store)
 end
 
 function handle_Boo(element, control_pile, value_pile, env, store)
+	value_pile = push(value_pile, inside(element)) #coloca o numero no topo da pilha de valores
+
+	automaton(control_pile, value_pile, env, store)
+end
+
+function handle_Id(element, control_pile, value_pile, env, store)
 	value_pile = push(value_pile, inside(element)) #coloca o numero no topo da pilha de valores
 
 	automaton(control_pile, value_pile, env, store)
@@ -261,6 +278,18 @@ end
 
 function handle_Or(element, control_pile, value_pile, env, store)
 	control_pile = push(control_pile, "#OR")
+	values = inside(element)
+	first_value = values[1:middle(values)]
+	second_value = values[middle(values)+2:end]
+
+	control_pile = push(control_pile, second_value)
+	control_pile = push(control_pile, first_value)
+
+	automaton(control_pile, value_pile, env, store)
+end
+
+function handle_Assign(element, control_pile, value_pile, env, store)
+	control_pile = push(control_pile, "#ASSIGN")
 	values = inside(element)
 	first_value = values[1:middle(values)]
 	second_value = values[middle(values)+2:end]
