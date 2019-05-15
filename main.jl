@@ -124,23 +124,65 @@ mutable struct CSeq<:Node val end
 end
 
 function pega_entrada()
-     print("Escreva a expressão: ")
+     println("Escreva a expressão: ")
      readline()
  end
 
-entrada = pega_entrada()
-println("Você digitou $entrada")
+ function pega_arquivo()
+    println("Escreva o nome do arquivo .txt")
+    readline()
+ end
 
-teste_str = "while not (y == 0) do z:=z*y z:=y-1"
-# println(teste_str)
-parse = parse_one(entrada, teste)
-parser_string = (string.(parse))
-parser_string = replace(parser_string[1], "Any"=> "")
-parser_string = replace(parser_string, "["=> "")
-parser_string = replace(parser_string, "]"=> "")
-parser_string = replace(parser_string, " "=> "")
+# entrada = pega_entrada()
+# println("Você digitou $entrada")
+# # println(teste_str)
+# parse = parse_one(entrada, teste)
+# parser_string = (string.(parse))
+# parser_string = replace(parser_string[1], "Any"=> "")
+# parser_string = replace(parser_string, "["=> "")
+# parser_string = replace(parser_string, "]"=> "")
+# parser_string = replace(parser_string, " "=> "")
 
-println(parser_string)
-println(typeof(parser_string))
+# println(parser_string)
 
-pile.main(parser_string)
+# pile.main(parser_string)
+
+
+function main()
+    println("Pressione 1 para escrever um comando. Exemplo: '2+3' , '2<3 and 3>11' ")
+    println("Pressione 2 para ler um arquivo texto de entrada")
+    digito = readline()
+    if (isequal(digito, "1"))
+        entrada = pega_entrada()
+        println("Você digitou $entrada")
+        parse = parse_one(entrada, teste)
+        parser_string = (string.(parse))
+        parser_string = replace(parser_string[1], "Any"=> "")
+        parser_string = replace(parser_string, "["=> "")
+        parser_string = replace(parser_string, "]"=> "")
+        parser_string = replace(parser_string, " "=> "")
+        println(parser_string)
+        pile.main(parser_string)
+    
+    elseif (isequal(digito, "2"))
+        entrada = pega_arquivo()
+        open(entrada) do file
+            for ln in eachline(file)
+                linha = "$(ln)"
+                println(linha)
+                println("Você digitou $linha")
+                parse = parse_one(linha, teste)
+                parser_string = (string.(parse))
+                parser_string = replace(parser_string[1], "Any"=> "")
+                parser_string = replace(parser_string, "["=> "")
+                parser_string = replace(parser_string, "]"=> "")
+                parser_string = replace(parser_string, " "=> "")
+                println(parser_string)
+                pile.main(parser_string)
+                println(" ")
+            end
+        end
+    end
+end 
+
+main()
