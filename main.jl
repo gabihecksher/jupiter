@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-=======
-include("pile.jl")
-
->>>>>>> 09de36905fa8496d180e41e4e6f5819591bc4408
 using ParserCombinator
 using Nullables
 
@@ -146,12 +141,6 @@ parser_string = replace(parser_string, "]"=> "")
 parser_string = replace(parser_string, " "=> "")
 
 println(parser_string)
-<<<<<<< HEAD
 println(typeof(parser_string))
 
 pile.main(parser_string)
-=======
-
-
-#parser_to_aut(parser_string)
->>>>>>> 09de36905fa8496d180e41e4e6f5819591bc4408
