@@ -37,10 +37,7 @@ mutable struct CSeq<:Node val end
         #definicao de numero pela gramatica onde PFloat64 faz parte do Parser
         number = (E"(" + spc + PFloat64() + spc + E")") | PFloat64() > Num
 
-<<<<<<< HEAD
         #definicao de identificador pela gramatica onde Word faz parte do Parser
-=======
->>>>>>> bbc6d43b8a289a394c3b97844254306211913281
         identifier = (E"(" + spc + Word() + spc + E")") | Word() > Id
 
         #unica coisa que eu achei no parser combinator que parseia true e false (nao sei o que significa isso, caso duvidas consultar biblioteca ParserCombinator)
@@ -54,14 +51,8 @@ mutable struct CSeq<:Node val end
         addition = Delayed()
         subtraction = Delayed()
 
-<<<<<<< HEAD
         #aqui por exemplo eu botei o multiplication no mult_expression mas eu so defino o que eh na linha abaixo.
         mult_expression = (multiplication | division | atom) 
-=======
-
-        mult_expression = (multiplication | division | atom)
-
->>>>>>> bbc6d43b8a289a394c3b97844254306211913281
 
         multiplication.matcher = Nullable{Matcher}((atom + E"*" + mult_expression) | (E"(" + atom + E"*" + mult_expression + E")") |> Mul)
         division.matcher = Nullable{Matcher}((atom + E"/" + mult_expression) | (E"(" + atom + E"/" + mult_expression + E")") |> Div)
