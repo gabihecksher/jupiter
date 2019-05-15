@@ -1,6 +1,9 @@
-
 using ParserCombinator
 using Nullables
+
+module pile
+include("pile.jl")
+end
 
 abstract type Node end
 ==(n1::Node, n2::Node) = isequal(n1.val, n2.val)
@@ -135,5 +138,9 @@ parser_string = (string.(parse))
 parser_string = replace(parser_string[1], "Any"=> "")
 parser_string = replace(parser_string, "["=> "")
 parser_string = replace(parser_string, "]"=> "")
+parser_string = replace(parser_string, " "=> "")
 
 println(parser_string)
+println(typeof(parser_string))
+
+pile.main(parser_string)

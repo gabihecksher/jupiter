@@ -1,5 +1,4 @@
 include("calc.jl")
-
 function handle(element, control_pile, value_pile, env, store)
 	op = element[1:2]
 	if op == "Eq"
@@ -281,11 +280,12 @@ function handle_Not(element, control_pile, value_pile, env, store)
 	automaton(control_pile, value_pile, env, store)
 end
 
-function main()
+function main(x::String)
 	#automaton(["Num(23)"],[],[],[])
     #automaton(["Div(Mul(Num(1),Num(4)),Sub(Num(5),Num(15)))"],[],[],[])
-	automaton(["Or(Not(Lt(Num(20),Num(10))),Eq(Num(2),Num(5)))"],[],[],[])
+	# automaton(["Or(Not(Lt(Num(20),Num(10))),Eq(Num(2),Num(5)))"],[],[],[])
+	automaton([x],[],[],[])
 
 end
 
-main()
+# main()
