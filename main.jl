@@ -24,9 +24,9 @@ mutable struct And<:Node val end #ok
 mutable struct Or<:Node val end #ok
 mutable struct Boo<:Node val end #ok
 mutable struct Assign<:Node val end #ok
-mutable struct Loop<:Node val end
+mutable struct Loop<:Node val end #ok
 mutable struct Cond<:Node val end
-mutable struct CSeq<:Node val end
+mutable struct CSeq<:Node val end #ok
 
 
 
@@ -165,7 +165,7 @@ function main()
         env = Dict([("z", 1), ("y", 2)])
         store = Dict([(1, 1), (2,10)])
         pile.main(parser_string, env, store)
-    
+
     elseif (isequal(digito, "2"))
         entrada = pega_arquivo()
         open(entrada) do file
@@ -187,6 +187,6 @@ function main()
             end
         end
     end
-end 
+end
 
 main()

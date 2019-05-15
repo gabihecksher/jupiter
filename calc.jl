@@ -27,6 +27,8 @@ function calc(op, control_pile, value_pile, env, store)
 		calc_assign(control_pile, value_pile, env, store)
 	elseif op === "#LOOP"
 		calc_loop(control_pile, value_pile, env, store)
+	elseif op === "#COND"
+		calc_cond(control_pile, value_pile, env, store)
 	end
 
 end
@@ -302,6 +304,25 @@ function calc_loop(control_pile, value_pile, env, store)
 	if condition == "true"
 		control_pile = push(control_pile, loop)
 		control_pile = push(control_pile, second_value)
+	end
+	automaton(control_pile, value_pile, env, store)
+end
+
+function calc_cond(control_pile, value_pile, env, store)
+	condition = popfirst!(value_pile)
+	loop = popfirst!(value_pile)
+	values = pile.inside(loop)
+
+	part_two = values[middle(values)+2:end]
+
+	second_value = values[middle(values)+2:middle(part_two)+middle(values)+1]
+	third_value = values[middle(part_two)+middle(values)+3:end]
+
+	control_pile = pop(control_pile)
+	if condition == "true"
+		control_pile = push(control_pile, second_value)
+	else
+		control_pile = push(control_pile, third_value)
 	end
 	automaton(control_pile, value_pile, env, store)
 end
