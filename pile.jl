@@ -1,12 +1,12 @@
 include("calc.jl")
 
 function automaton(control_pile, value_pile, env, store)
-	print_piles(control_pile, value_pile)
+	print_piles(control_pile, value_pile, env, store)
 	if length(control_pile) == 0
-		println(env)
-		println(store)
 		if length(value_pile) == 1
-			println("Resultado: ",popfirst!(value_pile))
+			result = popfirst!(value_pile)
+			print_piles(control_pile, value_pile, env, store)
+			println("Resultado: ",result)
 		end
 		return 0
 	else
@@ -72,17 +72,36 @@ function handle(element, control_pile, value_pile, env, store)
 	end
 end
 
-function print_piles(control_pile, value_pile)
+function print_piles(control_pile, value_pile, env, store)
+	println()
+	println()
 	println("######################")
+
+	println()
 
 	println("CONTROL PILE:")
 	print_pile(control_pile)
 
+	println()
+
 	println("VALUE PILE:")
 	print_pile(value_pile)
 
-	println("######################")
+	println()
 
+	println("ENV:")
+	println(env)
+
+	println()
+
+	println("STORE:")
+	println(store)
+
+	println()
+
+	println("######################")
+	println()
+	println()
 end
 
 function push(pile, element)
@@ -296,17 +315,16 @@ function handle_Cond(element, control_pile, value_pile, env, store)
 	first_value = values[1:middle(values)]
 	part_two = values[middle(values)+2:end]
 
-	second_value = values[middle(values)+2:middle(part_two)+middle(values)+1]
+ 	second_value = values[middle(values)+2:middle(part_two)+middle(values)+1]
 	third_value = values[middle(part_two)+middle(values)+3:end]
 
-	 
-	control_pile = push(control_pile, first_value)
 
-	value_pile = push(value_pile, element)
+ 	control_pile = push(control_pile, first_value)
 
-	automaton(control_pile, value_pile, env, store)
+ 	value_pile = push(value_pile, element)
+
+ 	automaton(control_pile, value_pile, env, store)
 end
-
 
 function handle_Not(element, control_pile, value_pile, env, store)
 	control_pile = push(control_pile, "#NOT")

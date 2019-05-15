@@ -24,9 +24,9 @@ mutable struct And<:Node val end #ok
 mutable struct Or<:Node val end #ok
 mutable struct Boo<:Node val end #ok
 mutable struct Assign<:Node val end #ok
-mutable struct Loop<:Node val end #ok
+mutable struct Loop<:Node val end
 mutable struct Cond<:Node val end
-mutable struct CSeq<:Node val end #ok
+mutable struct CSeq<:Node val end
 
 
 
@@ -154,14 +154,14 @@ function main()
     digito = readline()
     if (isequal(digito, "1"))
         entrada = pega_entrada()
-        println("Você digitou $entrada")
+        println("Entrada: $entrada")
         parse = parse_one(entrada, teste)
         parser_string = (string.(parse))
         parser_string = replace(parser_string[1], "Any"=> "")
         parser_string = replace(parser_string, "["=> "")
         parser_string = replace(parser_string, "]"=> "")
         parser_string = replace(parser_string, " "=> "")
-        println(parser_string)
+        
         env = Dict([("z", 1), ("y", 2)])
         store = Dict([(1, 1), (2,10)])
         pile.main(parser_string, env, store)
@@ -172,7 +172,6 @@ function main()
             for ln in eachline(file)
                 linha = "$(ln)"
                 println(linha)
-                println("Você digitou $linha")
                 parse = parse_one(linha, teste)
                 parser_string = (string.(parse))
                 parser_string = replace(parser_string[1], "Any"=> "")
