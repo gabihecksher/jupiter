@@ -24,6 +24,8 @@ function calc(op, control_pile, value_pile, env, store)
 		calc_or(control_pile, value_pile, env, store)
 	elseif op === "#NOT"
 		calc_not(control_pile, value_pile, env, store)
+	elseif op === "#ASSIGN"
+		calc_assign(control_pile, value_pile, env, store)
 	end
 
 end
@@ -152,5 +154,16 @@ function calc_not(control_pile, value_pile, env, store)
 		result = "false"
 	end
 	value_pile = push(value_pile, result)
+	automaton(pop(control_pile), value_pile, env, store)
+end
+
+function calc_assign(control_pile, value_pile, env, store)
+	value2 = popfirst!(value_pile)
+	value1 = popfirst!(value_pile)
+
+	loc = env[value1]
+	store[loc] = (string.(value2))
+	println(env)
+	println(store)
 	automaton(pop(control_pile), value_pile, env, store)
 end
