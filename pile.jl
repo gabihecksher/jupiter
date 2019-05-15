@@ -317,7 +317,7 @@ function parser_to_aut(parser_result)
 
     automaton([parser_result],[],environment,store)
 	#automaton([parser_result],[],environment,store)
-#	automaton(["Or(Not(Lt(Num(20),Num(10))),Eq(Num(2),Num(5)))"],[],environment,store)
+	#automaton(["Or(Not(Lt(Num(20),Num(10))),Eq(Num(2),Num(5)))"],[],environment,store)
 
 end
 
