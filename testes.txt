@@ -6,7 +6,7 @@
 (3/2)+(2+4)
 3/2*3+4
 
-a:=(3*2+1) #fazer teste pro assign
+a:=(3*2+1)
 a:=3*2+1
 
 2<3
@@ -23,13 +23,12 @@ if (a>2) then a:=3 a:=2 else b:=2 end
 
 2<3 and 3>11
 (2<3) and (3>11)
-se a for inicializado
 a<32*2+1 and b>232*1
 a==23 and b==1
 a>2 or a<1
 a==2*3 or a>21
 
 while (a>2) do a:=2 a:=3
-while a>2 do a:=2
+while a<30 do a:=a+5
 while (a>2) do (a:=a*2) (b:=3*c)
 while a>2 do a:=2 while b<1 do b:=1
