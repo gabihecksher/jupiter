@@ -1,9 +1,8 @@
 using ParserCombinator
 using Nullables
 
-module pile
-include("pile.jl")
-end
+include("./automaton.jl")
+using .Automaton
 
 abstract type Node end
 ==(n1::Node, n2::Node) = isequal(n1.val, n2.val)
@@ -161,10 +160,10 @@ function main()
         parser_string = replace(parser_string, "["=> "")
         parser_string = replace(parser_string, "]"=> "")
         parser_string = replace(parser_string, " "=> "")
-        
+
         env = Dict([("z", 1), ("y", 2)])
         store = Dict([(1, 1), (2,10)])
-        pile.main(parser_string, env, store)
+        Automaton.automaton([parser_string], [], env, store)
 
     elseif (isequal(digito, "2"))
         entrada = pega_arquivo()
@@ -181,7 +180,7 @@ function main()
                 println(parser_string)
                 env = Dict([("z", 1), ("y", 2)])
                 store = Dict([(1, 1), (2,10)])
-                pile.main(parser_string, env, store)
+                Automaton.automaton([parser_string], [], env, store)
                 println(" ")
             end
         end

@@ -1,34 +1,34 @@
-function calc(op, control_pile, value_pile, env, store)
+function calc(op, control_stack, value_stack, env, store)
 	if op === "#SUM"
-		calc_sum(control_pile, value_pile, env, store)
+		calc_sum(control_stack, value_stack, env, store)
 	elseif op === "#MUL"
-		calc_mul(control_pile, value_pile, env, store)
+		calc_mul(control_stack, value_stack, env, store)
 	elseif op === "#SUB"
-		calc_sub(control_pile, value_pile, env, store)
+		calc_sub(control_stack, value_stack, env, store)
 	elseif op === "#DIV"
-		calc_div(control_pile, value_pile, env, store)
+		calc_div(control_stack, value_stack, env, store)
 	elseif op === "#EQ"
-		calc_eq(control_pile, value_pile, env, store)
+		calc_eq(control_stack, value_stack, env, store)
 	elseif op === "#LT"
-		calc_lt(control_pile, value_pile, env, store)
+		calc_lt(control_stack, value_stack, env, store)
 	elseif op === "#GT"
-		calc_gt(control_pile, value_pile, env, store)
+		calc_gt(control_stack, value_stack, env, store)
 	elseif op === "#LE"
-		calc_le(control_pile, value_pile, env, store)
+		calc_le(control_stack, value_stack, env, store)
 	elseif op === "#GE"
-		calc_ge(control_pile, value_pile, env, store)
+		calc_ge(control_stack, value_stack, env, store)
 	elseif op === "#AND"
-		calc_and(control_pile, value_pile, env, store)
+		calc_and(control_stack, value_stack, env, store)
 	elseif op === "#OR"
-		calc_or(control_pile, value_pile, env, store)
+		calc_or(control_stack, value_stack, env, store)
 	elseif op === "#NOT"
-		calc_not(control_pile, value_pile, env, store)
+		calc_not(control_stack, value_stack, env, store)
 	elseif op === "#ASSIGN"
-		calc_assign(control_pile, value_pile, env, store)
+		calc_assign(control_stack, value_stack, env, store)
 	elseif op === "#LOOP"
-		calc_loop(control_pile, value_pile, env, store)
+		calc_loop(control_stack, value_stack, env, store)
 	elseif op === "#COND"
-		calc_cond(control_pile, value_pile, env, store)
+		calc_cond(control_stack, value_stack, env, store)
 	end
 
 end
@@ -84,9 +84,9 @@ function get_value(id, env, store)
 	store[loc]
 end
 
-function calc_sum(control_pile, value_pile, env, store)
-	value2 = popfirst!(value_pile)
-	value1 = popfirst!(value_pile)
+function calc_sum(control_stack, value_stack, env, store)
+	value2 = popfirst!(value_stack)
+	value1 = popfirst!(value_stack)
 	if typeof(value1) == String
 		value1 = get_value(value1, env, store)
 	end
@@ -95,13 +95,13 @@ function calc_sum(control_pile, value_pile, env, store)
 	end
 
 	result = value1 + value2
-	value_pile = push(value_pile, result)
-	automaton(pop(control_pile), value_pile, env, store)
+	value_stack = push(value_stack, result)
+	automaton(pop(control_stack), value_stack, env, store)
 end
 
-function calc_sub(control_pile, value_pile, env, store)
-	value2 = popfirst!(value_pile)
-	value1 = popfirst!(value_pile)
+function calc_sub(control_stack, value_stack, env, store)
+	value2 = popfirst!(value_stack)
+	value1 = popfirst!(value_stack)
 
 	if typeof(value1) == String
 		value1 = get_value(value1, env, store)
@@ -112,13 +112,13 @@ function calc_sub(control_pile, value_pile, env, store)
 
 
 	result = value1 - value2
-	value_pile = push(value_pile, result)
-	automaton(pop(control_pile), value_pile, env, store)
+	value_stack = push(value_stack, result)
+	automaton(pop(control_stack), value_stack, env, store)
 end
 
-function calc_mul(control_pile, value_pile, env, store)
-	value2 = popfirst!(value_pile)
-	value1 = popfirst!(value_pile)
+function calc_mul(control_stack, value_stack, env, store)
+	value2 = popfirst!(value_stack)
+	value1 = popfirst!(value_stack)
 
 	if typeof(value1) == String
 		value1 = get_value(value1, env, store)
@@ -128,13 +128,13 @@ function calc_mul(control_pile, value_pile, env, store)
 	end
 
 	result = value1 * value2
-	value_pile = push(value_pile, result)
-	automaton(pop(control_pile), value_pile, env, store)
+	value_stack = push(value_stack, result)
+	automaton(pop(control_stack), value_stack, env, store)
 end
 
-function calc_div(control_pile, value_pile, env, store)
-	value2 = popfirst!(value_pile)
-	value1 = popfirst!(value_pile)
+function calc_div(control_stack, value_stack, env, store)
+	value2 = popfirst!(value_stack)
+	value1 = popfirst!(value_stack)
 
 	if typeof(value1) == String
 		value1 = get_value(value1, env, store)
@@ -144,13 +144,13 @@ function calc_div(control_pile, value_pile, env, store)
 	end
 
 	result = value1 / value2
-	value_pile = push(value_pile, result)
-	automaton(pop(control_pile), value_pile, env, store)
+	value_stack = push(value_stack, result)
+	automaton(pop(control_stack), value_stack, env, store)
 end
 
-function calc_eq(control_pile, value_pile, env, store)
-	value2 = popfirst!(value_pile)
-	value1 = popfirst!(value_pile)
+function calc_eq(control_stack, value_stack, env, store)
+	value2 = popfirst!(value_stack)
+	value1 = popfirst!(value_stack)
 
 	if typeof(value1) == String
 		value1 = get_value(value1, env, store)
@@ -165,13 +165,13 @@ function calc_eq(control_pile, value_pile, env, store)
 	else
 		result = "false"
 	end
-	value_pile = push(value_pile, result)
-	automaton(pop(control_pile), value_pile, env, store)
+	value_stack = push(value_stack, result)
+	automaton(pop(control_stack), value_stack, env, store)
 end
 
-function calc_lt(control_pile, value_pile, env, store)
-	value2 = popfirst!(value_pile)
-	value1 = popfirst!(value_pile)
+function calc_lt(control_stack, value_stack, env, store)
+	value2 = popfirst!(value_stack)
+	value1 = popfirst!(value_stack)
 
 	if typeof(value1) == String
 		value1 = get_value(value1, env, store)
@@ -185,13 +185,13 @@ function calc_lt(control_pile, value_pile, env, store)
 	else
 		result = "false"
 	end
-	value_pile = push(value_pile, result)
-	automaton(pop(control_pile), value_pile, env, store)
+	value_stack = push(value_stack, result)
+	automaton(pop(control_stack), value_stack, env, store)
 end
 
-function calc_gt(control_pile, value_pile, env, store)
-	value2 = popfirst!(value_pile)
-	value1 = popfirst!(value_pile)
+function calc_gt(control_stack, value_stack, env, store)
+	value2 = popfirst!(value_stack)
+	value1 = popfirst!(value_stack)
 
 	if typeof(value1) == String
 		value1 = get_value(value1, env, store)
@@ -205,13 +205,13 @@ function calc_gt(control_pile, value_pile, env, store)
 	else
 		result = "false"
 	end
-	value_pile = push(value_pile, result)
-	automaton(pop(control_pile), value_pile, env, store)
+	value_stack = push(value_stack, result)
+	automaton(pop(control_stack), value_stack, env, store)
 end
 
-function calc_le(control_pile, value_pile, env, store)
-	value2 = popfirst!(value_pile)
-	value1 = popfirst!(value_pile)
+function calc_le(control_stack, value_stack, env, store)
+	value2 = popfirst!(value_stack)
+	value1 = popfirst!(value_stack)
 
 	if typeof(value1) == String
 		value1 = get_value(value1, env, store)
@@ -225,13 +225,13 @@ function calc_le(control_pile, value_pile, env, store)
 	else
 		result = "false"
 	end
-	value_pile = push(value_pile, result)
-	automaton(pop(control_pile), value_pile, env, store)
+	value_stack = push(value_stack, result)
+	automaton(pop(control_stack), value_stack, env, store)
 end
 
-function calc_ge(control_pile, value_pile, env, store)
-	value2 = popfirst!(value_pile)
-	value1 = popfirst!(value_pile)
+function calc_ge(control_stack, value_stack, env, store)
+	value2 = popfirst!(value_stack)
+	value1 = popfirst!(value_stack)
 
 	if typeof(value1) == String
 		value1 = get_value(value1, env, store)
@@ -245,84 +245,84 @@ function calc_ge(control_pile, value_pile, env, store)
 	else
 		result = "false"
 	end
-	value_pile = push(value_pile, result)
-	automaton(pop(control_pile), value_pile, env, store)
+	value_stack = push(value_stack, result)
+	automaton(pop(control_stack), value_stack, env, store)
 end
 
-function calc_and(control_pile, value_pile, env, store)
-	value2 = popfirst!(value_pile)
-	value1 = popfirst!(value_pile)
+function calc_and(control_stack, value_stack, env, store)
+	value2 = popfirst!(value_stack)
+	value1 = popfirst!(value_stack)
 	if value1=="true" && value2=="true"
 		result = "true"
 	else
 		result = "false"
 	end
-	value_pile = push(value_pile, result)
-	automaton(pop(control_pile), value_pile, env, store)
+	value_stack = push(value_stack, result)
+	automaton(pop(control_stack), value_stack, env, store)
 end
 
-function calc_or(control_pile, value_pile, env, store)
-	value2 = popfirst!(value_pile)
-	value1 = popfirst!(value_pile)
+function calc_or(control_stack, value_stack, env, store)
+	value2 = popfirst!(value_stack)
+	value1 = popfirst!(value_stack)
 	if value1=="true" || value2=="true"
 		result = "true"
 	else
 		result = "false"
 	end
-	value_pile = push(value_pile, result)
-	automaton(pop(control_pile), value_pile, env, store)
+	value_stack = push(value_stack, result)
+	automaton(pop(control_stack), value_stack, env, store)
 end
 
-function calc_not(control_pile, value_pile, env, store)
-	value1 = popfirst!(value_pile)
+function calc_not(control_stack, value_stack, env, store)
+	value1 = popfirst!(value_stack)
 	if value1=="false"
 		result = "true"
 	else
 		result = "false"
 	end
-	value_pile = push(value_pile, result)
-	automaton(pop(control_pile), value_pile, env, store)
+	value_stack = push(value_stack, result)
+	automaton(pop(control_stack), value_stack, env, store)
 end
 
-function calc_assign(control_pile, value_pile, env, store)
-	value2 = popfirst!(value_pile)
-	value1 = popfirst!(value_pile)
+function calc_assign(control_stack, value_stack, env, store)
+	value2 = popfirst!(value_stack)
+	value1 = popfirst!(value_stack)
 
 	loc = env[value1]
 	store[loc] = value2
 	println(env)
 	println(store)
-	automaton(pop(control_pile), value_pile, env, store)
+	automaton(pop(control_stack), value_stack, env, store)
 end
 
-function calc_loop(control_pile, value_pile, env, store)
-	condition = popfirst!(value_pile)
-	loop = popfirst!(value_pile)
-	values = pile.inside(loop)
+function calc_loop(control_stack, value_stack, env, store)
+	condition = popfirst!(value_stack)
+	loop = popfirst!(value_stack)
+	values = stack.inside(loop)
 	second_value = values[middle(values)+2:end]
-	control_pile = pop(control_pile)
+	control_stack = pop(control_stack)
 	if condition == "true"
-		control_pile = push(control_pile, loop)
-		control_pile = push(control_pile, second_value)
+		control_stack = push(control_stack, loop)
+		control_stack = push(control_stack, second_value)
 	end
-	automaton(control_pile, value_pile, env, store)
+	automaton(control_stack, value_stack, env, store)
 end
 
-function calc_cond(control_pile, value_pile, env, store)
-	condition = popfirst!(value_pile)
-	loop = popfirst!(value_pile)
-	values = pile.inside(loop)
+function calc_cond(control_stack, value_stack, env, store)
+	condition = popfirst!(value_stack)
+	loop = popfirst!(value_stack)
+	values = stack.inside(loop)
 
 	part_two = values[middle(values)+2:end]
 
 	second_value = values[middle(values)+2:middle(part_two)+middle(values)+1]
 	third_value = values[middle(part_two)+middle(values)+3:end]
 
-	control_pile = pop(control_pile)
+	control_stack = pop(control_stack)
 	if condition == "true"
-		control_pile = push(control_pile, second_value)
+		control_stack = push(control_stack, second_value)
 	else
-		control_pile = push(control_pile, third_value)
+		control_stack = push(control_stack, third_value)
 	end
-	automaton(control_pile, value_pile, env, store)
+	automaton(control_stack, value_stack, env, store)
 end
