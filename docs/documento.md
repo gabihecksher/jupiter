@@ -4,7 +4,7 @@ Demonstração das denotações:
 
 ![alt text](https://github.com/gabihecksher/jupiter/blob/master/images/handle-num.png?raw=true)
 
-Soma
+Soma:
 
 `δ(Sum(E₁, E₂) :: C, V, S) = δ(E₁ :: E₂ :: #SUM :: C, V, S)`
 
@@ -14,7 +14,8 @@ Soma
 
 ![alt text](https://github.com/gabihecksher/jupiter/blob/master/images/calc-sum.png?raw=true)
 
-Subtração
+Subtração:
+
 `δ(Sub(E₁, E₂) :: C, V, S) = δ(E₁ :: E₂ :: #SUB :: C, V, S)`
 
 `δ(#SUB :: C, Num(N₁) :: Num(N₂) :: V, S) = δ(C, N₁ - N₂ :: V, S)`
@@ -23,7 +24,8 @@ Subtração
 
 ![alt text](https://github.com/gabihecksher/jupiter/blob/master/images/calc-sub.png?raw=true)
 
-Multiplicação
+Multiplicação:
+
 `δ(Mul(E₁, E₂) :: C, V, S) = δ(E₁ :: E₂ :: #MUL :: C, V, S)`
 `δ(#MUL :: C, Num(N₁) :: Num(N₂) :: V, S) = δ(C, N₁ * N₂ :: V, S)`
 
@@ -31,7 +33,8 @@ Multiplicação
 
 ![alt text](https://github.com/gabihecksher/jupiter/blob/master/images/calc-mul.png?raw=true)
 
-Divisão
+Divisão:
+
 `δ(Div(E₁, E₂) :: C, V, S) = δ(E₁ :: E₂ :: #MUL :: C, V, S)`
 `δ(#DIV :: C, Num(N₁) :: Num(N₂) :: V, S) = δ(C, N₁ / N₂ :: V, S) if N₂ ≠ 0`
 
@@ -39,7 +42,7 @@ Divisão
 
 ![alt text](https://github.com/gabihecksher/jupiter/blob/master/images/calc-div.png?raw=true)
 
-Comparações
+Comparações:
 
 `δ(Eq(E₁, E₂) :: C, V, S) = δ(E₁ :: E₂ :: #EQ :: C, V, S)`
 `δ(#EQ :: C, Boo(B₁) :: Boo(B₂) :: V, S) = δ(C, B₁ = B₂ :: V, S)`
@@ -76,7 +79,7 @@ Comparações
 
 ![alt text](https://github.com/gabihecksher/jupiter/blob/master/images/calc-ge.png?raw=true)
 
-Operadores lógicos
+Operadores lógicos:
 
 `δ(And(E₁, E₂) :: C, V, S) = δ(E₁ :: E₂ :: #AND :: C, V, S)`
 `δ(#AND :: C, Boo(B₁) :: Boo(B₂) :: V, S) = δ(C, B₁ ∧ B₂ :: V, S)`
