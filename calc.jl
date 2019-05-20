@@ -100,10 +100,10 @@ function calc_sum(control_stack, value_stack, env, store) # chamada quando o opc
 end
 
 function calc_sub(control_stack, value_stack, env, store)
-	value2 = popfirst!(value_stack)
+	value2 = popfirst!(value_stack) # retira os dois elementos do topo da pilha de valores
 	value1 = popfirst!(value_stack)
 
-	if typeof(value1) == String
+	if typeof(value1) == String # caso o valor seja o nome de uma variável, pega o valor associado a ela
 		value1 = get_value(value1, env, store)
 	end
 	if typeof(value2) == String
@@ -112,15 +112,15 @@ function calc_sub(control_stack, value_stack, env, store)
 
 
 	result = value1 - value2
-	value_stack = push(value_stack, result)
+	value_stack = push(value_stack, result) # coloca o resultado da subtração no topo da pilha de valores
 	automaton(pop(control_stack), value_stack, env, store)
 end
 
 function calc_mul(control_stack, value_stack, env, store)
-	value2 = popfirst!(value_stack)
+	value2 = popfirst!(value_stack) # retira os dois elementos do topo da pilha de valores
 	value1 = popfirst!(value_stack)
 
-	if typeof(value1) == String
+	if typeof(value1) == String # caso o valor seja o nome de uma variável, pega o valor associado a ela
 		value1 = get_value(value1, env, store)
 	end
 	if typeof(value2) == String
@@ -128,15 +128,15 @@ function calc_mul(control_stack, value_stack, env, store)
 	end
 
 	result = value1 * value2
-	value_stack = push(value_stack, result)
+	value_stack = push(value_stack, result) # coloca o resultado da multiplicação no topo da pilha de valores
 	automaton(pop(control_stack), value_stack, env, store)
 end
 
 function calc_div(control_stack, value_stack, env, store)
-	value2 = popfirst!(value_stack)
+	value2 = popfirst!(value_stack) # retira os dois elementos do topo da pilha de valores
 	value1 = popfirst!(value_stack)
 
-	if typeof(value1) == String
+	if typeof(value1) == String # caso o valor seja o nome de uma variável, pega o valor associado a ela
 		value1 = get_value(value1, env, store)
 	end
 	if typeof(value2) == String
@@ -144,15 +144,15 @@ function calc_div(control_stack, value_stack, env, store)
 	end
 
 	result = value1 / value2
-	value_stack = push(value_stack, result)
+	value_stack = push(value_stack, result) # coloca o resultado da divisão no topo da pilha de valores
 	automaton(pop(control_stack), value_stack, env, store)
 end
 
 function calc_eq(control_stack, value_stack, env, store)
-	value2 = popfirst!(value_stack)
+	value2 = popfirst!(value_stack) # retira os dois elementos do topo da pilha de valores
 	value1 = popfirst!(value_stack)
 
-	if typeof(value1) == String
+	if typeof(value1) == String # caso o valor seja o nome de uma variável, pega o valor associado a ela
 		value1 = get_value(value1, env, store)
 	end
 	if typeof(value2) == String
@@ -165,15 +165,15 @@ function calc_eq(control_stack, value_stack, env, store)
 	else
 		result = "false"
 	end
-	value_stack = push(value_stack, result)
+	value_stack = push(value_stack, result)  # coloca o resultado da comparação no topo da pilha de valores
 	automaton(pop(control_stack), value_stack, env, store)
 end
 
 function calc_lt(control_stack, value_stack, env, store)
-	value2 = popfirst!(value_stack)
+	value2 = popfirst!(value_stack) # retira os dois elementos do topo da pilha de valores
 	value1 = popfirst!(value_stack)
 
-	if typeof(value1) == String
+	if typeof(value1) == String # caso o valor seja o nome de uma variável, pega o valor associado a ela
 		value1 = get_value(value1, env, store)
 	end
 	if typeof(value2) == String
@@ -185,15 +185,15 @@ function calc_lt(control_stack, value_stack, env, store)
 	else
 		result = "false"
 	end
-	value_stack = push(value_stack, result)
+	value_stack = push(value_stack, result)  # coloca o resultado da comparação no topo da pilha de valores
 	automaton(pop(control_stack), value_stack, env, store)
 end
 
 function calc_gt(control_stack, value_stack, env, store)
-	value2 = popfirst!(value_stack)
+	value2 = popfirst!(value_stack) # retira os dois elementos do topo da pilha de valores
 	value1 = popfirst!(value_stack)
 
-	if typeof(value1) == String
+	if typeof(value1) == String # caso o valor seja o nome de uma variável, pega o valor associado a ela
 		value1 = get_value(value1, env, store)
 	end
 	if typeof(value2) == String
@@ -205,15 +205,15 @@ function calc_gt(control_stack, value_stack, env, store)
 	else
 		result = "false"
 	end
-	value_stack = push(value_stack, result)
+	value_stack = push(value_stack, result)  # coloca o resultado da comparação no topo da pilha de valores
 	automaton(pop(control_stack), value_stack, env, store)
 end
 
 function calc_le(control_stack, value_stack, env, store)
-	value2 = popfirst!(value_stack)
+	value2 = popfirst!(value_stack) # retira os dois elementos do topo da pilha de valores
 	value1 = popfirst!(value_stack)
 
-	if typeof(value1) == String
+	if typeof(value1) == String # caso o valor seja o nome de uma variável, pega o valor associado a ela
 		value1 = get_value(value1, env, store)
 	end
 	if typeof(value2) == String
@@ -225,15 +225,15 @@ function calc_le(control_stack, value_stack, env, store)
 	else
 		result = "false"
 	end
-	value_stack = push(value_stack, result)
+	value_stack = push(value_stack, result)  # coloca o resultado da comparação no topo da pilha de valores
 	automaton(pop(control_stack), value_stack, env, store)
 end
 
 function calc_ge(control_stack, value_stack, env, store)
-	value2 = popfirst!(value_stack)
+	value2 = popfirst!(value_stack) # retira os dois elementos do topo da pilha de valores
 	value1 = popfirst!(value_stack)
 
-	if typeof(value1) == String
+	if typeof(value1) == String # caso o valor seja o nome de uma variável, pega o valor associado a ela
 		value1 = get_value(value1, env, store)
 	end
 	if typeof(value2) == String
@@ -245,51 +245,51 @@ function calc_ge(control_stack, value_stack, env, store)
 	else
 		result = "false"
 	end
-	value_stack = push(value_stack, result)
+	value_stack = push(value_stack, result)  # coloca o resultado da comparação no topo da pilha de valores
 	automaton(pop(control_stack), value_stack, env, store)
 end
 
 function calc_and(control_stack, value_stack, env, store)
-	value2 = popfirst!(value_stack)
+	value2 = popfirst!(value_stack) # retira os dois elementos do topo da pilha de valores
 	value1 = popfirst!(value_stack)
 	if value1=="true" && value2=="true"
 		result = "true"
 	else
 		result = "false"
 	end
-	value_stack = push(value_stack, result)
+	value_stack = push(value_stack, result)  # coloca o resultado da comparação no topo da pilha de valores
 	automaton(pop(control_stack), value_stack, env, store)
 end
 
 function calc_or(control_stack, value_stack, env, store)
-	value2 = popfirst!(value_stack)
+	value2 = popfirst!(value_stack) # retira os dois elementos do topo da pilha de valores
 	value1 = popfirst!(value_stack)
 	if value1=="true" || value2=="true"
 		result = "true"
 	else
 		result = "false"
 	end
-	value_stack = push(value_stack, result)
+	value_stack = push(value_stack, result)  # coloca o resultado da comparação no topo da pilha de valores
 	automaton(pop(control_stack), value_stack, env, store)
 end
 
 function calc_not(control_stack, value_stack, env, store)
-	value1 = popfirst!(value_stack)
+	value1 = popfirst!(value_stack) # retira o elemento do topo da pilha de valores
 	if value1=="false"
 		result = "true"
 	else
 		result = "false"
 	end
-	value_stack = push(value_stack, result)
+	value_stack = push(value_stack, result)  # coloca o resultado da negação no topo da pilha de valores
 	automaton(pop(control_stack), value_stack, env, store)
 end
 
 function calc_assign(control_stack, value_stack, env, store)
-	value2 = popfirst!(value_stack)
+	value2 = popfirst!(value_stack) # retira os dois elementos do topo da pilha de valores
 	value1 = popfirst!(value_stack)
 
 	loc = env[value1]
-	store[loc] = value2
+	store[loc] = value2 # associa o novo valor ao nome da variavel
 	println(env)
 	println(store)
 	automaton(pop(control_stack), value_stack, env, store)

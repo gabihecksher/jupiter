@@ -155,96 +155,96 @@ function handle_Sum(element, control_stack, value_stack, env, store)
 end
 
 function handle_Sub(element, control_stack, value_stack, env, store)
-	control_stack = push(control_stack, "#SUB")
+	control_stack = push(control_stack, "#SUB") # coloca o opcode de subtração na pilha de controle
 	values = inside(element)
 	first_value = values[1:middle(values)]
 	second_value = values[middle(values)+2:end]
 
-	control_stack = push(control_stack, second_value)
+	control_stack = push(control_stack, second_value) # coloca os elementos a serem subtraídos na pilha de controle
 	control_stack = push(control_stack, first_value)
 
 	automaton(control_stack, value_stack, env, store)
 end
 
 function handle_Mul(element, control_stack, value_stack, env, store)
-	control_stack = push(control_stack, "#MUL")
+	control_stack = push(control_stack, "#MUL")  # coloca o opcode de multiplicação na pilha de controle
 	values = inside(element)
 	first_value = values[1:middle(values)]
 	second_value = values[middle(values)+2:end]
 
-	control_stack = push(control_stack, second_value)
+	control_stack = push(control_stack, second_value) # coloca os elementos a serem multiplicados na pilha de controle
 	control_stack = push(control_stack, first_value)
 
 	automaton(control_stack, value_stack, env, store)
 end
 
 function handle_Div(element, control_stack, value_stack, env, store)
-	control_stack = push(control_stack, "#DIV")
+	control_stack = push(control_stack, "#DIV")  # coloca o opcode de divisão na pilha de controle
 	values = inside(element)
 	first_value = values[1:middle(values)]
 	second_value = values[middle(values)+2:end]
 
-	control_stack = push(control_stack, second_value)
+	control_stack = push(control_stack, second_value) # coloca os elementos a serem divididos na pilha de controle
 	control_stack = push(control_stack, first_value)
 
 	automaton(control_stack, value_stack, env, store)
 end
 
 function handle_Eq(element, control_stack, value_stack, env, store)
-	control_stack = push(control_stack, "#EQ")
+	control_stack = push(control_stack, "#EQ")  # coloca o opcode de equidade na pilha de controle
 	values = inside(element)
 	first_value = values[1:middle(values)]
 	second_value = values[middle(values)+2:end]
 
-	control_stack = push(control_stack, second_value)
+	control_stack = push(control_stack, second_value) # coloca os elementos a serem comparados na pilha de controle
 	control_stack = push(control_stack, first_value)
 
 	automaton(control_stack, value_stack, env, store)
 end
 
 function handle_Lt(element, control_stack, value_stack, env, store)
-	control_stack = push(control_stack, "#LT")
+	control_stack = push(control_stack, "#LT")  # coloca o opcode de comparação do tipo "menor que" na pilha de controle
 	values = inside(element)
 	first_value = values[1:middle(values)]
 	second_value = values[middle(values)+2:end]
 
-	control_stack = push(control_stack, second_value)
+	control_stack = push(control_stack, second_value) # coloca os elementos a serem comparados na pilha de controle
 	control_stack = push(control_stack, first_value)
 
 	automaton(control_stack, value_stack, env, store)
 end
 
 function handle_Le(element, control_stack, value_stack, env, store)
-	control_stack = push(control_stack, "#LE")
+	control_stack = push(control_stack, "#LE")  # coloca o opcode de comparação do tipo "menor ou igual a" na pilha de controle
 	values = inside(element)
 	first_value = values[1:middle(values)]
 	second_value = values[middle(values)+2:end]
 
-	control_stack = push(control_stack, second_value)
+	control_stack = push(control_stack, second_value) # coloca os elementos a serem comparados na pilha de controle
 	control_stack = push(control_stack, first_value)
 
 	automaton(control_stack, value_stack, env, store)
 end
 
 function handle_Gt(element, control_stack, value_stack, env, store)
-	control_stack = push(control_stack, "#GT")
+	control_stack = push(control_stack, "#GT")  # coloca o opcode de comparação do tipo "maior que" na pilha de controle
 	values = inside(element)
 	first_value = values[1:middle(values)]
 	second_value = values[middle(values)+2:end]
 
-	control_stack = push(control_stack, second_value)
+	control_stack = push(control_stack, second_value) # coloca os elementos a serem comparados na pilha de controle
 	control_stack = push(control_stack, first_value)
 
 	automaton(control_stack, value_stack, env, store)
 end
 
 function handle_Ge(element, control_stack, value_stack, env, store)
-	control_stack = push(control_stack, "#GE")
+	control_stack = push(control_stack, "#GE")  # coloca o opcode de comparação do tipo "maior ou igual a" na pilha de controle
 	values = inside(element)
 	first_value = values[1:middle(values)]
 	second_value = values[middle(values)+2:end]
 
-	control_stack = push(control_stack, second_value)
+	control_stack = push(control_stack, second_value) # coloca os elementos a serem comparados na pilha de controle
 	control_stack = push(control_stack, first_value)
 
 	automaton(control_stack, value_stack, env, store)
@@ -252,36 +252,36 @@ end
 
 
 function handle_And(element, control_stack, value_stack, env, store)
-	control_stack = push(control_stack, "#AND")
+	control_stack = push(control_stack, "#AND")  # coloca o opcode de "e" na pilha de controle
 	values = inside(element)
 	first_value = values[1:middle(values)]
 	second_value = values[middle(values)+2:end]
 
-	control_stack = push(control_stack, second_value)
+	control_stack = push(control_stack, second_value) # coloca os elementos na pilha de controle
 	control_stack = push(control_stack, first_value)
 
 	automaton(control_stack, value_stack, env, store)
 end
 
 function handle_Or(element, control_stack, value_stack, env, store)
-	control_stack = push(control_stack, "#OR")
+	control_stack = push(control_stack, "#OR")  # coloca o opcode de "ou" na pilha de controle
 	values = inside(element)
 	first_value = values[1:middle(values)]
 	second_value = values[middle(values)+2:end]
 
-	control_stack = push(control_stack, second_value)
+	control_stack = push(control_stack, second_value) # coloca os elementos na pilha de controle
 	control_stack = push(control_stack, first_value)
 
 	automaton(control_stack, value_stack, env, store)
 end
 
 function handle_Assign(element, control_stack, value_stack, env, store)
-	control_stack = push(control_stack, "#ASSIGN")
+	control_stack = push(control_stack, "#ASSIGN")  # coloca o opcode de atribuição na pilha de controle
 	values = inside(element)
 	first_value = values[1:middle(values)]
 	second_value = values[middle(values)+2:end]
 
-	control_stack = push(control_stack, second_value)
+	control_stack = push(control_stack, second_value) # coloca os elementos na pilha de controle
 	control_stack = push(control_stack, first_value)
 
 	automaton(control_stack, value_stack, env, store)
@@ -292,14 +292,14 @@ function handle_CSeq(element, control_stack, value_stack, env, store)
 	first_value = values[1:middle(values)]
 	second_value = values[middle(values)+2:end]
 
-	control_stack = push(control_stack, second_value)
+	control_stack = push(control_stack, second_value) # coloca os comandos na pilha de controle
 	control_stack = push(control_stack, first_value)
 
 	automaton(control_stack, value_stack, env, store)
 end
 
 function handle_Loop(element, control_stack, value_stack, env, store)
-	control_stack = push(control_stack, "#LOOP")
+	control_stack = push(control_stack, "#LOOP")   # coloca o opcode de loop na pilha de controle
 	values = inside(element)
 	first_value = values[1:middle(values)]
 	control_stack = push(control_stack, first_value)
@@ -310,7 +310,7 @@ function handle_Loop(element, control_stack, value_stack, env, store)
 end
 
 function handle_Cond(element, control_stack, value_stack, env, store)
-	control_stack = push(control_stack, "#COND")
+	control_stack = push(control_stack, "#COND")  # coloca o opcode de condição na pilha de controle
 	values = inside(element)
 	first_value = values[1:middle(values)]
 	part_two = values[middle(values)+2:end]
@@ -327,7 +327,7 @@ function handle_Cond(element, control_stack, value_stack, env, store)
 end
 
 function handle_Not(element, control_stack, value_stack, env, store)
-	control_stack = push(control_stack, "#NOT")
+	control_stack = push(control_stack, "#NOT") # coloca o opcode de negação na pilha de controle
 	value = inside(element)
 
 	control_stack = push(control_stack, value)
