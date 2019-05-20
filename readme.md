@@ -11,6 +11,7 @@ Run file:
 Clean environment:
 `make clean`
 
+Documentação:
 
-
-
+Função Automaton:
+![alt text](https://github.com/gabihecksher/jupiter/tree/master/images/function-automaton.png)
