@@ -95,6 +95,34 @@ Operadores lógicos:
 
 ![alt text](https://github.com/gabihecksher/jupiter/blob/master/images/calc-or.png?raw=true)
 
+`δ(Id(W) :: C, V, E, S) = δ(C, B :: V, E, S), where E[W] = l ∧ S[l] = B`
+
+`δ(Assign(W, X) :: C, V, E, S) = δ(X :: #ASSIGN :: C, W :: V, E, S')`
+`δ(#ASSIGN :: C, T :: W :: V, E, S) = δ(C, V, E, S'), where E[W] = l ∧ S' = S/[l ↦ T]`
+
+![alt text](https://github.com/gabihecksher/jupiter/blob/master/images/handle-assign.png?raw=true)
+
+![alt text](https://github.com/gabihecksher/jupiter/blob/master/images/calc-assign.png?raw=true)
+
+`δ(Loop(X, M) :: C, V, E, S) = δ(X :: #LOOP :: C, Loop(X, M) :: V, E, S)`
+`δ(#LOOP :: C, Boo(true) :: Loop(X, M) :: V, E, S) = δ(M :: Loop(X, M) :: C, V, E, S)`
+`δ(#LOOP :: C, Boo(false) :: Loop(X, M) :: V, E, S) = δ(C, V, E, S)`
+
+![alt text](https://github.com/gabihecksher/jupiter/blob/master/images/handle-loop.png?raw=true)
+
+![alt text](https://github.com/gabihecksher/jupiter/blob/master/images/calc-loop.png?raw=true)
+
+`δ(Cond(X, M₁, M₂) :: C, V, E, S) = δ(X :: #COND :: C, Cond(X, M₁, M₂) :: V, E, S)`
+`δ(#COND :: C, Boo(true) :: Cond(X, M₁, M₂) :: V, E, S) = δ(M₁ :: C, V, E, S)`
+`δ(#COND :: C, Boo(false) :: Cond(X, M₁, M₂) :: V, E, S) = δ(M₂ :: C, V, E, S)`
+
+![alt text](https://github.com/gabihecksher/jupiter/blob/master/images/handle-cond.png?raw=true)
+
+![alt text](https://github.com/gabihecksher/jupiter/blob/master/images/calc-cond.png?raw=true)
+
+`δ(CSeq(M₁, M₂) :: C, V, E, S) = δ(M₁ :: M₂ :: C, V, E, S)`
+
+![alt text](https://github.com/gabihecksher/jupiter/blob/master/images/handle-cseq.png?raw=true)
 
 
 
