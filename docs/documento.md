@@ -5,6 +5,7 @@ Demonstração das denotações:
 ![alt text](https://github.com/gabihecksher/jupiter/blob/master/images/handle-num.png?raw=true)
 
 Soma
+
 `δ(Sum(E₁, E₂) :: C, V, S) = δ(E₁ :: E₂ :: #SUM :: C, V, S)`
 
 `δ(#SUM :: C, Num(N₁) :: Num(N₂) :: V, S) = δ(C, N₁ + N₂ :: V, S)`
