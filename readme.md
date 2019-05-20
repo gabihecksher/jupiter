@@ -14,4 +14,4 @@ Clean environment:
 Documentação:
 
 Função Automaton:
-![alt text](https://github.com/gabihecksher/jupiter/tree/master/images/function-automaton.png)
+![alt text](https://github.com/gabihecksher/jupiter/blob/master/images/function-automaton.png?raw=true)
