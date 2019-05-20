@@ -84,10 +84,10 @@ function get_value(id, env, store)
 	store[loc]
 end
 
-function calc_sum(control_stack, value_stack, env, store)
-	value2 = popfirst!(value_stack)
+function calc_sum(control_stack, value_stack, env, store) # chamada quando o opcode #SUM está no topo da pilha de controle
+	value2 = popfirst!(value_stack)  # retira os dois elementos do topo da pilha de valores
 	value1 = popfirst!(value_stack)
-	if typeof(value1) == String
+	if typeof(value1) == String # caso o valor seja o nome de uma variável, pega o valor associado a ela
 		value1 = get_value(value1, env, store)
 	end
 	if typeof(value2) == String
@@ -95,7 +95,7 @@ function calc_sum(control_stack, value_stack, env, store)
 	end
 
 	result = value1 + value2
-	value_stack = push(value_stack, result)
+	value_stack = push(value_stack, result) # coloca o resultado da soma no topo da pilha de valores
 	automaton(pop(control_stack), value_stack, env, store)
 end
 

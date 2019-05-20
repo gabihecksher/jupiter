@@ -142,12 +142,12 @@ function handle_Id(element, control_stack, value_stack, env, store)
 end
 
 function handle_Sum(element, control_stack, value_stack, env, store)
-	control_stack = push(control_stack, "#SUM")
+	control_stack = push(control_stack, "#SUM") #coloca o opcode de soma na pilha de controle
 	values = inside(element)
 	first_value = values[1:middle(values)]
 	second_value = values[middle(values)+2:end]
 
-	control_stack = push(control_stack, second_value)
+	control_stack = push(control_stack, second_value) #coloca as expressões a serem somadas na pilha de controle
 	control_stack = push(control_stack, first_value)
 
 	automaton(control_stack, value_stack, env, store)
