@@ -10,3 +10,6 @@ Run file:
 
 Clean environment:
 `make clean`
+
+Para executar os testes sequencialmente chame o arquivo "testes.txt"
+Caso queira rodar o fatorial, chame o arquivo "fatorial.txt"
