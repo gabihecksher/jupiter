@@ -1,5 +1,5 @@
 
-As variaveis são inicializadas na main.jl, linha 181 e 182 no store e env. `z` está inicializado com 1 e `y` com 10
+As variaveis são inicializadas na main.jl, linha 150 e 151 no store e env. `z` está inicializado com 1 e `y` com 10
 
 ![alt text](https://github.com/gabihecksher/jupiter/blob/master/images/inicializacao_var.PNG?raw=true)
 
