@@ -132,23 +132,9 @@ function pega_entrada()
     readline()
  end
 
-# entrada = pega_entrada()
-# println("Você digitou $entrada")
-# # println(teste_str)
-# parse = parse_one(entrada, teste)
-# parser_string = (string.(parse))
-# parser_string = replace(parser_string[1], "Any"=> "")
-# parser_string = replace(parser_string, "["=> "")
-# parser_string = replace(parser_string, "]"=> "")
-# parser_string = replace(parser_string, " "=> "")
-
-# println(parser_string)
-
-# pile.main(parser_string)
-
 
 function main()
-    println("Pressione 1 para escrever um comando. Exemplo: '2+3' , '2<3 and 3>11' ")
+    println("Pressione 1 para escrever um comando. Exemplo: 2+3 , 2<3 and 3>11 ")
     println("Pressione 2 para ler um arquivo texto de entrada")
     digito = readline()
     if (isequal(digito, "1"))
