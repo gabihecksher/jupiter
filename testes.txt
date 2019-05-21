@@ -16,19 +16,19 @@ a>=(3+2*3)
 a<=(3+2*3)
 a<(3+2*3/4)
 
-if (a>2) then (a:=3) else (a:=4) end
-if a>2 then a:=3 else a:=4 end
-if (a>2) then a:=3 a:=2 else b:=2 end
+if (y>2) then (z:=3) else (z:=4) end
+if y>2 then z:=3 else a:=z end
+if (z>2) then y:=3 y:=2 else y:=2 end
 
 
 2<3 and 3>11
 (2<3) and (3>11)
 a<32*2+1 and b>232*1
-a==23 and b==1
-a>2 or a<1
-a==2*3 or a>21
+z==23 and y==1
+y>2 or y<1
+y==2*3 or y>21
 
-while (a>2) do a:=2 a:=3
-while a<30 do a:=a+5
-while (a>2) do (a:=a*2) (b:=3*c)
-while a>2 do a:=2 while b<1 do b:=1
+while (z>2) do y:=2 z:=3
+while y<30 do z:=a+5
+while (y>2) do (z:=z*2) (y:=3*y)
+while y>2 do z:=2 while z<1 do y:=1
