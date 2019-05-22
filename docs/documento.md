@@ -106,6 +106,10 @@ Operadores lógicos:
 
 `δ(Id(W) :: C, V, E, S) = δ(C, B :: V, E, S), where E[W] = l ∧ S[l] = B`
 
+![alt text](https://github.com/gabihecksher/jupiter/blob/master/images/handle-id.png?raw=true)
+
+![alt text](https://github.com/gabihecksher/jupiter/blob/master/images/calc-id.png?raw=true)
+
 `δ(Assign(W, X) :: C, V, E, S) = δ(X :: #ASSIGN :: C, W :: V, E, S')`
 
 `δ(#ASSIGN :: C, T :: W :: V, E, S) = δ(C, V, E, S'), where E[W] = l ∧ S' = S/[l ↦ T]`
