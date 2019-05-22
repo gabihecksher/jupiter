@@ -104,9 +104,7 @@ Operadores lógicos:
 
 ![alt text](https://github.com/gabihecksher/jupiter/blob/master/images/calc-assign.png?raw=true)
 
-As variáveis são inicializadas na main.jl, linha 150 e 151 no store e env
-
-![alt text](https://github.com/gabihecksher/jupiter/blob/master/images/inicializacao_var.PNG?raw=true)
+As variáveis são inicializadas a partir de entradas do usuário pelo terminal
 
 `δ(Loop(X, M) :: C, V, E, S) = δ(X :: #LOOP :: C, Loop(X, M) :: V, E, S)`
 `δ(#LOOP :: C, Boo(true) :: Loop(X, M) :: V, E, S) = δ(M :: Loop(X, M) :: C, V, E, S)`
