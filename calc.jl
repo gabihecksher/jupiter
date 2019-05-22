@@ -88,10 +88,16 @@ function calc_sum(control_stack, value_stack, env, store) # chamada quando o opc
 	value2 = popfirst!(value_stack)  # retira os dois elementos do topo da pilha de valores
 	value1 = popfirst!(value_stack)
 	if typeof(value1) == String # caso o valor seja o nome de uma variável, pega o valor associado a ela
-		value1 = parse(Float64, get_value(value1, env, store))
+		value1 = get_value(value1, env, store)
+		if typeof(value1) == String
+			value1 = parse(Float64, value1)
+		end
 	end
 	if typeof(value2) == String
-		value2 = parse(Float64, get_value(value2, env, store))
+		value2 = get_value(value2, env, store)
+		if typeof(value2) == String
+			value2 = parse(Float64, value2)
+		end
 	end
 
 	result = value1 + value2
@@ -104,10 +110,16 @@ function calc_sub(control_stack, value_stack, env, store)
 	value1 = popfirst!(value_stack)
 
 	if typeof(value1) == String # caso o valor seja o nome de uma variável, pega o valor associado a ela
-		value1 = parse(Float64, get_value(value1, env, store))
+		value1 = get_value(value1, env, store)
+		if typeof(value1) == String
+			value1 = parse(Float64, value1)
+		end
 	end
 	if typeof(value2) == String
-		value2 = parse(Float64, get_value(value2, env, store))
+		value2 = get_value(value2, env, store)
+		if typeof(value2) == String
+			value2 = parse(Float64, value2)
+		end
 	end
 
 
@@ -121,10 +133,16 @@ function calc_mul(control_stack, value_stack, env, store)
 	value1 = popfirst!(value_stack)
 
 	if typeof(value1) == String # caso o valor seja o nome de uma variável, pega o valor associado a ela
-		value1 = parse(Float64, get_value(value1, env, store))
+		value1 = get_value(value1, env, store)
+		if typeof(value1) == String
+			value1 = parse(Float64, value1)
+		end
 	end
 	if typeof(value2) == String
-		value2 = parse(Float64, get_value(value2, env, store))
+		value2 = get_value(value2, env, store)
+		if typeof(value2) == String
+			value2 = parse(Float64, value2)
+		end
 	end
 
 	result = value1 * value2
@@ -137,10 +155,16 @@ function calc_div(control_stack, value_stack, env, store)
 	value1 = popfirst!(value_stack)
 
 	if typeof(value1) == String # caso o valor seja o nome de uma variável, pega o valor associado a ela
-		value1 = parse(Float64, get_value(value1, env, store))
+		value1 = get_value(value1, env, store)
+		if typeof(value1) == String
+			value1 = parse(Float64, value1)
+		end
 	end
 	if typeof(value2) == String
-		value2 = parse(Float64, get_value(value2, env, store))
+		value2 = get_value(value2, env, store)
+		if typeof(value2) == String
+			value2 = parse(Float64, value2)
+		end
 	end
 
 	result = value1 / value2
@@ -154,9 +178,15 @@ function calc_eq(control_stack, value_stack, env, store)
 
 	if typeof(value1) == String # caso o valor seja o nome de uma variável, pega o valor associado a ela
 		value1 = get_value(value1, env, store)
+		if typeof(value1) == String
+			value1 = parse(Float64, value1)
+		end
 	end
 	if typeof(value2) == String
 		value2 = get_value(value2, env, store)
+		if typeof(value2) == String
+			value2 = parse(Float64, value2)
+		end
 	end
 
 
@@ -174,10 +204,16 @@ function calc_lt(control_stack, value_stack, env, store)
 	value1 = popfirst!(value_stack)
 
 	if typeof(value1) == String # caso o valor seja o nome de uma variável, pega o valor associado a ela
-		value1 = parse(Float64, get_value(value1, env, store))
+		value1 = get_value(value1, env, store)
+		if typeof(value1) == String
+			value1 = parse(Float64, value1)
+		end
 	end
 	if typeof(value2) == String
-		value2 = parse(Float64, get_value(value2, env, store))
+		value2 = get_value(value2, env, store)
+		if typeof(value2) == String
+			value2 = parse(Float64, value2)
+		end
 	end
 
 	if value1 < value2
@@ -194,10 +230,16 @@ function calc_gt(control_stack, value_stack, env, store)
 	value1 = popfirst!(value_stack)
 
 	if typeof(value1) == String # caso o valor seja o nome de uma variável, pega o valor associado a ela
-		value1 = parse(Float64, get_value(value1, env, store))
+		value1 = get_value(value1, env, store)
+		if typeof(value1) == String
+			value1 = parse(Float64, value1)
+		end
 	end
 	if typeof(value2) == String
-		value2 = parse(Float64, get_value(value2, env, store))
+		value2 = get_value(value2, env, store)
+		if typeof(value2) == String
+			value2 = parse(Float64, value2)
+		end
 	end
 
 	if value1 > value2
@@ -214,10 +256,16 @@ function calc_le(control_stack, value_stack, env, store)
 	value1 = popfirst!(value_stack)
 
 	if typeof(value1) == String # caso o valor seja o nome de uma variável, pega o valor associado a ela
-		value1 = parse(Float64, get_value(value1, env, store))
+		value1 = get_value(value1, env, store)
+		if typeof(value1) == String
+			value1 = parse(Float64, value1)
+		end
 	end
 	if typeof(value2) == String
-		value2 = parse(Float64, get_value(value2, env, store))
+		value2 = get_value(value2, env, store)
+		if typeof(value2) == String
+			value2 = parse(Float64, value2)
+		end
 	end
 
 	if value1 <= value2
@@ -234,10 +282,16 @@ function calc_ge(control_stack, value_stack, env, store)
 	value1 = popfirst!(value_stack)
 
 	if typeof(value1) == String # caso o valor seja o nome de uma variável, pega o valor associado a ela
-		value1 = parse(Float64, get_value(value1, env, store))
+		value1 = get_value(value1, env, store)
+		if typeof(value1) == String
+			value1 = parse(Float64, value1)
+		end
 	end
 	if typeof(value2) == String
-		value2 = parse(Float64, get_value(value2, env, store))
+		value2 = get_value(value2, env, store)
+		if typeof(value2) == String
+			value2 = parse(Float64, value2)
+		end
 	end
 
 	if value1 >= value2
