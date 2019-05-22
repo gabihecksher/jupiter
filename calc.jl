@@ -88,10 +88,10 @@ function calc_sum(control_stack, value_stack, env, store) # chamada quando o opc
 	value2 = popfirst!(value_stack)  # retira os dois elementos do topo da pilha de valores
 	value1 = popfirst!(value_stack)
 	if typeof(value1) == String # caso o valor seja o nome de uma variável, pega o valor associado a ela
-		value1 = get_value(value1, env, store)
+		value1 = parse(Float64, get_value(value1, env, store))
 	end
 	if typeof(value2) == String
-		value2 = get_value(value2, env, store)
+		value2 = parse(Float64, get_value(value2, env, store))
 	end
 
 	result = value1 + value2
@@ -104,10 +104,10 @@ function calc_sub(control_stack, value_stack, env, store)
 	value1 = popfirst!(value_stack)
 
 	if typeof(value1) == String # caso o valor seja o nome de uma variável, pega o valor associado a ela
-		value1 = get_value(value1, env, store)
+		value1 = parse(Float64, get_value(value1, env, store))
 	end
 	if typeof(value2) == String
-		value2 = get_value(value2, env, store)
+		value2 = parse(Float64, get_value(value2, env, store))
 	end
 
 
@@ -121,10 +121,10 @@ function calc_mul(control_stack, value_stack, env, store)
 	value1 = popfirst!(value_stack)
 
 	if typeof(value1) == String # caso o valor seja o nome de uma variável, pega o valor associado a ela
-		value1 = get_value(value1, env, store)
+		value1 = parse(Float64, get_value(value1, env, store))
 	end
 	if typeof(value2) == String
-		value2 = get_value(value2, env, store)
+		value2 = parse(Float64, get_value(value2, env, store))
 	end
 
 	result = value1 * value2
@@ -137,10 +137,10 @@ function calc_div(control_stack, value_stack, env, store)
 	value1 = popfirst!(value_stack)
 
 	if typeof(value1) == String # caso o valor seja o nome de uma variável, pega o valor associado a ela
-		value1 = get_value(value1, env, store)
+		value1 = parse(Float64, get_value(value1, env, store))
 	end
 	if typeof(value2) == String
-		value2 = get_value(value2, env, store)
+		value2 = parse(Float64, get_value(value2, env, store))
 	end
 
 	result = value1 / value2
@@ -174,10 +174,10 @@ function calc_lt(control_stack, value_stack, env, store)
 	value1 = popfirst!(value_stack)
 
 	if typeof(value1) == String # caso o valor seja o nome de uma variável, pega o valor associado a ela
-		value1 = get_value(value1, env, store)
+		value1 = parse(Float64, get_value(value1, env, store))
 	end
 	if typeof(value2) == String
-		value2 = get_value(value2, env, store)
+		value2 = parse(Float64, get_value(value2, env, store))
 	end
 
 	if value1 < value2
@@ -194,10 +194,10 @@ function calc_gt(control_stack, value_stack, env, store)
 	value1 = popfirst!(value_stack)
 
 	if typeof(value1) == String # caso o valor seja o nome de uma variável, pega o valor associado a ela
-		value1 = get_value(value1, env, store)
+		value1 = parse(Float64, get_value(value1, env, store))
 	end
 	if typeof(value2) == String
-		value2 = get_value(value2, env, store)
+		value2 = parse(Float64, get_value(value2, env, store))
 	end
 
 	if value1 > value2
@@ -214,10 +214,10 @@ function calc_le(control_stack, value_stack, env, store)
 	value1 = popfirst!(value_stack)
 
 	if typeof(value1) == String # caso o valor seja o nome de uma variável, pega o valor associado a ela
-		value1 = get_value(value1, env, store)
+		value1 = parse(Float64, get_value(value1, env, store))
 	end
 	if typeof(value2) == String
-		value2 = get_value(value2, env, store)
+		value2 = parse(Float64, get_value(value2, env, store))
 	end
 
 	if value1 <= value2
@@ -234,10 +234,10 @@ function calc_ge(control_stack, value_stack, env, store)
 	value1 = popfirst!(value_stack)
 
 	if typeof(value1) == String # caso o valor seja o nome de uma variável, pega o valor associado a ela
-		value1 = get_value(value1, env, store)
+		value1 = parse(Float64, get_value(value1, env, store))
 	end
 	if typeof(value2) == String
-		value2 = get_value(value2, env, store)
+		value2 = parse(Float64, get_value(value2, env, store))
 	end
 
 	if value1 >= value2
@@ -298,7 +298,7 @@ end
 function calc_loop(control_stack, value_stack, env, store)
 	condition = popfirst!(value_stack)
 	loop = popfirst!(value_stack)
-	values = stack.inside(loop)
+	values = Automaton.inside(loop)
 	second_value = values[middle(values)+2:end]
 	control_stack = pop(control_stack)
 	if condition == "true"
@@ -311,7 +311,7 @@ end
 function calc_cond(control_stack, value_stack, env, store)
 	condition = popfirst!(value_stack)
 	loop = popfirst!(value_stack)
-	values = stack.inside(loop)
+	values = Automaton.inside(loop)
 
 	part_two = values[middle(values)+2:end]
 

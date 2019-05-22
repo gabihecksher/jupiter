@@ -137,18 +137,37 @@ function main()
     println("Pressione 1 para escrever um comando. Exemplo: 2+3 , 2<3 and 3>11 ")
     println("Pressione 2 para ler um arquivo texto de entrada")
     digito = readline()
+    env = Dict()
+    store = Dict()
+    # env = Dict([("z", 1), ("y", 2)])
+    # store = Dict([(1, 1), (2,10)])
+
+    println("De quantas variaveis seu programa vai precisar?")
+    num_variaveis = parse(UInt8, readline())
+    #num_variaveis = parse(Float64, num_variaveis)
+    for i = 1:num_variaveis
+        println("Qual o nome da $i ª variavel?")
+        nome_var = readline()
+        println("Qual o valor inicial da $i ª variavel?")
+        valor_var = readline()
+
+        env[nome_var] = i
+        store[i] = valor_var
+        Automaton.print_variables(env,store)
+    end
+
     if (isequal(digito, "1"))
+
         entrada = pega_entrada()
         println("Entrada: $entrada")
-        parse = parse_one(entrada, teste)
-        parser_string = (string.(parse))
+        parser = parse_one(entrada, teste)
+        parser_string = (string.(parser))
         parser_string = replace(parser_string[1], "Any"=> "")
         parser_string = replace(parser_string, "["=> "")
         parser_string = replace(parser_string, "]"=> "")
         parser_string = replace(parser_string, " "=> "")
 
-        env = Dict([("z", 1), ("y", 2)])
-        store = Dict([(1, 1), (2,10)])
+
         Automaton.automaton([parser_string], [], env, store)
 
     elseif (isequal(digito, "2"))
@@ -164,8 +183,6 @@ function main()
                 parser_string = replace(parser_string, "]"=> "")
                 parser_string = replace(parser_string, " "=> "")
                 println(parser_string)
-                env = Dict([("z", 1), ("y", 2)])
-                store = Dict([(1, 1), (2,10)])
                 Automaton.automaton([parser_string], [], env, store)
                 println(" ")
             end

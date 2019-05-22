@@ -9,6 +9,7 @@ function automaton(control_stack, value_stack, env, store)
 			print_stacks(control_stack, value_stack, env, store)
 			println("Resultado: ",result)
 		end
+		print_variables(env,store)
 		return 0
 	else
 		op = control_stack[1]
@@ -122,6 +123,23 @@ function print_stack(stack)
 		print_stack(stack[2:end])
 	end
 end
+
+function print_variables(env, store)
+	println("VARIÁVEIS:")
+	tamanho = 0
+	for (key, value) in env
+		tamanho = tamanho+1
+	end
+	i = tamanho
+	for (key, value) in env
+		id = key
+		value = store[i]
+		println("$id = $value")
+		i = i - 1
+	end
+
+end
+
 
 function handle_Num(element, control_stack, value_stack, env, store)
     value_stack = push(value_stack, parse(Float64, element[5:end-1])) #coloca o numero no topo da pilha de valores
