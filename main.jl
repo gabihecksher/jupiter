@@ -134,25 +134,22 @@ function pega_entrada()
 
 
 function main()
-    println("Pressione 1 para escrever um comando. Exemplo: 2+3 , 2<3 and 3>11 ")
-    println("Pressione 2 para ler um arquivo texto de entrada")
+    println("Pressione 1 para escrever o programa. Exemplos: 2+3 , 2<3 and 3>11 ")
+    println("Pressione 2 para ler um arquivo texto como entrada")
     digito = readline()
     env = Dict()
     store = Dict()
-    # env = Dict([("z", 1), ("y", 2)])
-    # store = Dict([(1, 1), (2,10)])
 
     println("De quantas variaveis seu programa vai precisar?")
     num_variaveis = parse(UInt8, readline())
-    #num_variaveis = parse(Float64, num_variaveis)
     for i = 1:num_variaveis
         println("Qual o nome da $i ª variavel?")
         nome_var = readline()
         println("Qual o valor inicial da $i ª variavel?")
         valor_var = readline()
 
-        env[nome_var] = i
-        store[i] = valor_var
+        env[nome_var] = i # coloca o id da variavel no dicionario env associada a localizacao
+        store[i] = valor_var # associa a localizacao da variavel ao seu valor no dicionario store
         Automaton.print_variables(env,store)
     end
 
