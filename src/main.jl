@@ -128,7 +128,7 @@ function pega_entrada()
  end
 
  function pega_arquivo()
-    println("Escreva o nome do arquivo .txt")
+    println("Escreva o o path do arquivo a ser lido. Exemplo: test/fatorial.txt")
     readline()
  end
 
