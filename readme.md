@@ -11,5 +11,4 @@ Run compiler:
 Clean environment:
 `make clean`
 
-Para executar os testes sequencialmente chame o path arquivo "testes.txt". Exemplo `test/testes.txt`
-Caso queira rodar o fatorial, chame o path arquivo "fatorial.txt"
+Existem arquivos testes disponiveis para serem executados na `main`, dentro da pasta test
