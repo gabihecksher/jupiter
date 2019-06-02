@@ -1,5 +1,27 @@
 module Automaton
+
 include("calc.jl")
+include("lexer.jl")
+
+function aut(control_stack, value_stack, env, store)
+	print_stacks(control_stack, value_stack, env, store)
+	if length(control_stack) === 0
+		if length(value_stack) === 1
+			result = popfirst!(value_stack)
+			print_stacks(control_stack, value_stack, env, store)
+			println("Resultado: ",result)
+		end
+		print_variables(env,store)
+		return 0
+	else
+		op = control_stack[1]
+		if typeof(op) === String && op[1] === '#'
+			calc(op, control_stack, value_stack, env, store)
+		else
+			hand(popfirst!(control_stack), control_stack, value_stack, env, store)
+		end
+	end
+end
 
 function automaton(control_stack, value_stack, env, store)
 	print_stacks(control_stack, value_stack, env, store)
@@ -20,6 +42,55 @@ function automaton(control_stack, value_stack, env, store)
 		end
 	end
 end
+
+function hand(op, control_stack, value_stack, env, store)
+	println("Tipo:")
+	println(typeof(op))
+	println(op isa Eq)
+	println(Eq <: Eq)
+	println(Eq <: typeof(op))
+	if typeof(op) <: Eq
+		println("Eh do tipo Eq")
+		handle_Eq(element, control_stack, value_stack, env, store)
+	elseif typeof(op) === Lt
+		handle_Lt(element, control_stack, value_stack, env, store)
+	elseif typeof(op) === Gt
+		handle_Gt(element, control_stack, value_stack, env, store)
+	elseif typeof(op) === Le
+		handle_Le(element, control_stack, value_stack, env, store)
+	elseif typeof(op) === Ge
+		handle_Ge(element, control_stack, value_stack, env, store)
+	elseif typeof(op) === Or
+		handle_Or(element, control_stack, value_stack, env, store)
+	elseif typeof(op) === Id
+		handle_Id(element, control_stack, value_stack, env, store)
+	elseif typeof(op) === Num
+		handle_Num(element, control_stack, value_stack, env, store)
+	elseif typeof(op) === Sum
+		handle_Sum(element, control_stack, value_stack, env, store)
+	elseif typeof(op) === Sub
+		handle_Sub(element, control_stack, value_stack, env, store)
+	elseif typeof(op) === Mul
+		handle_Mul(element, control_stack, value_stack, env, store)
+	elseif typeof(op) === Div
+		handle_Div(element, control_stack, value_stack, env, store)
+	elseif typeof(op) === Boo
+		handle_Boo(element, control_stack, value_stack, env, store)
+	elseif typeof(op) === Not
+		handle_Not(element, control_stack, value_stack, env, store)
+	elseif typeof(op) === And
+		handle_And(element, control_stack, value_stack, env, store)
+	elseif typeof(op) === Loop
+		handle_Loop(element, control_stack, value_stack, env, store)
+	elseif typeof(op) === CSeq
+		handle_CSeq(element, control_stack, value_stack, env, store)
+	elseif typeof(op) === Cond
+		handle_Cond(element, control_stack, value_stack, env, store)
+	elseif typeof(op) === Assign
+		handle_Assign(element, control_stack, value_stack, env, store)
+	end
+end
+
 
 function handle(element, control_stack, value_stack, env, store)
 	op = element[1:2]
@@ -105,6 +176,15 @@ function print_stacks(control_stack, value_stack, env, store)
 	println()
 end
 
+function print_stack(stack)
+	if length(stack) === 1
+		println(stack[1])
+	elseif length(stack) > 1
+		println(stack[1])
+		print_stack(stack[2:end])
+	end
+end
+
 function push(stack, element)
     pushfirst!(stack, element)
 	stack
@@ -115,14 +195,6 @@ function pop(stack)
     stack
 end
 
-function print_stack(stack)
-	if length(stack) == 1
-		println(stack[1])
-	elseif length(stack) > 1
-		println(stack[1])
-		print_stack(stack[2:end])
-	end
-end
 
 function print_variables(env, store)
 	println("VARIÁVEIS:")
