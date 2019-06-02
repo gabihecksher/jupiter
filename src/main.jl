@@ -1,7 +1,6 @@
+include("./automaton.jl")
 include("./lexer.jl")
 
-include("./automaton.jl")
-using .Automaton
 
 function pega_entrada()
      println("Escreva a expressão: ")
@@ -31,7 +30,7 @@ function main()
 
         env[nome_var] = i # coloca o id da variavel no dicionario env associada a localizacao
         store[i] = valor_var # associa a localizacao da variavel ao seu valor no dicionario store
-        Automaton.print_variables(env,store)
+        print_variables(env,store)
     end
 
     if (isequal(digito, "1"))
@@ -42,7 +41,7 @@ function main()
 
 
         # Automaton.automaton([parser_string], [], env, store)
-        Automaton.aut([parser[1]], [], env, store)
+        aut([parser[1]], [], env, store)
 
     elseif (isequal(digito, "2"))
         entrada = pega_arquivo()

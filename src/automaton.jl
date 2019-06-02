@@ -1,4 +1,3 @@
-module Automaton
 
 include("calc.jl")
 include("lexer.jl")
@@ -46,9 +45,11 @@ end
 function hand(op, control_stack, value_stack, env, store)
 	println("Tipo:")
 	println(typeof(op))
+	# println(op == Eq) 
 	println(op isa Eq)
 	println(Eq <: Eq)
 	println(Eq <: typeof(op))
+
 	if typeof(op) <: Eq
 		println("Eh do tipo Eq")
 		handle_Eq(element, control_stack, value_stack, env, store)
@@ -425,4 +426,3 @@ function handle_Not(element, control_stack, value_stack, env, store)
 	automaton(control_stack, value_stack, env, store)
 end
 
-end
