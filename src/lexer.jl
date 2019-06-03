@@ -23,7 +23,9 @@ mutable struct Assign<:Node val end #ok
 mutable struct Loop<:Node val end
 mutable struct Cond<:Node val end
 mutable struct CSeq<:Node val end
-
+mutable struct Bind<:Node val end
+mutable struct Ref<:Node val end
+mutable struct Blk<:Node val end
 
 
 @with_names begin
@@ -33,10 +35,10 @@ mutable struct CSeq<:Node val end
     @with_pre spc begin
 
         #definicao de numero pela gramatica onde PFloat64 faz parte do Parser
-        number = (E"(" + spc + PFloat64() + spc + E")") | PFloat64() > Num
+        number = (E"(" + spc + PFloat64() + spc + E")") | PFloat64() |> Num
 
         #definicao de identificador pela gramatica onde Word faz parte do Parser
-        identifier = (E"(" + spc + Word() + spc + E")") | Word() > Id
+        identifier = (E"(" + spc + Word() + spc + E")") | Word() |> Id
 
         #unica coisa que eu achei no parser combinator que parseia true e false (nao sei o que significa isso, caso duvidas consultar biblioteca ParserCombinator)
         truth = (E"(" + spc + p"([Tt][Rr][Uu][Ee])|([Ff][Aa][Ll][Ss][Ee])" + spc + E")") | p"([Tt][Rr][Uu][Ee])|([Ff][Aa][Ll][Ss][Ee])" > Boo
@@ -78,7 +80,7 @@ mutable struct CSeq<:Node val end
         and_or = (conjunction | disjuction)
         bool_expression = ((equality | negation | lower_eq | lower_than | greater_eq | greater_than) | (E"(" + (equality | negation |  lower_eq | lower_than | greater_eq | greater_than) + E")"))
 
-        expression = (arith_expression | bool_expression | and_or)
+        expression = (arith_expression | bool_expression | and_or) |> Ref
 
 
         equality.matcher = Nullable{Matcher}((arith_expression + spc + E"==" +spc +  expression) | (E"(" + arith_expression + spc + E"==" + spc + expression + E")") |> Eq)
@@ -99,8 +101,11 @@ mutable struct CSeq<:Node val end
         conditional = Delayed()
         call = Delayed()
 
+        var = Delayed()
+        let_var = Delayed()
 
-        cmd = assign | loop | expression | conditional | cseq
+
+        cmd = let_var | assign | loop | expression | conditional | cseq
 
         # conditional.matcher = Nullable{Matcher}((E"if" + spc + bool_expression + spc + E"then" + spc + cmd + spc + E"end") | (E"if" + spc + bool_expression + spc + E"then" + spc + cmd + spc + E"else" + spc + cmd + spc + E"end") |> Cond)
 
@@ -111,6 +116,13 @@ mutable struct CSeq<:Node val end
         loop.matcher = Nullable{Matcher}((E"while" + spc + expression + spc + E"do" + spc + cmd) | (E"(" + E"while" + spc + expression + spc + E"do" + spc + cmd + E")") |> Loop)
 
         cseq.matcher = Nullable{Matcher}((cmd + spc + cmd) |> CSeq)
+
+
+    ##################### IMP-1 ######################################
+
+
+        var.matcher = Nullable{Matcher}((E"var" +  spc + identifier + spc + E"=" + spc + expression) |> Bind)
+        let_var.matcher =  Nullable{Matcher}((E"let" + spc + var + spc + E"in" + spc + cmd) |> Blk)
 
         teste = cmd + Eos()
 
