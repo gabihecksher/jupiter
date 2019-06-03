@@ -35,10 +35,10 @@ mutable struct Blk<:Node val end
     @with_pre spc begin
 
         #definicao de numero pela gramatica onde PFloat64 faz parte do Parser
-        number = (E"(" + spc + PFloat64() + spc + E")") | PFloat64() |> Num
+        number = (E"(" + spc + PFloat64() + spc + E")") | PFloat64() > Num
 
         #definicao de identificador pela gramatica onde Word faz parte do Parser
-        identifier = (E"(" + spc + Word() + spc + E")") | Word() |> Id
+        identifier = (E"(" + spc + Word() + spc + E")") | Word() > Id
 
         #unica coisa que eu achei no parser combinator que parseia true e false (nao sei o que significa isso, caso duvidas consultar biblioteca ParserCombinator)
         truth = (E"(" + spc + p"([Tt][Rr][Uu][Ee])|([Ff][Aa][Ll][Ss][Ee])" + spc + E")") | p"([Tt][Rr][Uu][Ee])|([Ff][Aa][Ll][Ss][Ee])" > Boo
@@ -80,7 +80,7 @@ mutable struct Blk<:Node val end
         and_or = (conjunction | disjuction)
         bool_expression = ((equality | negation | lower_eq | lower_than | greater_eq | greater_than) | (E"(" + (equality | negation |  lower_eq | lower_than | greater_eq | greater_than) + E")"))
 
-        expression = (arith_expression | bool_expression | and_or) |> Ref
+        expression = (arith_expression | bool_expression | and_or) #|> Ref
 
 
         equality.matcher = Nullable{Matcher}((arith_expression + spc + E"==" +spc +  expression) | (E"(" + arith_expression + spc + E"==" + spc + expression + E")") |> Eq)

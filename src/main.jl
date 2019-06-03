@@ -37,11 +37,15 @@ function main()
 
         entrada = pega_entrada()
         println("Entrada: $entrada")
+
         parser = parse_one(entrada, teste)
+        println(parser)
 
 
         # Automaton.automaton([parser_string], [], env, store)
-        aut([parser[1]], [], env, store)
+        control_stack = Array{Any, 1}(parser)
+        value_stack = Array{Any, 1}()
+        automaton(control_stack, value_stack, env, store)
 
     elseif (isequal(digito, "2"))
         entrada = pega_arquivo()
