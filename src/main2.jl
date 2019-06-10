@@ -2,17 +2,6 @@ include("./automaton.jl")
 include("./lexer.jl")
 
 
-function pega_entrada()
-     println("Escreva a expressão: ")
-     readline()
- end
-
- function pega_arquivo()
-    println("Escreva o o path do arquivo a ser lido. Exemplo: test/fatorial.txt")
-    readline()
- end
-
-
 function main(args)
     if(isequal(args[1], "-f"))
         arquivo_path = args[2]
