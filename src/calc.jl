@@ -339,19 +339,14 @@ end
 
 function calc_cond(control_stack, value_stack, env, store)
 	condition = popfirst!(value_stack)
-	loop = popfirst!(value_stack)
-	values = Automaton.inside(loop)
-
-	part_two = values[middle(values)+2:end]
-
-	second_value = values[middle(values)+2:middle(part_two)+middle(values)+1]
-	third_value = values[middle(part_two)+middle(values)+3:end]
+	command = popfirst!(value_stack)
+	values = command.val
 
 	control_stack = pop(control_stack)
-	if condition == "true"
-		control_stack = push(control_stack, second_value)
+	if condition
+		control_stack = push(control_stack, values[2])
 	else
-		control_stack = push(control_stack, third_value)
+		control_stack = push(control_stack, values[3])
 	end
 	automaton(control_stack, value_stack, env, store)
 end

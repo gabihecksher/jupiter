@@ -69,6 +69,8 @@ function handle(op, control_stack, value_stack, env, store)
 		handle_Cond(op, control_stack, value_stack, env, store)
 	elseif typeof(op) <: Assign
 		handle_Assign(op, control_stack, value_stack, env, store)
+	elseif typeof(op) <: Bind
+		handle_Bind(op, control_stack, value_stack, env, store)
 	end
 end
 
@@ -282,8 +284,8 @@ function handle_Assign(element, control_stack, value_stack, env, store)
 	automaton(control_stack, value_stack, env, store)
 end
 
+
 function handle_CSeq(element, control_stack, value_stack, env, store)
-	values = inside(element)
 	operators = element.val
 
 	control_stack = push(control_stack, operators[1]) #coloca as expressões a serem somadas na pilha de controle
@@ -304,15 +306,9 @@ end
 
 function handle_Cond(element, control_stack, value_stack, env, store)
 	control_stack = push(control_stack, "#COND")  # coloca o opcode de condição na pilha de controle
-	values = inside(element)
-	first_value = values[1:middle(values)]
-	part_two = values[middle(values)+2:end]
+	operators = element.val
 
- 	second_value = values[middle(values)+2:middle(part_two)+middle(values)+1]
-	third_value = values[middle(part_two)+middle(values)+3:end]
-
-
- 	control_stack = push(control_stack, first_value)
+ 	control_stack = push(control_stack, operators[1])
 
  	value_stack = push(value_stack, element)
 
@@ -322,6 +318,27 @@ end
 function handle_Not(element, control_stack, value_stack, env, store)
 	control_stack = push(control_stack, "#NOT") # coloca o opcode de negação na pilha de controle
 	control_stack = push(control_stack, element.val)
+
+	automaton(control_stack, value_stack, env, store)
+end
+
+function handle_Bind(element, control_stack, value_stack, env, store)
+	control_stack = push(control_stack, "#BIND")  # coloca o opcode de atribuição na pilha de controle
+	operators = element.val
+
+	value_stack = push(value_stack, operators[1].val) # coloca o id da variavel no topo da pilha de valores
+	control_stack = push(control_stack, operators[2]) # coloca a expressao associada à variavel na pilha de controle
+
+	automaton(control_stack, value_stack, env, store)
+end
+
+function handle_Blk(element, control_stack, value_stack, env, store)
+	operators = element.val
+	control_stack = push(control_stack, "#BLKCMD")
+	control_stack = push(control_stack, operators[2])
+
+	control_stack = push(control_stack, "#BLKDEC")
+	control_stack = push(control_stack, operators[1])
 
 	automaton(control_stack, value_stack, env, store)
 end

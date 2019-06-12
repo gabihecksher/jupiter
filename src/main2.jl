@@ -10,10 +10,12 @@ function main(args)
                 linha = "$(ln)"
                 println(linha)
                 parse = parse_one(linha, teste)
-                control_stack = Array{Any, 1}(parser)
+                control_stack = Array{Any, 1}(parse)
                 value_stack = Array{Any, 1}()
                 # env[nome_var] = i # coloca o id da variavel no dicionario env associada a localizacao
                 # store[i] = valor_var # associa a localizacao da variavel ao seu valor no dicionario store
+                env = Dict{String,Int64}
+                store = Dict{Int64,PFloat64}
                 automaton(control_stack, value_stack, env, store)
             end
     end
