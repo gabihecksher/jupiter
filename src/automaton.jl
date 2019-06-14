@@ -21,7 +21,6 @@ function automaton(control_stack, value_stack, env, store)
 			control_stack[1] = op[1]
 			handle(popfirst!(control_stack), control_stack, value_stack, env, store)
 		elseif typeof(op) === String && op[1] === '#'
-			println("eh opcode")
 			calc(op, control_stack, value_stack, env, store)
 		else
 			handle(popfirst!(control_stack), control_stack, value_stack, env, store)
@@ -163,10 +162,10 @@ end
 
 function handle_Sum(element, control_stack, value_stack, env, store)
 	control_stack = push(control_stack, "#SUM") #coloca o opcode de soma na pilha de controle
-	operators = element.val
+	operands = element.val
 
-	control_stack = push(control_stack, operators[1]) #coloca as expressões a serem somadas na pilha de controle
-	control_stack = push(control_stack, operators[2])
+	control_stack = push(control_stack, operands[1]) #coloca as expressões a serem somadas na pilha de controle
+	control_stack = push(control_stack, operands[2])
 
 	automaton(control_stack, value_stack, env, store)
 
@@ -174,10 +173,10 @@ end
 
 function handle_Sub(element, control_stack, value_stack, env, store)
 	control_stack = push(control_stack, "#SUB") #coloca o opcode de soma na pilha de controle
-	operators = element.val
+	operands = element.val
 
-	control_stack = push(control_stack, operators[1]) #coloca as expressões a serem somadas na pilha de controle
-	control_stack = push(control_stack, operators[2])
+	control_stack = push(control_stack, operands[1]) #coloca as expressões a serem somadas na pilha de controle
+	control_stack = push(control_stack, operands[2])
 
 	automaton(control_stack, value_stack, env, store)
 
@@ -185,70 +184,70 @@ end
 
 function handle_Mul(element, control_stack, value_stack, env, store)
 	control_stack = push(control_stack, "#MUL")  # coloca o opcode de multiplicação na pilha de controle
-	operators = element.val
+	operands = element.val
 
-	control_stack = push(control_stack, operators[1]) #coloca as expressões a serem somadas na pilha de controle
-	control_stack = push(control_stack, operators[2])
+	control_stack = push(control_stack, operands[1]) #coloca as expressões a serem somadas na pilha de controle
+	control_stack = push(control_stack, operands[2])
 
 	automaton(control_stack, value_stack, env, store)
 end
 
 function handle_Div(element, control_stack, value_stack, env, store)
 	control_stack = push(control_stack, "#DIV")  # coloca o opcode de divisão na pilha de controle
-	operators = element.val
+	operands = element.val
 
-	control_stack = push(control_stack, operators[1]) #coloca as expressões a serem somadas na pilha de controle
-	control_stack = push(control_stack, operators[2])
+	control_stack = push(control_stack, operands[1]) #coloca as expressões a serem somadas na pilha de controle
+	control_stack = push(control_stack, operands[2])
 
 	automaton(control_stack, value_stack, env, store)
 end
 
 function handle_Eq(element, control_stack, value_stack, env, store)
 	control_stack = push(control_stack, "#EQ")  # coloca o opcode de equidade na pilha de controle
-	operators = element.val
+	operands = element.val
 
-	control_stack = push(control_stack, operators[1]) #coloca as expressões a serem somadas na pilha de controle
-	control_stack = push(control_stack, operators[2])
+	control_stack = push(control_stack, operands[1]) #coloca as expressões a serem somadas na pilha de controle
+	control_stack = push(control_stack, operands[2])
 
 	automaton(control_stack, value_stack, env, store)
 end
 
 function handle_Lt(element, control_stack, value_stack, env, store)
 	control_stack = push(control_stack, "#LT")  # coloca o opcode de comparação do tipo "menor que" na pilha de controle
-	operators = element.val
+	operands = element.val
 
-	control_stack = push(control_stack, operators[1]) #coloca as expressões a serem somadas na pilha de controle
-	control_stack = push(control_stack, operators[2])
+	control_stack = push(control_stack, operands[1]) #coloca as expressões a serem somadas na pilha de controle
+	control_stack = push(control_stack, operands[2])
 
 	automaton(control_stack, value_stack, env, store)
 end
 
 function handle_Le(element, control_stack, value_stack, env, store)
 	control_stack = push(control_stack, "#LE")  # coloca o opcode de comparação do tipo "menor ou igual a" na pilha de controle
-	operators = element.val
+	operands = element.val
 
-	control_stack = push(control_stack, operators[1]) #coloca as expressões a serem somadas na pilha de controle
-	control_stack = push(control_stack, operators[2])
+	control_stack = push(control_stack, operands[1]) #coloca as expressões a serem somadas na pilha de controle
+	control_stack = push(control_stack, operands[2])
 
 	automaton(control_stack, value_stack, env, store)
 end
 
 function handle_Gt(element, control_stack, value_stack, env, store)
 	control_stack = push(control_stack, "#GT")  # coloca o opcode de comparação do tipo "maior que" na pilha de controle
-	operators = element.val
+	operands = element.val
 
-	control_stack = push(control_stack, operators[1]) #coloca as expressões a serem somadas na pilha de controle
-	control_stack = push(control_stack, operators[2])
+	control_stack = push(control_stack, operands[1]) #coloca as expressões a serem somadas na pilha de controle
+	control_stack = push(control_stack, operands[2])
 
 	automaton(control_stack, value_stack, env, store)
 end
 
 function handle_Ge(element, control_stack, value_stack, env, store)
 	control_stack = push(control_stack, "#GE")  # coloca o opcode de comparação do tipo "maior ou igual a" na pilha de controle
-	operators = element.val
+	operands = element.val
 
-	control_stack = push(control_stack, operators[1]) #coloca as expressões a serem somadas na pilha de controle
-	control_stack = push(control_stack, operators[2])
+	control_stack = push(control_stack, operands[1]) #coloca as expressões a serem somadas na pilha de controle
+	control_stack = push(control_stack, operands[2])
 
 	automaton(control_stack, value_stack, env, store)
 end
@@ -256,48 +255,48 @@ end
 
 function handle_And(element, control_stack, value_stack, env, store)
 	control_stack = push(control_stack, "#AND")  # coloca o opcode de "e" na pilha de controle
-	operators = element.val
+	operands = element.val
 
-	control_stack = push(control_stack, operators[1]) #coloca as expressões a serem somadas na pilha de controle
-	control_stack = push(control_stack, operators[2])
+	control_stack = push(control_stack, operands[1]) #coloca as expressões a serem somadas na pilha de controle
+	control_stack = push(control_stack, operands[2])
 
 	automaton(control_stack, value_stack, env, store)
 end
 
 function handle_Or(element, control_stack, value_stack, env, store)
 	control_stack = push(control_stack, "#OR")  # coloca o opcode de "ou" na pilha de controle
-	operators = element.val
+	operands = element.val
 
-	control_stack = push(control_stack, operators[1]) #coloca as expressões a serem somadas na pilha de controle
-	control_stack = push(control_stack, operators[2])
+	control_stack = push(control_stack, operands[1]) #coloca as expressões a serem somadas na pilha de controle
+	control_stack = push(control_stack, operands[2])
 
 	automaton(control_stack, value_stack, env, store)
 end
 
 function handle_Assign(element, control_stack, value_stack, env, store)
 	control_stack = push(control_stack, "#ASSIGN")  # coloca o opcode de atribuição na pilha de controle
-	operators = element.val
+	operands = element.val
 
-	control_stack = push(control_stack, operators[1]) #coloca as expressões a serem somadas na pilha de controle
-	control_stack = push(control_stack, operators[2])
+	control_stack = push(control_stack, operands[1]) #coloca as expressões a serem somadas na pilha de controle
+	control_stack = push(control_stack, operands[2])
 
 	automaton(control_stack, value_stack, env, store)
 end
 
 
 function handle_CSeq(element, control_stack, value_stack, env, store)
-	operators = element.val
+	operands = element.val
 
-	control_stack = push(control_stack, operators[1]) #coloca as expressões a serem somadas na pilha de controle
-	control_stack = push(control_stack, operators[2])
+	control_stack = push(control_stack, operands[1]) #coloca as expressões a serem somadas na pilha de controle
+	control_stack = push(control_stack, operands[2])
 
 	automaton(control_stack, value_stack, env, store)
 end
 
 function handle_Loop(element, control_stack, value_stack, env, store)
 	control_stack = push(control_stack, "#LOOP")   # coloca o opcode de loop na pilha de controle
-	operators = element.val
-	control_stack = push(control_stack, operators[1])
+	operands = element.val
+	control_stack = push(control_stack, operands[1])
 
 	value_stack = push(value_stack, element)
 
@@ -306,9 +305,9 @@ end
 
 function handle_Cond(element, control_stack, value_stack, env, store)
 	control_stack = push(control_stack, "#COND")  # coloca o opcode de condição na pilha de controle
-	operators = element.val
+	operands = element.val
 
- 	control_stack = push(control_stack, operators[1])
+ 	control_stack = push(control_stack, operands[1])
 
  	value_stack = push(value_stack, element)
 
@@ -324,21 +323,36 @@ end
 
 function handle_Bind(element, control_stack, value_stack, env, store)
 	control_stack = push(control_stack, "#BIND")  # coloca o opcode de atribuição na pilha de controle
-	operators = element.val
+	operands = element.val
 
-	value_stack = push(value_stack, operators[1].val) # coloca o id da variavel no topo da pilha de valores
-	control_stack = push(control_stack, operators[2]) # coloca a expressao associada à variavel na pilha de controle
+	value_stack = push(value_stack, operands[1].val) # coloca o id da variavel no topo da pilha de valores
+	control_stack = push(control_stack, operands[2]) # coloca a expressao associada à variavel na pilha de controle
+
+#	if typeof(operands[2]) <: Storable
+#		handle_Var(element, control_stack, value_stack, env, store)
+#	else
+#		handle_Const(element, control_stack, value_stack, env, store)
+#	end
+
 
 	automaton(control_stack, value_stack, env, store)
 end
 
+#function handle_Const(element, control_stack, value_stack, env, store)
+#	operands = element.val
+#	env[operands[1]] = operands[2]; # associa diretamente o id ao seu valor no ambiente
+
+#	automaton(control_stack, value_stack, env, store)
+
+#end
+
 function handle_Blk(element, control_stack, value_stack, env, store)
-	operators = element.val
+	operands = element.val
 	control_stack = push(control_stack, "#BLKCMD")
-	control_stack = push(control_stack, operators[2])
+	control_stack = push(control_stack, operands[2])
 
 	control_stack = push(control_stack, "#BLKDEC")
-	control_stack = push(control_stack, operators[1])
+	control_stack = push(control_stack, operands[1])
 
 	automaton(control_stack, value_stack, env, store)
 end

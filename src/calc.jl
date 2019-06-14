@@ -30,59 +30,23 @@ function calc(op, control_stack, value_stack, env, store)
 		calc_loop(control_stack, value_stack, env, store)
 	elseif op === "#COND"
 		calc_cond(control_stack, value_stack, env, store)
+	elseif op === "#BIND"
+		calc_bind(control_stack, value_stack, env, store)
 	end
 
 end
-
-
-function inside(element)
-	parentheses_control = 0
-	start = 0;
-	finish = 0;
-	i = 0
-	for char in element
-		i = i + 1
-		if char == '('
-			if parentheses_control == 0 # se for o primeiro parenteses
-				start = i+1
-			end
-			parentheses_control = parentheses_control + 1
-		end
-		if char == ')'
-			parentheses_control = parentheses_control - 1
-			if parentheses_control == 0
-				finish = i-1
-			end
-		end
-	end
-	return element[start:finish]
-end
-
-
-function middle(element)
-	parentheses_control = 0
-	finish = 0;
-	i = 0
-	for char in element
-		i = i + 1
-		if char == '('
-			parentheses_control = parentheses_control + 1
-		end
-		if char == ')'
-			parentheses_control = parentheses_control - 1
-			if parentheses_control == 0
-				finish = i
-				return finish
-			end
-		end
-	end
-end
-
-
 
 function get_value(id, env, store)
 	loc = env[id] #retorna o valor de uma variavel a partir de seu nome
 	store[loc]
+end
+
+
+function size_dict(dict)
+	var size = 0
+	for key in dict
+		var++
+	end
 end
 
 function calc_sum(control_stack, value_stack, env, store) # chamada quando o opcode #SUM está no topo da pilha de controle
@@ -347,6 +311,21 @@ function calc_cond(control_stack, value_stack, env, store)
 		control_stack = push(control_stack, values[2])
 	else
 		control_stack = push(control_stack, values[3])
+	end
+	automaton(control_stack, value_stack, env, store)
+end
+
+
+function calc_bind(control_stack, value_stack, env, store)
+	value = popfirst!(value_stack)
+	identifier = popfirst!(value_stack)
+
+	if value <: Storable
+		const loc = size_dict(store)
+		env[identifier] = loc
+		store[loc] = value
+	else
+		env[identifier] = value
 	end
 	automaton(control_stack, value_stack, env, store)
 end
