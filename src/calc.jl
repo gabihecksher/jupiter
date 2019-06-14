@@ -320,7 +320,7 @@ function calc_bind(control_stack, value_stack, env, store)
 	value = popfirst!(value_stack)
 	identifier = popfirst!(value_stack)
 
-	if value <: Storable
+	if value <: Ref
 		const loc = size_dict(store)
 		env[identifier] = loc
 		store[loc] = value

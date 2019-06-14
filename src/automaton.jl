@@ -68,6 +68,10 @@ function handle(op, control_stack, value_stack, env, store)
 		handle_Cond(op, control_stack, value_stack, env, store)
 	elseif typeof(op) <: Assign
 		handle_Assign(op, control_stack, value_stack, env, store)
+	elseif typeof(op) <: Ref
+		handle_Ref(op, control_stack, value_stack, env, store)
+	elseif typeof(op) <: DeRef
+		handle_DeRef(op, control_stack, value_stack, env, store)
 	elseif typeof(op) <: Bind
 		handle_Bind(op, control_stack, value_stack, env, store)
 	end
@@ -159,6 +163,7 @@ function handle_Id(element, control_stack, value_stack, env, store)
 
 	automaton(control_stack, value_stack, env, store)
 end
+
 
 function handle_Sum(element, control_stack, value_stack, env, store)
 	control_stack = push(control_stack, "#SUM") #coloca o opcode de soma na pilha de controle
@@ -328,23 +333,8 @@ function handle_Bind(element, control_stack, value_stack, env, store)
 	value_stack = push(value_stack, operands[1].val) # coloca o id da variavel no topo da pilha de valores
 	control_stack = push(control_stack, operands[2]) # coloca a expressao associada à variavel na pilha de controle
 
-#	if typeof(operands[2]) <: Storable
-#		handle_Var(element, control_stack, value_stack, env, store)
-#	else
-#		handle_Const(element, control_stack, value_stack, env, store)
-#	end
-
-
 	automaton(control_stack, value_stack, env, store)
 end
-
-#function handle_Const(element, control_stack, value_stack, env, store)
-#	operands = element.val
-#	env[operands[1]] = operands[2]; # associa diretamente o id ao seu valor no ambiente
-
-#	automaton(control_stack, value_stack, env, store)
-
-#end
 
 function handle_Blk(element, control_stack, value_stack, env, store)
 	operands = element.val
@@ -355,4 +345,24 @@ function handle_Blk(element, control_stack, value_stack, env, store)
 	control_stack = push(control_stack, operands[1])
 
 	automaton(control_stack, value_stack, env, store)
+end
+
+
+function handle_Ref(element, control_stack, value_stack, env, store)
+
+end
+
+function handle_DeRef(element, control_stack, value_stack, env, store)
+	operand = element.val
+	id = operand.val # pega o identificador da variavel
+	value_stack = push(value_stack, env[id]) # coloca a location associada a variavel na pilha de valores
+end
+
+function handle_ValRef(element, control_stack, value_stack, env, store)
+	operand = element.val
+	id = operand.val # pega o identificador da variavel
+	value_stack = push(value_stack, store[store[env[id]]]) # pega o valor apontado por um ponteiro
+	#ex x := &y  ValRef(Id(x))
+	#ex env = [x->loc2, y->loc3] store = [loc2->loc3, loc3->8]
+	#nesse caso receberia x e retornaria 8
 end
