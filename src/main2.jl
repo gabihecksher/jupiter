@@ -1,4 +1,4 @@
-include("./automaton.jl")
+# include("./automaton.jl")
 include("./lexer.jl")
 
 
@@ -25,11 +25,11 @@ function main(args)
         entrada = readline()
         parser = parse_one(entrada, teste)
         println(parser)
-        control_stack = Array{Any, 1}(parser)
-        value_stack = Array{Any, 1}()
-        # env[nome_var] = i # coloca o id da variavel no dicionario env associada a localizacao
-        # store[i] = valor_var # associa a localizacao da variavel ao seu valor no dicionario store
-        automaton(control_stack, value_stack, env, store)
+        # control_stack = Array{Any, 1}(parser)
+        # value_stack = Array{Any, 1}()
+        # # env[nome_var] = i # coloca o id da variavel no dicionario env associada a localizacao
+        # # store[i] = valor_var # associa a localizacao da variavel ao seu valor no dicionario store
+        # automaton(control_stack, value_stack, env, store)
     end
 end
 

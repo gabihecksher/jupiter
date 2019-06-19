@@ -4,11 +4,11 @@ using Nullables
 abstract type Node end
 ==(n1::Node, n2::Node) = isequal(n1.val, n2.val)
 
-mutable struct Num<:Node val end #ok
 mutable struct Sum<:Node val end #ok
 mutable struct Sub<:Node val end #ok
 mutable struct Mul<:Node val end #ok
 mutable struct Div<:Node val end #ok
+mutable struct Num<:Node val end #ok
 mutable struct Id<:Node val end #ok
 mutable struct Not<:Node val end #ok
 mutable struct Eq<:Node val end #ok
@@ -26,6 +26,8 @@ mutable struct CSeq<:Node val end
 mutable struct Bind<:Node val end
 mutable struct Ref<:Node val end
 mutable struct Blk<:Node val end
+mutable struct DSeq<:Node val end
+
 
 
 @with_names begin
@@ -101,11 +103,10 @@ mutable struct Blk<:Node val end
         conditional = Delayed()
         call = Delayed()
 
-        var = Delayed()
-        let_var = Delayed()
+        declaration = Delayed()
 
 
-        cmd = let_var | assign | loop | expression | conditional | cseq
+        cmd =  declaration | assign | loop | expression | conditional | cseq
 
         # conditional.matcher = Nullable{Matcher}((E"if" + spc + bool_expression + spc + E"then" + spc + cmd + spc + E"end") | (E"if" + spc + bool_expression + spc + E"then" + spc + cmd + spc + E"else" + spc + cmd + spc + E"end") |> Cond)
 
@@ -119,12 +120,19 @@ mutable struct Blk<:Node val end
 
 
     ##################### IMP-1 ######################################
+        dseq = Delayed()
 
+        constant = E"const" + spc + identifier + spc + E"=" + spc + expression
+        ref = expression |> Ref
+        var = E"var" +  spc + identifier + spc + E"=" + spc + ref
 
-        var.matcher = Nullable{Matcher}((E"var" +  spc + identifier + spc + E"=" + spc + expression) |> Bind)
-        let_var.matcher =  Nullable{Matcher}((E"let" + spc + var + spc + E"in" + spc + cmd) |> Blk)
+        bind = ((constant | var)|> Bind)
 
-        teste = cmd + Eos()
+        dseq.matcher =  Nullable{Matcher}((bind + spc + bind) |> DSeq)
+
+        declaration.matcher =  Nullable{Matcher}((E"let" + spc + (bind|dseq) + spc + E"in" + spc + cmd) |> Blk)
+
+        teste = declaration + Eos()
 
 
     end
