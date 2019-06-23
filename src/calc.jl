@@ -1,6 +1,5 @@
 function calc(op, control_stack, value_stack, env, store)
 	if op === "#SUM"
-		println("eh sum")
 		calc_sum(control_stack, value_stack, env, store)
 	elseif op === "#MUL"
 		calc_mul(control_stack, value_stack, env, store)
@@ -32,6 +31,8 @@ function calc(op, control_stack, value_stack, env, store)
 		calc_cond(control_stack, value_stack, env, store)
 	elseif op === "#BIND"
 		calc_bind(control_stack, value_stack, env, store)
+	elseif op === "#REF"
+		calc_ref(control_stack, value_stack, env, store)
 	end
 
 end
@@ -42,12 +43,12 @@ function get_value(id, env, store)
 end
 
 
-function size_dict(dict)
-	var size = 0
-	for key in dict
-		var++
-	end
-end
+#function size_dict(dict)
+#	size = 0
+#	for key in dict
+#		size++
+#	end
+#end
 
 function calc_sum(control_stack, value_stack, env, store) # chamada quando o opcode #SUM está no topo da pilha de controle
 	value2 = popfirst!(value_stack)  # retira os dois elementos do topo da pilha de valores
@@ -318,14 +319,24 @@ end
 
 function calc_bind(control_stack, value_stack, env, store)
 	value = popfirst!(value_stack)
+	println("value:", value)
+	println(typeof(value))
 	identifier = popfirst!(value_stack)
+	println("identifier:", identifier)
+	println(typeof(identifier))
 
-	if value <: Ref
-		const loc = size_dict(store)
-		env[identifier] = loc
-		store[loc] = value
+	if typeof(value) <: Ref
+		env[identifier] = value
 	else
 		env[identifier] = value
 	end
-	automaton(control_stack, value_stack, env, store)
+	automaton(pop(control_stack), value_stack, env, store)
+end
+
+function calc_ref(control_stack, value_stack, env, store)
+	value = popfirst!(value_stack)
+	loc = length(store)
+	store[loc] = value
+	push(value_stack, loc)
+	automaton(pop(control_stack), value_stack, env, store)
 end

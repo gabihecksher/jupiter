@@ -1,4 +1,3 @@
-
 include("calc.jl")
 include("lexer.jl")
 
@@ -68,10 +67,12 @@ function handle(op, control_stack, value_stack, env, store)
 		handle_Cond(op, control_stack, value_stack, env, store)
 	elseif typeof(op) <: Assign
 		handle_Assign(op, control_stack, value_stack, env, store)
+	elseif typeof(op) <: Blk
+		handle_Blk(op, control_stack, value_stack, env, store)
 	elseif typeof(op) <: Ref
 		handle_Ref(op, control_stack, value_stack, env, store)
-	elseif typeof(op) <: DeRef
-		handle_DeRef(op, control_stack, value_stack, env, store)
+	#elseif typeof(op) <: DeRef
+	#	handle_DeRef(op, control_stack, value_stack, env, store)
 	elseif typeof(op) <: Bind
 		handle_Bind(op, control_stack, value_stack, env, store)
 	end
@@ -349,7 +350,10 @@ end
 
 
 function handle_Ref(element, control_stack, value_stack, env, store)
+	control_stack = push(control_stack, "#REF")
+	control_stack = push(control_stack, element.val)
 
+	automaton(control_stack, value_stack, env, store)
 end
 
 function handle_DeRef(element, control_stack, value_stack, env, store)
