@@ -27,6 +27,10 @@ mutable struct Bind<:Node val end
 mutable struct Ref<:Node val end
 mutable struct Blk<:Node val end
 mutable struct DSeq<:Node val end
+mutable struct ValRef<:Node val end
+mutable struct DeRef<:Node val end
+
+
 
 
 
@@ -123,8 +127,14 @@ mutable struct DSeq<:Node val end
         dseq = Delayed()
 
         constant = E"const" + spc + identifier + spc + E"=" + spc + expression
+
         ref = expression |> Ref
-        var = E"var" +  spc + identifier + spc + E"=" + spc + ref
+        
+        val_ref = (E"&" + identifier)|>ValRef
+        de_ref = (E"*" + identifier)|>DeRef
+
+
+        var = E"var" +  spc + identifier + spc + E"=" + spc + (ref|val_ref|de_ref)
 
         bind = ((constant | var)|> Bind)
 
