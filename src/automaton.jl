@@ -13,10 +13,7 @@ function automaton(control_stack, value_stack, env, store, locations)
 		return 0
 	else
 		op = control_stack[1]
-		println("op: ", op)
-		println("typeof(op): ", typeof(op))
 		if Array{Any,1} <: typeof(op)
-			println("eh do tipo any")
 			control_stack[1] = op[1]
 			handle(popfirst!(control_stack), control_stack, value_stack, env, store, locations)
 		elseif typeof(op) <: opCode

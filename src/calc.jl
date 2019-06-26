@@ -421,14 +421,10 @@ function calc_bind(control_stack, value_stack, env, store, locations)
 
 	next = popfirst!(value_stack)
 
-	println("TIPO: ", typeof(next))
-
 	if typeof(next) <: Dict # ja existe E'
-		println("ja existe E'")
 		next[identifier] = loc
 		value_stack = push(value_stack, next) # atualiza E' e coloca de volta na pilha de valores
 	else # primeiro bind
-		println("primeiro bind")
 		value_stack = push(value_stack, next) # coloca de volta o valor retirado
 		new_env = Dict()
 		new_env[identifier] = loc
