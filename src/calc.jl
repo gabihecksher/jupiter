@@ -318,17 +318,30 @@ end
 
 
 function calc_bind(control_stack, value_stack, env, store)
-	value = popfirst!(value_stack)
-	println("value:", value)
-	println(typeof(value))
+	loc = popfirst!(value_stack)
 	identifier = popfirst!(value_stack)
-	println("identifier:", identifier)
-	println(typeof(identifier))
+	println("TAMANHO PILHA DE VALORES: ", size(value_stack)[1])
+	if size(value_stack)[1] !== 0
+		next = popfirst!(value_stack)
 
-	if typeof(value) <: Ref
-		env[identifier] = value
+		println("TIPO: ", typeof(next))
+
+		if typeof(next) <: Dict # ja existe E'
+			println("ja existe E'")
+			next[identifier] = loc
+			value_stack = push(value_stack, next) # atualiza E' e coloca de volta na pilha de valores
+		else # primeiro bind
+			println("primeiro bind")
+			value_stack = push(value_stack, next) # coloca de volta o valor retirado
+			new_env = Dict()
+			new_env[identifier] = loc
+			value_stack = push(value_stack, new_env)
+		end
 	else
-		env[identifier] = value
+		println("pilha vazia, primeiro bind")
+		new_env = Dict()
+		new_env[identifier] = loc
+		value_stack = push(value_stack, new_env)
 	end
 	automaton(pop(control_stack), value_stack, env, store)
 end

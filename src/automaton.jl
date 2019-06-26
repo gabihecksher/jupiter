@@ -71,8 +71,10 @@ function handle(op, control_stack, value_stack, env, store)
 		handle_Blk(op, control_stack, value_stack, env, store)
 	elseif typeof(op) <: Ref
 		handle_Ref(op, control_stack, value_stack, env, store)
-	#elseif typeof(op) <: DeRef
-	#	handle_DeRef(op, control_stack, value_stack, env, store)
+	elseif typeof(op) <: DeRef
+		handle_DeRef(op, control_stack, value_stack, env, store)
+	elseif typeof(op) <: ValRef
+		handle_ValRef(op, control_stack, value_stack, env, store)
 	elseif typeof(op) <: Bind
 		handle_Bind(op, control_stack, value_stack, env, store)
 	end
@@ -363,9 +365,10 @@ function handle_DeRef(element, control_stack, value_stack, env, store)
 end
 
 function handle_ValRef(element, control_stack, value_stack, env, store)
-	operand = element.val
+	operand = element.val[1]
 	id = operand.val # pega o identificador da variavel
 	value_stack = push(value_stack, store[store[env[id]]]) # pega o valor apontado por um ponteiro
+	automaton(control_stack, value_stack, env, store)
 	#ex x := &y  ValRef(Id(x))
 	#ex env = [x->loc2, y->loc3] store = [loc2->loc3, loc3->8]
 	#nesse caso receberia x e retornaria 8

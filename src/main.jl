@@ -12,8 +12,8 @@ function main(args)
                 parse = parse_one(linha, teste)
                 control_stack = Array{Any, 1}(parse)
                 value_stack = Array{Any, 1}()
-                env = Dict{String,Int64}
-                store = Dict{Int64,PFloat64}
+                env = Dict()
+                store = Dict()
                 automaton(control_stack, value_stack, env, store)
             end
     end
