@@ -1,39 +1,138 @@
+abstract type opCode end
+
+mutable struct opCodeSum <: opCode
+    val :: String
+end
+
+mutable struct opCodeMul <: opCode
+    val :: String
+end
+
+mutable struct opCodeSub <: opCode
+    val :: String
+end
+
+mutable struct opCodeDiv <: opCode
+    val :: String
+end
+
+mutable struct opCodeEq <: opCode
+    val :: String
+end
+
+mutable struct opCodeLt <: opCode
+    val :: String
+end
+
+mutable struct opCodeGt <: opCode
+    val :: String
+end
+
+mutable struct opCodeLe <: opCode
+    val :: String
+end
+
+mutable struct opCodeGe <: opCode
+    val :: String
+end
+
+mutable struct opCodeAnd <: opCode
+    val :: String
+end
+
+mutable struct opCodeOr <: opCode
+    val :: String
+end
+
+mutable struct opCodeNot <: opCode
+    val :: String
+end
+
+mutable struct opCodeAssign <: opCode
+    val :: String
+end
+
+mutable struct opCodeLoop <: opCode
+    val :: String
+end
+
+mutable struct opCodeCond <: opCode
+    val :: String
+end
+
+mutable struct opCodeBind <: opCode
+    val :: String
+end
+
+mutable struct opCodeRef <: opCode
+    val :: String
+end
+
+mutable struct opCodeBlkDec <: opCode
+    val :: String
+end
+
+mutable struct opCodeBlkCmd <: opCode
+    val :: String
+end
+
+op_sum = opCodeSum("#SUM")
+op_mul = opCodeMul("#MUL")
+op_sub = opCodeSub("#SUB")
+op_div = opCodeDiv("#DIV")
+op_eq = opCodeEq("#EQ")
+op_lt = opCodeLt("#LT")
+op_gt = opCodeGt("#GT")
+op_le = opCodeLt("#LE")
+op_ge = opCodeGe("#GE")
+op_and = opCodeAnd("#AND")
+op_or = opCodeOr("#OR")
+op_not = opCodeNot("#NOT")
+op_assign = opCodeAssign("#ASSIGN")
+op_loop = opCodeLoop("#LOOP")
+op_cond = opCodeCond("#COND")
+op_bind = opCodeBind("#BIND")
+op_ref = opCodeRef("#REF")
+op_blk = opCodeBlkDec("#BLKDEC")
+op_cmd = opCodeBlkDec("#BLKCMD")
+
+
 function calc(op, control_stack, value_stack, env, store, locations)
-	if op === "#SUM"
+	if typeof(op) <: opCodeSum
 		calc_sum(control_stack, value_stack, env, store, locations)
-	elseif op === "#MUL"
+	elseif typeof(op) <: opCodeMul
 		calc_mul(control_stack, value_stack, env, store, locations)
-	elseif op === "#SUB"
+	elseif typeof(op) <: opCodeSub
 		calc_sub(control_stack, value_stack, env, store, locations)
-	elseif op === "#DIV"
+	elseif typeof(op) <: opCodeDiv
 		calc_div(control_stack, value_stack, env, store, locations)
-	elseif op === "#EQ"
+	elseif typeof(op) <: opCodeEq
 		calc_eq(control_stack, value_stack, env, store, locations)
-	elseif op === "#LT"
+	elseif typeof(op) <: opCodeLt
 		calc_lt(control_stack, value_stack, env, store, locations)
-	elseif op === "#GT"
+	elseif typeof(op) <: opCodeGt
 		calc_gt(control_stack, value_stack, env, store, locations)
-	elseif op === "#LE"
+	elseif typeof(op) <: opCodeLe
 		calc_le(control_stack, value_stack, env, store, locations)
-	elseif op === "#GE"
+	elseif typeof(op) <: opCodeGe
 		calc_ge(control_stack, value_stack, env, store, locations)
-	elseif op === "#AND"
+	elseif typeof(op) <: opCodeAnd
 		calc_and(control_stack, value_stack, env, store, locations)
-	elseif op === "#OR"
+	elseif typeof(op) <: opCodeOr
 		calc_or(control_stack, value_stack, env, store, locations)
-	elseif op === "#NOT"
+	elseif typeof(op) <: opCodeNot
 		calc_not(control_stack, value_stack, env, store, locations)
-	elseif op === "#ASSIGN"
+	elseif typeof(op) <: opCodeAssign
 		calc_assign(control_stack, value_stack, env, store, locations)
-	elseif op === "#LOOP"
+	elseif typeof(op) <: opCodeLoop
 		calc_loop(control_stack, value_stack, env, store, locations)
-	elseif op === "#COND"
+	elseif typeof(op) <: opCodeCond
 		calc_cond(control_stack, value_stack, env, store, locations)
-	elseif op === "#BIND"
+	elseif typeof(op) <: opCodeBind
 		calc_bind(control_stack, value_stack, env, store, locations)
-	elseif op === "#REF"
+	elseif typeof(op) <: opCodeRef
 		calc_ref(control_stack, value_stack, env, store, locations)
-	elseif op === "#BLKDEC"
+	elseif typeof(op) <: opCodeBlkDec
 		calc_blkdec(control_stack, value_stack, env, store, locations)
 	end
 
