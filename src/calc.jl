@@ -443,6 +443,7 @@ function calc_ref(control_stack, value_stack, env, store, locations)
 	loc = Loc(length(store))
 	store[loc] = value
 	push(value_stack, loc)
+	push(locations, loc)
 	automaton(pop(control_stack), value_stack, env, store, locations)
 end
 
