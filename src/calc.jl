@@ -33,6 +33,8 @@ function calc(op, control_stack, value_stack, env, store, locations)
 		calc_bind(control_stack, value_stack, env, store, locations)
 	elseif op === "#REF"
 		calc_ref(control_stack, value_stack, env, store, locations)
+	elseif op === "#BLKDEC"
+		calc_blkdec(control_stack, value_stack, env, store, locations)
 	end
 
 end
@@ -42,13 +44,6 @@ function get_value(id, env, store)
 	store[loc]
 end
 
-
-#function size_dict(dict)
-#	size = 0
-#	for key in dict
-#		size++
-#	end
-#end
 
 function calc_sum(control_stack, value_stack, env, store, locations) # chamada quando o opcode #SUM está no topo da pilha de controle
 	value2 = popfirst!(value_stack)  # retira os dois elementos do topo da pilha de valores
@@ -346,4 +341,33 @@ function calc_ref(control_stack, value_stack, env, store, locations)
 	store[loc] = value
 	push(value_stack, loc)
 	automaton(pop(control_stack), value_stack, env, store, locations)
+end
+
+function calc_blkdec(control_stack, value_stack, env, store, locations)
+	result_env = copy_dict(env)
+	blk_env = popfirst!(value_stack)
+	exists = false
+	for (key_blk, value_blk) in blk_env
+		for (key, value) in result_env
+			if key === key_blk
+				result_env[key] = blk_env[key_blk]
+				exists = true
+			end
+		end
+		if !exists
+			result_env[key_blk] = value_blk
+		else
+			exists = false
+		end
+	end
+	value_stack = push(value_stack, result_env)
+	automaton(pop(control_stack), value_stack, env, store, locations)
+end
+
+function copy_dict(dict2)
+	new = Dict()
+	for (key, value) in dict2
+		new[key] = value
+	end
+	return new
 end

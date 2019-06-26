@@ -129,7 +129,7 @@ mutable struct DeRef<:Node val end
         constant = E"const" + spc + identifier + spc + E"=" + spc + expression
 
         ref = expression |> Ref
-        
+
         val_ref = (E"&" + identifier)|>ValRef
         de_ref = (E"*" + identifier)|>DeRef
 
