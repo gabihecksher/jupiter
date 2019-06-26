@@ -13,3 +13,5 @@ Clean environment:
 
 Para executar os testes sequencialmente chame o path arquivo "testes.txt". Exemplo `test/testes.txt`
 Caso queira rodar o fatorial, chame o path arquivo "fatorial.txt"
+
+INSTRUCOES DE EXECUCAO DA P2 ESTA NO README DA BRANCH P2. 
