@@ -164,7 +164,7 @@ function handle_Boo(element, control_stack, value_stack, env, store, locations)
 end
 
 function handle_Id(element, control_stack, value_stack, env, store, locations)
-	value_stack = push(value_stack, element.val) #coloca o numero no topo da pilha de valores
+	value_stack = push(value_stack, String(element.val)) #coloca o numero no topo da pilha de valores
 
 	automaton(control_stack, value_stack, env, store, locations)
 end
@@ -297,8 +297,9 @@ end
 function handle_CSeq(element, control_stack, value_stack, env, store, locations)
 	operands = element.val
 
-	control_stack = push(control_stack, operands[1]) #coloca as expressões a serem somadas na pilha de controle
 	control_stack = push(control_stack, operands[2])
+	control_stack = push(control_stack, operands[1]) #coloca as expressões a serem somadas na pilha de controle
+
 
 	automaton(control_stack, value_stack, env, store, locations)
 end

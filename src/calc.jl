@@ -144,7 +144,7 @@ end
 
 function get_value(id, env, store)
 	loc = env[id] #retorna o valor de uma variavel a partir de seu nome
-	store[loc]
+	return store[loc]
 end
 
 
