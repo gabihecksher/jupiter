@@ -2,21 +2,18 @@ include("calc.jl")
 include("lexer.jl")
 
 function automaton(control_stack, value_stack, env, store, locations)
-	print_stacks(control_stack, value_stack, env, store)
+	print_stacks(control_stack, value_stack, env, store, locations)
 	if length(control_stack) === 0
 		if length(value_stack) === 1
 			result = popfirst!(value_stack)
-			print_stacks(control_stack, value_stack, env, store)
+			print_stacks(control_stack, value_stack, env, store, locations)
 			println("Resultado: ",result)
 		end
 		print_variables(env,store)
 		return 0
 	else
 		op = control_stack[1]
-		println("op: ", op)
-		println("typeof(op): ", typeof(op))
 		if Array{Any,1} <: typeof(op)
-			println("eh do tipo any")
 			control_stack[1] = op[1]
 			handle(popfirst!(control_stack), control_stack, value_stack, env, store, locations)
 		elseif typeof(op) <: opCode
@@ -83,7 +80,7 @@ function handle(op, control_stack, value_stack, env, store, locations)
 end
 
 
-function print_stacks(control_stack, value_stack, env, store)
+function print_stacks(control_stack, value_stack, env, store, locations)
 	println()
 	println()
 	println("######################")
@@ -107,6 +104,11 @@ function print_stacks(control_stack, value_stack, env, store)
 
 	println("STORE:")
 	println(store)
+
+	println()
+
+	println("LOCATIONS:")
+	println(locations)
 
 	println()
 
