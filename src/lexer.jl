@@ -128,13 +128,12 @@ mutable struct DeRef<:Node val end
 
         constant = E"const" + spc + identifier + spc + E"=" + spc + expression
 
-        ref = expression |> Ref
-
         val_ref = (E"&" + identifier)|>ValRef
         de_ref = (E"*" + identifier)|>DeRef
 
+        ref = ((expression | val_ref | de_ref) |> Ref)
 
-        var = E"var" +  spc + identifier + spc + E"=" + spc + (ref|val_ref|de_ref)
+        var = E"var" +  spc + identifier + spc + E"=" + spc + (ref)
 
         bind = ((constant | var)|> Bind)
 

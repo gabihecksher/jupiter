@@ -1,3 +1,7 @@
+mutable struct Loc
+	val :: Int
+end
+
 function calc(op, control_stack, value_stack, env, store, locations)
 	if op === "#SUM"
 		calc_sum(control_stack, value_stack, env, store, locations)
@@ -35,6 +39,8 @@ function calc(op, control_stack, value_stack, env, store, locations)
 		calc_ref(control_stack, value_stack, env, store, locations)
 	elseif op === "#BLKDEC"
 		calc_blkdec(control_stack, value_stack, env, store, locations)
+	elseif op === "#BLKCMD"
+		calc_blkcmd(control_stack, value_stack, env, store, locations)
 	end
 
 end
@@ -337,7 +343,7 @@ end
 
 function calc_ref(control_stack, value_stack, env, store, locations)
 	value = popfirst!(value_stack)
-	loc = length(store)
+	loc = Loc(length(store))
 	store[loc] = value
 	push(value_stack, loc)
 	automaton(pop(control_stack), value_stack, env, store, locations)
@@ -360,14 +366,28 @@ function calc_blkdec(control_stack, value_stack, env, store, locations)
 			exists = false
 		end
 	end
-	value_stack = push(value_stack, result_env)
+	value_stack = push(value_stack, env)
+	automaton(pop(control_stack), value_stack, result_env, store, locations)
+end
+
+function calc_blkcmd(control_stack, value_stack, env, store, locations)
+	env = copy_dict(popfirst!(value_stack))
+	locations = copy_array(popfirst!(value_stack))
 	automaton(pop(control_stack), value_stack, env, store, locations)
 end
 
-function copy_dict(dict2)
+function copy_dict(dict)
 	new = Dict()
-	for (key, value) in dict2
+	for (key, value) in dict
 		new[key] = value
+	end
+	return new
+end
+
+function copy_array(array)
+	new =  Array{Any, 1}()
+	for (value) in array
+		new = push!(new, value)
 	end
 	return new
 end
