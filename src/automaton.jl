@@ -356,22 +356,32 @@ end
 
 
 function handle_Ref(element, control_stack, value_stack, env, store, locations)
+<<<<<<< HEAD
 	control_stack = push(control_stack, op_ref.val)
 	control_stack = push(control_stack, element.val)
+=======
+	control_stack = push(control_stack, "#REF")
+	if typeof(element.val) <: Array{Any,1}
+		control_stack = push(control_stack, element.val[1])
+	else
+		control_stack = push(control_stack, element.val)
+	end
+>>>>>>> b4a79f16938519e36ecfc7776ad8cc69b5bf8036
 
 	automaton(control_stack, value_stack, env, store, locations)
 end
 
 function handle_DeRef(element, control_stack, value_stack, env, store, locations)
-	operand = element.val
+	operand = element.val[1]
 	id = operand.val # pega o identificador da variavel
-	value_stack = push(value_stack, env[id], locations) # coloca a location associada a variavel na pilha de valores
+	value_stack = push(value_stack, store[store[env[id]]]) # coloca a location associada a variavel na pilha de valores
+	automaton(control_stack, value_stack, env, store, locations)
 end
 
 function handle_ValRef(element, control_stack, value_stack, env, store, locations)
 	operand = element.val[1]
 	id = operand.val # pega o identificador da variavel
-	value_stack = push(value_stack, store[store[env[id]]]) # pega o valor apontado por um ponteiro
+	value_stack = push(value_stack, env[id]) # pega o valor apontado por um ponteiro
 	automaton(control_stack, value_stack, env, store, locations)
 	#ex x := &y  ValRef(Id(x))
 	#ex env = [x->loc2, y->loc3] store = [loc2->loc3, loc3->8]
