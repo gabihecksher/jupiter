@@ -356,17 +356,12 @@ end
 
 
 function handle_Ref(element, control_stack, value_stack, env, store, locations)
-<<<<<<< HEAD
 	control_stack = push(control_stack, op_ref.val)
-	control_stack = push(control_stack, element.val)
-=======
-	control_stack = push(control_stack, "#REF")
 	if typeof(element.val) <: Array{Any,1}
 		control_stack = push(control_stack, element.val[1])
 	else
 		control_stack = push(control_stack, element.val)
 	end
->>>>>>> b4a79f16938519e36ecfc7776ad8cc69b5bf8036
 
 	automaton(control_stack, value_stack, env, store, locations)
 end

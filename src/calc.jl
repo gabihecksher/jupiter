@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 abstract type opCode end
 
 mutable struct opCodeSum <: opCode
@@ -97,13 +96,9 @@ op_ref = opCodeRef("#REF")
 op_blk = opCodeBlkDec("#BLKDEC")
 op_cmd = opCodeBlkDec("#BLKCMD")
 
-
-=======
 mutable struct Loc
 	val :: Int
 end
-
->>>>>>> b4a79f16938519e36ecfc7776ad8cc69b5bf8036
 function calc(op, control_stack, value_stack, env, store, locations)
 	if typeof(op) <: opCodeSum
 		calc_sum(control_stack, value_stack, env, store, locations)
