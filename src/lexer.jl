@@ -137,10 +137,11 @@ mutable struct DeRef<:Node val end
         var = E"var" +  spc + identifier + spc + E"=" + spc + (ref|val_ref|de_ref)
 
         bind = ((constant | var)|> Bind)
+        
+        dec = bind | dseq
+        dseq.matcher =  Nullable{Matcher}((bind + spc + dec) |> DSeq)
 
-        dseq.matcher =  Nullable{Matcher}((bind + spc + bind) |> DSeq)
-
-        declaration.matcher =  Nullable{Matcher}((E"let" + spc + (bind|dseq) + spc + E"in" + spc + cmd) |> Blk)
+        declaration.matcher =  Nullable{Matcher}((E"let" + spc + dec + spc + E"in" + spc + cmd) |> Blk)
 
         teste = declaration + Eos()
 
