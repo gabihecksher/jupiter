@@ -6,7 +6,10 @@ Install environment:
 `make install`
 
 Run compiler:
-`julia-1.0.0/bin/julia src/main.jl`
+  para rodar com arquivo:
+  `  julia-1.0.0/bin/julia src/main.jl -f "path/arquivo.txt"`
+  para rodar com comando
+    `julia-1.0.0/bin/julia src/main.jl -i"`
 
 Clean environment:
 `make clean`
