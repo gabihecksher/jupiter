@@ -94,7 +94,7 @@ op_cond = opCodeCond("#COND")
 op_bind = opCodeBind("#BIND")
 op_ref = opCodeRef("#REF")
 op_blk = opCodeBlkDec("#BLKDEC")
-op_cmd = opCodeBlkDec("#BLKCMD")
+op_cmd = opCodeBlkCmd("#BLKCMD")
 
 mutable struct Loc
 	val :: Int
@@ -136,7 +136,7 @@ function calc(op, control_stack, value_stack, env, store, locations)
 		calc_ref(control_stack, value_stack, env, store, locations)
 	elseif typeof(op) <: opCodeBlkDec
 		calc_blkdec(control_stack, value_stack, env, store, locations)
-	elseif op === "#BLKCMD"
+	elseif typeof(op) <: opCodeBlkCmd
 		calc_blkcmd(control_stack, value_stack, env, store, locations)
 	end
 
