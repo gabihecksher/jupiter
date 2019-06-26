@@ -14,7 +14,8 @@ function main(args)
                 value_stack = Array{Any, 1}()
                 env = Dict()
                 store = Dict()
-                automaton(control_stack, value_stack, env, store)
+                locations = []
+                automaton(control_stack, value_stack, env, store, locations)
             end
     end
 
@@ -27,7 +28,8 @@ function main(args)
          value_stack = Array{Any, 1}()
          env = Dict()
          store = Dict()
-         automaton(control_stack, value_stack, env, store)
+         locations = []
+         automaton(control_stack, value_stack, env, store, locations)
     end
 end
 
