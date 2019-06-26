@@ -1,38 +1,38 @@
-function calc(op, control_stack, value_stack, env, store)
+function calc(op, control_stack, value_stack, env, store, locations)
 	if op === "#SUM"
-		calc_sum(control_stack, value_stack, env, store)
+		calc_sum(control_stack, value_stack, env, store, locations)
 	elseif op === "#MUL"
-		calc_mul(control_stack, value_stack, env, store)
+		calc_mul(control_stack, value_stack, env, store, locations)
 	elseif op === "#SUB"
-		calc_sub(control_stack, value_stack, env, store)
+		calc_sub(control_stack, value_stack, env, store, locations)
 	elseif op === "#DIV"
-		calc_div(control_stack, value_stack, env, store)
+		calc_div(control_stack, value_stack, env, store, locations)
 	elseif op === "#EQ"
-		calc_eq(control_stack, value_stack, env, store)
+		calc_eq(control_stack, value_stack, env, store, locations)
 	elseif op === "#LT"
-		calc_lt(control_stack, value_stack, env, store)
+		calc_lt(control_stack, value_stack, env, store, locations)
 	elseif op === "#GT"
-		calc_gt(control_stack, value_stack, env, store)
+		calc_gt(control_stack, value_stack, env, store, locations)
 	elseif op === "#LE"
-		calc_le(control_stack, value_stack, env, store)
+		calc_le(control_stack, value_stack, env, store, locations)
 	elseif op === "#GE"
-		calc_ge(control_stack, value_stack, env, store)
+		calc_ge(control_stack, value_stack, env, store, locations)
 	elseif op === "#AND"
-		calc_and(control_stack, value_stack, env, store)
+		calc_and(control_stack, value_stack, env, store, locations)
 	elseif op === "#OR"
-		calc_or(control_stack, value_stack, env, store)
+		calc_or(control_stack, value_stack, env, store, locations)
 	elseif op === "#NOT"
-		calc_not(control_stack, value_stack, env, store)
+		calc_not(control_stack, value_stack, env, store, locations)
 	elseif op === "#ASSIGN"
-		calc_assign(control_stack, value_stack, env, store)
+		calc_assign(control_stack, value_stack, env, store, locations)
 	elseif op === "#LOOP"
-		calc_loop(control_stack, value_stack, env, store)
+		calc_loop(control_stack, value_stack, env, store, locations)
 	elseif op === "#COND"
-		calc_cond(control_stack, value_stack, env, store)
+		calc_cond(control_stack, value_stack, env, store, locations)
 	elseif op === "#BIND"
-		calc_bind(control_stack, value_stack, env, store)
+		calc_bind(control_stack, value_stack, env, store, locations)
 	elseif op === "#REF"
-		calc_ref(control_stack, value_stack, env, store)
+		calc_ref(control_stack, value_stack, env, store, locations)
 	end
 
 end
@@ -50,7 +50,7 @@ end
 #	end
 #end
 
-function calc_sum(control_stack, value_stack, env, store) # chamada quando o opcode #SUM está no topo da pilha de controle
+function calc_sum(control_stack, value_stack, env, store, locations) # chamada quando o opcode #SUM está no topo da pilha de controle
 	value2 = popfirst!(value_stack)  # retira os dois elementos do topo da pilha de valores
 	value1 = popfirst!(value_stack)
 
@@ -69,10 +69,10 @@ function calc_sum(control_stack, value_stack, env, store) # chamada quando o opc
 
 	result = value1 + value2
 	value_stack = push(value_stack, result) # coloca o resultado da soma no topo da pilha de valores
-	automaton(pop(control_stack), value_stack, env, store)
+	automaton(pop(control_stack), value_stack, env, store, locations)
 end
 
-function calc_sub(control_stack, value_stack, env, store)
+function calc_sub(control_stack, value_stack, env, store, locations)
 	value1 = popfirst!(value_stack)  # retira os dois elementos do topo da pilha de valores
 	value2 = popfirst!(value_stack)
 
@@ -91,10 +91,10 @@ function calc_sub(control_stack, value_stack, env, store)
 
 	result = value1 - value2
 	value_stack = push(value_stack, result) # coloca o resultado da soma no topo da pilha de valores
-	automaton(pop(control_stack), value_stack, env, store)
+	automaton(pop(control_stack), value_stack, env, store, locations)
 end
 
-function calc_mul(control_stack, value_stack, env, store)
+function calc_mul(control_stack, value_stack, env, store, locations)
 	value1 = popfirst!(value_stack)  # retira os dois elementos do topo da pilha de valores
 	value2 = popfirst!(value_stack)
 
@@ -113,10 +113,10 @@ function calc_mul(control_stack, value_stack, env, store)
 
 	result = value1 * value2
 	value_stack = push(value_stack, result) # coloca o resultado da soma no topo da pilha de valores
-	automaton(pop(control_stack), value_stack, env, store)
+	automaton(pop(control_stack), value_stack, env, store, locations)
 end
 
-function calc_div(control_stack, value_stack, env, store)
+function calc_div(control_stack, value_stack, env, store, locations)
 	value1 = popfirst!(value_stack)  # retira os dois elementos do topo da pilha de valores
 	value2 = popfirst!(value_stack)
 
@@ -135,10 +135,10 @@ function calc_div(control_stack, value_stack, env, store)
 
 	result = value1 / value2
 	value_stack = push(value_stack, result) # coloca o resultado da soma no topo da pilha de valores
-	automaton(pop(control_stack), value_stack, env, store)
+	automaton(pop(control_stack), value_stack, env, store, locations)
 end
 
-function calc_eq(control_stack, value_stack, env, store)
+function calc_eq(control_stack, value_stack, env, store, locations)
 	value1 = popfirst!(value_stack)  # retira os dois elementos do topo da pilha de valores
 	value2 = popfirst!(value_stack)
 
@@ -157,10 +157,10 @@ function calc_eq(control_stack, value_stack, env, store)
 
 	result = value1 === value2
 	value_stack = push(value_stack, result) # coloca o resultado da soma no topo da pilha de valores
-	automaton(pop(control_stack), value_stack, env, store)
+	automaton(pop(control_stack), value_stack, env, store, locations)
 end
 
-function calc_lt(control_stack, value_stack, env, store)
+function calc_lt(control_stack, value_stack, env, store, locations)
 	value1 = popfirst!(value_stack)  # retira os dois elementos do topo da pilha de valores
 	value2 = popfirst!(value_stack)
 
@@ -179,10 +179,10 @@ function calc_lt(control_stack, value_stack, env, store)
 
 	result = value1 < value2
 	value_stack = push(value_stack, result) # coloca o resultado da soma no topo da pilha de valores
-	automaton(pop(control_stack), value_stack, env, store)
+	automaton(pop(control_stack), value_stack, env, store, locations)
 end
 
-function calc_gt(control_stack, value_stack, env, store)
+function calc_gt(control_stack, value_stack, env, store, locations)
 	value1 = popfirst!(value_stack)  # retira os dois elementos do topo da pilha de valores
 	value2 = popfirst!(value_stack)
 
@@ -201,10 +201,10 @@ function calc_gt(control_stack, value_stack, env, store)
 
 	result = value1 > value2
 	value_stack = push(value_stack, result) # coloca o resultado da soma no topo da pilha de valores
-	automaton(pop(control_stack), value_stack, env, store)
+	automaton(pop(control_stack), value_stack, env, store, locations)
 end
 
-function calc_le(control_stack, value_stack, env, store)
+function calc_le(control_stack, value_stack, env, store, locations)
 	value1 = popfirst!(value_stack)  # retira os dois elementos do topo da pilha de valores
 	value2 = popfirst!(value_stack)
 
@@ -223,10 +223,10 @@ function calc_le(control_stack, value_stack, env, store)
 
 	result = value1 <= value2
 	value_stack = push(value_stack, result) # coloca o resultado da soma no topo da pilha de valores
-	automaton(pop(control_stack), value_stack, env, store)
+	automaton(pop(control_stack), value_stack, env, store, locations)
 end
 
-function calc_ge(control_stack, value_stack, env, store)
+function calc_ge(control_stack, value_stack, env, store, locations)
 	value1 = popfirst!(value_stack)  # retira os dois elementos do topo da pilha de valores
 	value2 = popfirst!(value_stack)
 
@@ -245,10 +245,10 @@ function calc_ge(control_stack, value_stack, env, store)
 
 	result = value1 >= value2
 	value_stack = push(value_stack, result) # coloca o resultado da soma no topo da pilha de valores
-	automaton(pop(control_stack), value_stack, env, store)
+	automaton(pop(control_stack), value_stack, env, store, locations)
 end
 
-function calc_and(control_stack, value_stack, env, store)
+function calc_and(control_stack, value_stack, env, store, locations)
 	value1 = popfirst!(value_stack) # retira os dois elementos do topo da pilha de valores
 	value2 = popfirst!(value_stack)
 	if value1 && value2
@@ -257,10 +257,10 @@ function calc_and(control_stack, value_stack, env, store)
 		result = false
 	end
 	value_stack = push(value_stack, result)  # coloca o resultado da comparação no topo da pilha de valores
-	automaton(pop(control_stack), value_stack, env, store)
+	automaton(pop(control_stack), value_stack, env, store, locations)
 end
 
-function calc_or(control_stack, value_stack, env, store)
+function calc_or(control_stack, value_stack, env, store, locations)
 	value2 = popfirst!(value_stack) # retira os dois elementos do topo da pilha de valores
 	value1 = popfirst!(value_stack)
 	if value1 || value2
@@ -269,27 +269,27 @@ function calc_or(control_stack, value_stack, env, store)
 		result = false
 	end
 	value_stack = push(value_stack, result)  # coloca o resultado da comparação no topo da pilha de valores
-	automaton(pop(control_stack), value_stack, env, store)
+	automaton(pop(control_stack), value_stack, env, store, locations)
 end
 
-function calc_not(control_stack, value_stack, env, store)
+function calc_not(control_stack, value_stack, env, store, locations)
 	value = popfirst!(value_stack) # retira o elemento do topo da pilha de valores
 
 	value_stack = push(value_stack, !value)  # coloca o resultado da negação no topo da pilha de valores
-	automaton(pop(control_stack), value_stack, env, store)
+	automaton(pop(control_stack), value_stack, env, store, locations)
 end
 
-function calc_assign(control_stack, value_stack, env, store)
+function calc_assign(control_stack, value_stack, env, store, locations)
 	value1 = popfirst!(value_stack) # retira os dois elementos do topo da pilha de valores
 	value2 = popfirst!(value_stack)
 
 	loc = env[value1]
 	store[loc] = value2 # associa o novo valor ao nome da variavel
 
-	automaton(pop(control_stack), value_stack, env, store)
+	automaton(pop(control_stack), value_stack, env, store, locations)
 end
 
-function calc_loop(control_stack, value_stack, env, store)
+function calc_loop(control_stack, value_stack, env, store, locations)
 	condition = popfirst!(value_stack)
 	loop = popfirst!(value_stack)
 	values = loop.val
@@ -299,10 +299,10 @@ function calc_loop(control_stack, value_stack, env, store)
 		control_stack = push(control_stack, loop)
 		control_stack = push(control_stack, second_value)
 	end
-	automaton(control_stack, value_stack, env, store)
+	automaton(control_stack, value_stack, env, store, locations)
 end
 
-function calc_cond(control_stack, value_stack, env, store)
+function calc_cond(control_stack, value_stack, env, store, locations)
 	condition = popfirst!(value_stack)
 	command = popfirst!(value_stack)
 	values = command.val
@@ -313,43 +313,37 @@ function calc_cond(control_stack, value_stack, env, store)
 	else
 		control_stack = push(control_stack, values[3])
 	end
-	automaton(control_stack, value_stack, env, store)
+	automaton(control_stack, value_stack, env, store, locations)
 end
 
 
-function calc_bind(control_stack, value_stack, env, store)
+function calc_bind(control_stack, value_stack, env, store, locations)
 	loc = popfirst!(value_stack)
 	identifier = popfirst!(value_stack)
-	println("TAMANHO PILHA DE VALORES: ", size(value_stack)[1])
-	if size(value_stack)[1] !== 0
-		next = popfirst!(value_stack)
 
-		println("TIPO: ", typeof(next))
+	next = popfirst!(value_stack)
 
-		if typeof(next) <: Dict # ja existe E'
-			println("ja existe E'")
-			next[identifier] = loc
-			value_stack = push(value_stack, next) # atualiza E' e coloca de volta na pilha de valores
-		else # primeiro bind
-			println("primeiro bind")
-			value_stack = push(value_stack, next) # coloca de volta o valor retirado
-			new_env = Dict()
-			new_env[identifier] = loc
-			value_stack = push(value_stack, new_env)
-		end
-	else
-		println("pilha vazia, primeiro bind")
+	println("TIPO: ", typeof(next))
+
+	if typeof(next) <: Dict # ja existe E'
+		println("ja existe E'")
+		next[identifier] = loc
+		value_stack = push(value_stack, next) # atualiza E' e coloca de volta na pilha de valores
+	else # primeiro bind
+		println("primeiro bind")
+		value_stack = push(value_stack, next) # coloca de volta o valor retirado
 		new_env = Dict()
 		new_env[identifier] = loc
 		value_stack = push(value_stack, new_env)
 	end
-	automaton(pop(control_stack), value_stack, env, store)
+
+	automaton(pop(control_stack), value_stack, env, store, locations)
 end
 
-function calc_ref(control_stack, value_stack, env, store)
+function calc_ref(control_stack, value_stack, env, store, locations)
 	value = popfirst!(value_stack)
 	loc = length(store)
 	store[loc] = value
 	push(value_stack, loc)
-	automaton(pop(control_stack), value_stack, env, store)
+	automaton(pop(control_stack), value_stack, env, store, locations)
 end
