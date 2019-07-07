@@ -6,9 +6,10 @@ function main(args)
     if(isequal(args[1], "-f"))
         arquivo_path = args[2]
         open(arquivo_path) do file
-            for ln in eachline(file)
-                linha = "$(ln)"
-                println(linha)
+                s = read(file, String)
+                s = replace(s, "\n" => " ")
+                s = replace(s, "    " => "")
+                linha = replace(s, "  "=> " ")
                 parse = parse_one(linha, teste)
                 control_stack = Array{Any, 1}(parse)
                 value_stack = Array{Any, 1}()
@@ -17,7 +18,6 @@ function main(args)
                 locations = []
                 automaton(control_stack, value_stack, env, store, locations)
             end
-    end
 
     elseif(isequal(args[1], "-i"))
         println("Escreva a expressão: ")
