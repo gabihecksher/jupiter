@@ -29,6 +29,8 @@ mutable struct Blk<:Node val end
 mutable struct DSeq<:Node val end
 mutable struct ValRef<:Node val end
 mutable struct DeRef<:Node val end
+mutable struct Abs<:Node val end
+
 
 
 
@@ -125,6 +127,7 @@ mutable struct DeRef<:Node val end
 
     ##################### IMP-1 ######################################
         dseq = Delayed()
+        fun = Delayed()
 
         constant = E"const" + spc + identifier + spc + E"=" + spc + expression
 
@@ -137,13 +140,19 @@ mutable struct DeRef<:Node val end
 
         bind = ((constant | var)|> Bind)
         
-        dec = bind | dseq
+        dec = bind | dseq | fun
         dseq.matcher =  Nullable{Matcher}((bind + spc + dec) |> DSeq)
 
         declaration.matcher =  Nullable{Matcher}((E"let" + spc + dec + spc + E"in" + spc + (cmd|cseq) + spc + E"end") |> Blk)
 
         teste = cmd + Eos()
 
+
+    ##################### IMP-2 #############################
+        formals = identifier + "E," + identifier
+        fun.matcher =  Nullable{Matcher}((E"fn" + spc + E"(" + (identifier|formals) + E")" + spc + E"=" + spc + cmd)|> Abs)
+        actual = expression + E"," + expression
+        call.matcher = Nullable{Matcher}(identifier + E"(" + actual + E")")
 
     end
 
