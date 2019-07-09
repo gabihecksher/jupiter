@@ -119,13 +119,20 @@ end
 
 function print_stack(stack)
 	if length(stack) === 1
-		println(stack[1])
+		if typeof(stack[1]) <: opCode
+			println(stack[1].val)
+		else
+			println(stack[1])
+		end
 	elseif length(stack) > 1
-		println(stack[1])
+		if typeof(stack[1]) <: opCode
+			println(stack[1].val)
+		else
+			println(stack[1])
+		end
 		print_stack(stack[2:end])
 	end
 end
-
 function push(stack, element)
     pushfirst!(stack, element)
 	stack
