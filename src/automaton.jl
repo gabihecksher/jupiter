@@ -359,8 +359,6 @@ function handle_Blk(element, control_stack, value_stack, env, store, locations)
 	control_stack = push(control_stack, op_blk)
 	control_stack = push(control_stack, operands[1])
 
-	value_stack = push(value_stack, locations)
-
 	automaton(control_stack, value_stack, env, store, locations)
 end
 

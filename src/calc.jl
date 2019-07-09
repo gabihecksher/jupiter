@@ -419,13 +419,26 @@ function calc_bind(control_stack, value_stack, env, store, locations)
 	loc = popfirst!(value_stack)
 	identifier = popfirst!(value_stack)
 
-	next = popfirst!(value_stack)
+	if length(value_stack) !== 0
+		next = popfirst!(value_stack)
+	end
 
-	if typeof(next) <: Dict # ja existe E'
+	if (@isdefined next) && (typeof(next) <: Dict) # ja existe E'
+		println("NAO E O PRIMEIRO BIND")
+		blk_locations = popfirst!(value_stack) # pega as locations do bloco
+		push!(blk_locations, loc) # coloca a loc nova na lista de locations
+		value_stack = push(value_stack, blk_locations) # coloca a lista de locations de volta
 		next[identifier] = loc
 		value_stack = push(value_stack, next) # atualiza E' e coloca de volta na pilha de valores
 	else # primeiro bind
-		value_stack = push(value_stack, next) # coloca de volta o valor retirado
+		println("PRIMEIRO BIND")
+		if @isdefined next
+			value_stack = push(value_stack, next) # coloca de volta o valor retirado
+		end
+
+		blk_locations = [loc]
+		value_stack = push(value_stack, blk_locations)
+
 		new_env = Dict()
 		new_env[identifier] = loc
 		value_stack = push(value_stack, new_env)
@@ -465,8 +478,10 @@ function calc_blkdec(control_stack, value_stack, env, store, locations)
 end
 
 function calc_blkcmd(control_stack, value_stack, env, store, locations)
-	env = copy_dict(popfirst!(value_stack))
-	locations = copy_array(popfirst!(value_stack))
+	if length(value_stack) !== 0
+		env = copy_dict(popfirst!(value_stack))
+		locations = copy_array(popfirst!(value_stack))
+	end
 	automaton(pop(control_stack), value_stack, env, store, locations)
 end
 
