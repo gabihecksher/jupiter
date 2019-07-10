@@ -1,0 +1,10 @@
+let const a = 1
+    in
+    let fn f(x,y) = 
+        let var z = 1 
+        in 
+            z:=2
+        end
+    in 2+2
+    end
+end
