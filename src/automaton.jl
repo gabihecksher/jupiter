@@ -122,7 +122,11 @@ end
 function print_stack(stack)
 	if length(stack) === 1
 		if typeof(stack[1]) <: opCode
-			println(stack[1].val)
+			if typeof(stack[1]) <: opCodeCall
+				println(stack[1].val, "(", stack[1].id, ",", stack[1].n, ")")
+			else
+				println(stack[1].val)
+			end
 		else
 			println(stack[1])
 		end
@@ -430,20 +434,15 @@ end
 
 function handle_Call(element, control_stack, value_stack, env, store, locations)
 	operands = element.val
-	
-	num_parameters = count_exp(operands[2])
-	println(num_parameters)
-	println(typeof(String(operands[1].val)))
-	op_call = opCodeCall("#CALL", String(operands[1].val), floor(Int, count_exp(operands[2])))
-	println(op_call)
-	control_stack = push(control_stack, op_call)
-	
 	id_function = operands[1]
 	parameters = operands[2]
 
-	for (expression) in parameters
-		control_stack = push(control_stack, expression)
-	end
-
+	num_parameters = count_exp(parameters)
+	op_call = opCodeCall("#CALL", String(id_function.val), num_parameters)
+	control_stack = push(control_stack, op_call)
+	
+	
+	control_stack = push(control_stack, parameters)
+	
 	automaton(control_stack, value_stack, env, store, locations)
 end
