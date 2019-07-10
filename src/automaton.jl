@@ -9,7 +9,7 @@ function automaton(control_stack, value_stack, env, store, locations)
 			print_stacks(control_stack, value_stack, env, store, locations)
 			println("Resultado: ",result)
 		end
-		print_variables(env,store)
+		#print_variables(env,store)
 		return 0
 	else
 		op = control_stack[1]
@@ -76,6 +76,8 @@ function handle(op, control_stack, value_stack, env, store, locations)
 		handle_Bind(op, control_stack, value_stack, env, store, locations)
 	elseif typeof(op) <: DSeq
 		handle_DSeq(op, control_stack, value_stack, env, store, locations)
+	elseif typeof(op) <: Call
+		handle_Call(op, control_stack, value_stack, env, store, locations)
 	end
 end
 
@@ -394,17 +396,47 @@ end
 function handle_DSeq(element, control_stack, value_stack, env, store, locations)
 	operands = element.val
 
-	control_stack = push(control_stack, operands[1]) #coloca as expressões a serem somadas na pilha de controle
+	control_stack = push(control_stack, operands[1]) 
 	control_stack = push(control_stack, operands[2])
 
 	automaton(control_stack, value_stack, env, store, locations)
 end
 
+function handle_IdSeq(element, control_stack, value_stack, env, store, locations)
+	operands = element.val
+
+	control_stack = push(control_stack, operands[1]) #coloca as ids na pilha de controle
+	control_stack = push(control_stack, operands[2])
+
+	automaton(control_stack, value_stack, env, store, locations)
+end
+
+function handle_ExpSeq(element, control_stack, value_stack, env, store, locations)
+	operands = element.val
+
+	control_stack = push(control_stack, operands[1]) #coloca as expressoes na pilha de controle
+	control_stack = push(control_stack, operands[2])
+
+	automaton(control_stack, value_stack, env, store, locations)
+end
+
+function count_exp(element) #recebe um ExpSeq e conta quantas exps tem nele
+	println(element)
+	if typeof(element) <: ExpSeq
+		println("e ExpSeq")
+		return 1 + count_exp(element.val[2])
+	else
+		println("nao e mais ExpSeq")
+		return 1
+	end
+end
+
 function handle_Call(element, control_stack, value_stack, env, store, locations)
 	operands = element.val
 	
-	op_call = opCodeCall("#CALL", operands[1], length(operands[2]))
-	control_stack = push(control_stack, op_call)
+	println(count_exp(operands[2]))
+	#op_call = opCodeCall("#CALL", operands[1], count_exp(operands[2]))
+	#control_stack = push(control_stack, op_call)
 	
 	id_function = operands[1]
 	parameters = operands[2]

@@ -30,6 +30,9 @@ mutable struct DSeq<:Node val end
 mutable struct ValRef<:Node val end
 mutable struct DeRef<:Node val end
 mutable struct Abs<:Node val end
+mutable struct Call<:Node val end
+mutable struct IdSeq<:Node val end
+mutable struct ExpSeq<:Node val end
 
 
 
@@ -108,9 +111,8 @@ mutable struct Abs<:Node val end
         cseq = Delayed()
         conditional = Delayed()
         call = Delayed()
-
         declaration = Delayed()
-
+        
 
         cmd =  declaration | assign | loop | expression | conditional | cseq
 
@@ -151,15 +153,14 @@ mutable struct Abs<:Node val end
 
     ##################### IMP-2 #############################
         formals = Delayed()
-        formals.matcher = Nullable{Matcher}((identifier + E"," + formals) | identifier)
-
+        formals.matcher = Nullable{Matcher}((identifier + E"," + formals) | identifier |> IdSeq)
+        actuals = Delayed()
         
         abs.matcher = Nullable{Matcher}((E"(" + formals + E")" + spc + E"=" + spc + declaration)|>Abs)
         
-    #    actual = expression + E"," + expression
-    #    call.matcher = Nullable{Matcher}(identifier + E"(" + actual + E")")
-        teste = declaration + Eos()
-
+        actuals.matcher = Nullable{Matcher}((expression + E"," + actuals) | expression |> ExpSeq)
+        call = identifier + E"(" + actuals + E")" |> Call
+        teste = call + Eos()
 
     end
 
