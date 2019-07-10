@@ -120,7 +120,7 @@ function print_stacks(control_stack, value_stack, env, store, locations)
 end
 
 function print_stack(stack)
-	if length(stack) === 1
+	if length(stack) > 0
 		if typeof(stack[1]) <: opCode
 			if typeof(stack[1]) <: opCodeCall
 				println(stack[1].val, "(", stack[1].id, ",", stack[1].n, ")")
@@ -128,17 +128,20 @@ function print_stack(stack)
 				println(stack[1].val)
 			end
 		else
-			println(stack[1])
+			element_string = string(stack[1])
+        	element_string = replace(element_string, "Any"=> "")
+        	element_string = replace(element_string, "["=> "")
+			element_string = replace(element_string, "]"=> "")
+			element_string = replace(element_string, " "=> "")
+			println(element_string)
+			if length(stack) > 1
+				print_stack(stack[2:end])
+			end
 		end
-	elseif length(stack) > 1
-		if typeof(stack[1]) <: opCode
-			println(stack[1].val)
-		else
-			println(stack[1])
-		end
-		print_stack(stack[2:end])
 	end
 end
+
+
 function push(stack, element)
     pushfirst!(stack, element)
 	stack
