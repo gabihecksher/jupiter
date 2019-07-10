@@ -147,7 +147,7 @@ mutable struct ExpSeq<:Node val end
         dec = bind | dseq
         dseq.matcher =  Nullable{Matcher}((bind + spc + dec) |> DSeq)
 
-        declaration.matcher =  Nullable{Matcher}((E"let" + spc + dec + spc + E"in" + spc + (cmd|cseq) + spc + E"end") |> Blk)
+        declaration.matcher =  Nullable{Matcher}((E"let" + spc + dec + spc + E"in" + spc + (call|cmd|cseq) + spc + E"end") |> Blk)
 
 
 
@@ -160,8 +160,8 @@ mutable struct ExpSeq<:Node val end
         
         exp_actual = actuals | expression
         actuals.matcher = Nullable{Matcher}((expression + E"," + exp_actual) | expression |> ExpSeq)
-        call = identifier + E"(" + exp_actual + E")" |> Call
-        teste = call + Eos()
+        call.matcher = Nullable{Matcher}(identifier + E"(" + exp_actual + E")" |> Call)
+        teste = declaration + Eos()
 
     end
 
