@@ -158,8 +158,9 @@ mutable struct ExpSeq<:Node val end
         
         abs.matcher = Nullable{Matcher}((E"(" + formals + E")" + spc + E"=" + spc + declaration)|>Abs)
         
-        actuals.matcher = Nullable{Matcher}((expression + E"," + actuals) | expression |> ExpSeq)
-        call = identifier + E"(" + actuals + E")" |> Call
+        exp_actual = actuals | expression
+        actuals.matcher = Nullable{Matcher}((expression + E"," + exp_actual) | expression |> ExpSeq)
+        call = identifier + E"(" + exp_actual + E")" |> Call
         teste = call + Eos()
 
     end

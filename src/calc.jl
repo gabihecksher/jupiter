@@ -79,7 +79,7 @@ end
 mutable struct opCodeCall <: opCode
 	val :: String
 	id :: String
-	n :: Integer
+	n :: Int64
 end
 
 op_sum = opCodeSum("#SUM")

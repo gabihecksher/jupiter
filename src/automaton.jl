@@ -421,22 +421,22 @@ function handle_ExpSeq(element, control_stack, value_stack, env, store, location
 end
 
 function count_exp(element) #recebe um ExpSeq e conta quantas exps tem nele
-	println(element)
-	if typeof(element) <: ExpSeq
-		println("e ExpSeq")
-		return 1 + count_exp(element.val[2])
-	else
-		println("nao e mais ExpSeq")
+	if length(element.val) === 1
 		return 1
+	else
+		return 1 + count_exp(element.val[2])
 	end
 end
 
 function handle_Call(element, control_stack, value_stack, env, store, locations)
 	operands = element.val
 	
-	println(count_exp(operands[2]))
-	#op_call = opCodeCall("#CALL", operands[1], count_exp(operands[2]))
-	#control_stack = push(control_stack, op_call)
+	num_parameters = count_exp(operands[2])
+	println(num_parameters)
+	println(typeof(String(operands[1].val)))
+	op_call = opCodeCall("#CALL", String(operands[1].val), floor(Int, count_exp(operands[2])))
+	println(op_call)
+	control_stack = push(control_stack, op_call)
 	
 	id_function = operands[1]
 	parameters = operands[2]
