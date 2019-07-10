@@ -107,7 +107,7 @@ mutable struct Abs<:Node val end
         loop = Delayed()
         cseq = Delayed()
         conditional = Delayed()
-        # call = Delayed()
+        call = Delayed()
 
         declaration = Delayed()
 
@@ -127,8 +127,8 @@ mutable struct Abs<:Node val end
 
     ##################### IMP-1 ######################################
         dseq = Delayed()
-        # fun = Delayed()
 
+        abs = Delayed()
         constant = E"const" + spc + identifier + spc + E"=" + spc + expression
 
         val_ref = (E"&" + identifier)|>ValRef
@@ -138,21 +138,28 @@ mutable struct Abs<:Node val end
 
         var = E"var" +  spc + identifier + spc + E"=" + spc + (ref)
 
-        bind = ((constant | var)|> Bind)
+        fun =  (E"fn" + spc + identifier + abs)
+
+        bind = ((fun | constant | var)|> Bind)
         
-        dec = bind | dseq # | fun
+        dec = bind | dseq
         dseq.matcher =  Nullable{Matcher}((bind + spc + dec) |> DSeq)
 
         declaration.matcher =  Nullable{Matcher}((E"let" + spc + dec + spc + E"in" + spc + (cmd|cseq) + spc + E"end") |> Blk)
 
-        teste = cmd + Eos()
 
 
     ##################### IMP-2 #############################
-    #    formals = identifier + "E," + identifier
-    #    fun.matcher =  Nullable{Matcher}((E"fn" + spc + E"(" + (identifier|formals) + E")" + spc + E"=" + spc + cmd)|> Abs)
+        formals = Delayed()
+        formals.matcher = Nullable{Matcher}((identifier + E"," + formals) | identifier)
+
+        
+        abs.matcher = Nullable{Matcher}((E"(" + formals + E")" + spc + E"=" + spc + declaration)|>Abs)
+        
     #    actual = expression + E"," + expression
     #    call.matcher = Nullable{Matcher}(identifier + E"(" + actual + E")")
+        teste = declaration + Eos()
+
 
     end
 

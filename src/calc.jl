@@ -76,6 +76,12 @@ mutable struct opCodeBlkCmd <: opCode
     val :: String
 end
 
+mutable struct opCodeCall <: opCode
+	val :: String
+	id :: String
+	n :: Integer
+end
+
 op_sum = opCodeSum("#SUM")
 op_mul = opCodeMul("#MUL")
 op_sub = opCodeSub("#SUB")

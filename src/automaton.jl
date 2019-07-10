@@ -399,3 +399,19 @@ function handle_DSeq(element, control_stack, value_stack, env, store, locations)
 
 	automaton(control_stack, value_stack, env, store, locations)
 end
+
+function handle_Call(element, control_stack, value_stack, env, store, locations)
+	operands = element.val
+	
+	op_call = opCodeCall("#CALL", operands[1], length(operands[2]))
+	control_stack = push(control_stack, op_call)
+	
+	id_function = operands[1]
+	parameters = operands[2]
+
+	for (expression) in parameters
+		control_stack = push(control_stack, expression)
+	end
+
+	automaton(control_stack, value_stack, env, store, locations)
+end

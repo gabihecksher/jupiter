@@ -11,12 +11,13 @@ function main(args)
                 s = replace(s, "    " => "")
                 linha = replace(s, "  "=> " ")
                 parse = parse_one(linha, teste)
-                control_stack = Array{Any, 1}(parse)
-                value_stack = Array{Any, 1}()
-                env = Dict()
-                store = Dict()
-                locations = []
-                automaton(control_stack, value_stack, env, store, locations)
+                println(parse)
+                # control_stack = Array{Any, 1}(parse)
+                # value_stack = Array{Any, 1}()
+                # env = Dict()
+                # store = Dict()
+                # locations = []
+                # automaton(control_stack, value_stack, env, store, locations)
             end
 
     elseif(isequal(args[1], "-i"))
