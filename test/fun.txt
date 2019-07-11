@@ -1,6 +1,6 @@
-let const a = 1
+let var a = 1
     in
-    let fn f(x,y) = 
+    let rec fn f(x,y) = 
         let var z = 1 
         in 
             z:=2

@@ -1,3 +1,5 @@
+include("lexer.jl")
+
 abstract type opCode end
 
 mutable struct opCodeSum <: opCode
@@ -80,6 +82,12 @@ mutable struct opCodeCall <: opCode
 	val :: String
 	id :: String
 	n :: Int64
+end
+
+mutable struct Closure
+	formals :: IdSeq
+	blk :: Blk
+	env :: Dict
 end
 
 op_sum = opCodeSum("#SUM")
@@ -422,7 +430,7 @@ end
 
 
 function calc_bind(control_stack, value_stack, env, store, locations)
-	loc = popfirst!(value_stack)
+	loc_or_value = popfirst!(value_stack)
 	identifier = popfirst!(value_stack)
 
 	if length(value_stack) !== 0
@@ -431,22 +439,27 @@ function calc_bind(control_stack, value_stack, env, store, locations)
 
 	if (@isdefined next) && (typeof(next) <: Dict) # ja existe E'
 		println("NAO E O PRIMEIRO BIND")
-		blk_locations = popfirst!(value_stack) # pega as locations do bloco
-		push!(blk_locations, loc) # coloca a loc nova na lista de locations
-		value_stack = push(value_stack, blk_locations) # coloca a lista de locations de volta
-		next[identifier] = loc
+		if typeof(loc_or_value) <: Loc
+			blk_locations = popfirst!(value_stack) # pega as locations do bloco
+			push!(blk_locations, loc_or_value) # coloca a loc nova na lista de locations
+			value_stack = push(value_stack, blk_locations) # coloca a lista de locations de volta
+		end
+		next[identifier] = loc_or_value
 		value_stack = push(value_stack, next) # atualiza E' e coloca de volta na pilha de valores
 	else # primeiro bind
 		println("PRIMEIRO BIND")
 		if @isdefined next
 			value_stack = push(value_stack, next) # coloca de volta o valor retirado
 		end
+		println(typeof(loc_or_value))
+		blk_locations = []
+		if typeof(loc_or_value) <: Loc
+			push!(blk_locations, loc_or_value)
+		end
 
-		blk_locations = [loc]
 		value_stack = push(value_stack, blk_locations)
-
 		new_env = Dict()
-		new_env[identifier] = loc
+		new_env[identifier] = loc_or_value
 		value_stack = push(value_stack, new_env)
 	end
 

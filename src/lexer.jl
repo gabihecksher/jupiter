@@ -33,6 +33,7 @@ mutable struct Abs<:Node val end
 mutable struct Call<:Node val end
 mutable struct IdSeq<:Node val end
 mutable struct ExpSeq<:Node val end
+mutable struct RBnd<:Node val end
 
 
 
@@ -142,9 +143,13 @@ mutable struct ExpSeq<:Node val end
 
         fun =  (E"fn" + spc + identifier + abs)
 
+        recfun =  (E"rec fn" + spc + identifier + abs)
+
         bind = ((fun | constant | var)|> Bind)
+
+        rbind = recfun|> RBnd
         
-        dec = bind | dseq
+        dec = bind | dseq | rbind
         dseq.matcher =  Nullable{Matcher}((bind + spc + dec) |> DSeq)
 
         declaration.matcher =  Nullable{Matcher}((E"let" + spc + dec + spc + E"in" + spc + (call|cmd|cseq) + spc + E"end") |> Blk)

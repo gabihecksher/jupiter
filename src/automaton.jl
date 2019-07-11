@@ -1,5 +1,4 @@
 include("calc.jl")
-include("lexer.jl")
 
 function automaton(control_stack, value_stack, env, store, locations)
 	print_stacks(control_stack, value_stack, env, store, locations)
@@ -134,9 +133,9 @@ function print_stack(stack)
 			element_string = replace(element_string, "]"=> "")
 			element_string = replace(element_string, " "=> "")
 			println(element_string)
-			if length(stack) > 1
-				print_stack(stack[2:end])
-			end
+		end
+		if length(stack) > 1
+			print_stack(stack[2:end])
 		end
 	end
 end
