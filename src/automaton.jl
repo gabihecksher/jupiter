@@ -1,4 +1,11 @@
 include("calc.jl")
+include("lexer.jl")
+
+mutable struct Closure
+	formals :: IdSeq
+	blk :: Blk
+	env :: Dict
+end
 
 function automaton(control_stack, value_stack, env, store, locations)
 	print_stacks(control_stack, value_stack, env, store, locations)
@@ -77,6 +84,8 @@ function handle(op, control_stack, value_stack, env, store, locations)
 		handle_DSeq(op, control_stack, value_stack, env, store, locations)
 	elseif typeof(op) <: Call
 		handle_Call(op, control_stack, value_stack, env, store, locations)
+	elseif typeof(op) <: Abs
+		handle_Abs(op, control_stack, value_stack, env, store, locations)
 	end
 end
 
@@ -446,5 +455,15 @@ function handle_Call(element, control_stack, value_stack, env, store, locations)
 	
 	control_stack = push(control_stack, parameters)
 	
+	automaton(control_stack, value_stack, env, store, locations)
+end
+
+function handle_Abs(element, control_stack, value_stack, env, store, locations)
+	operands = element.val
+	formals = operands[1]
+	blk = operands[2]
+
+	closure = Closure(formals, blk, env)
+	value_stack = push(value_stack, closure)
 	automaton(control_stack, value_stack, env, store, locations)
 end

@@ -158,15 +158,16 @@ mutable struct RBnd<:Node val end
 
     ##################### IMP-2 #############################
         formals = Delayed()
-        formals.matcher = Nullable{Matcher}((identifier + E"," + formals) | identifier |> IdSeq)
+        formal = identifier | formals
+        formals.matcher = Nullable{Matcher}((formal + E"," + formal) |> IdSeq)
         actuals = Delayed()
         
         abs.matcher = Nullable{Matcher}((E"(" + formals + E")" + spc + E"=" + spc + declaration)|>Abs)
         
-        exp_actual = actuals | expression
-        actuals.matcher = Nullable{Matcher}((expression + E"," + exp_actual) | expression |> ExpSeq)
+        exp_actual = expression| actuals
+        actuals.matcher = Nullable{Matcher}((exp_actual + E"," + exp_actual) |> ExpSeq)
         call.matcher = Nullable{Matcher}(identifier + E"(" + exp_actual + E")" |> Call)
-        teste = declaration + Eos()
+        teste = cmd + Eos()
 
     end
 

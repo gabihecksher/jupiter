@@ -1,5 +1,3 @@
-include("lexer.jl")
-
 abstract type opCode end
 
 mutable struct opCodeSum <: opCode
@@ -82,12 +80,6 @@ mutable struct opCodeCall <: opCode
 	val :: String
 	id :: String
 	n :: Int64
-end
-
-mutable struct Closure
-	formals :: IdSeq
-	blk :: Blk
-	env :: Dict
 end
 
 op_sum = opCodeSum("#SUM")
