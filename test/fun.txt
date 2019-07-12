@@ -1,9 +1,9 @@
 let var a = 1
     in
-    let fn f(x,y,a) = 
-        let var z = 1 
+    let fn f(x,y,z) = 
+        let var t = 1 
         in 
-            z:=2
+            t:=z+2
         end
     in f(2,4,1)
     end

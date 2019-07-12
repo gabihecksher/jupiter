@@ -464,6 +464,7 @@ function calc_ref(control_stack, value_stack, env, store, locations)
 end
 
 function calc_blkdec(control_stack, value_stack, env, store, locations)
+	println("TROCANDO OS ENVS")
 	result_env = copy_dict(env)
 	blk_env = popfirst!(value_stack)
 	exists = false
@@ -511,6 +512,8 @@ end
 
 function calc_call(control_stack, value_stack, env, store, locations)
 	op = popfirst!(control_stack)
+	control_stack = push(control_stack, env[op.id].blk)
+
 	formals = env[op.id].formals.val # pega um vetor de idseqs e ids
 									 # ex: Any[Id("x"), IdSeq(Any[Id("y"), Id("a")])]
 	i = op.n
