@@ -7,6 +7,13 @@ mutable struct Closure
 	env :: Dict
 end
 
+mutable struct opCodeCall <: opCode
+	val :: String
+	id :: String
+	n :: Int64
+end
+
+
 function automaton(control_stack, value_stack, env, store, locations)
 	print_stacks(control_stack, value_stack, env, store, locations)
 	if length(control_stack) === 0
@@ -86,6 +93,8 @@ function handle(op, control_stack, value_stack, env, store, locations)
 		handle_Call(op, control_stack, value_stack, env, store, locations)
 	elseif typeof(op) <: Abs
 		handle_Abs(op, control_stack, value_stack, env, store, locations)
+	elseif typeof(op) <: ExpSeq
+		handle_ExpSeq(op, control_stack, value_stack, env, store, locations)
 	end
 end
 

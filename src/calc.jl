@@ -76,12 +76,6 @@ mutable struct opCodeBlkCmd <: opCode
     val :: String
 end
 
-mutable struct opCodeCall <: opCode
-	val :: String
-	id :: String
-	n :: Int64
-end
-
 op_sum = opCodeSum("#SUM")
 op_mul = opCodeMul("#MUL")
 op_sub = opCodeSub("#SUB")
@@ -144,6 +138,8 @@ function calc(op, control_stack, value_stack, env, store, locations)
 		calc_blkdec(control_stack, value_stack, env, store, locations)
 	elseif typeof(op) <: opCodeBlkCmd
 		calc_blkcmd(control_stack, value_stack, env, store, locations)
+	elseif typeof(op) <: opCodeCall
+		calc_call(control_stack, value_stack, env, store, locations)
 	end
 
 end
@@ -510,4 +506,39 @@ function copy_array(array)
 		new = push!(new, value)
 	end
 	return new
+end
+
+
+function calc_call(control_stack, value_stack, env, store, locations)
+	op = popfirst!(control_stack)
+	formals = env[op.id].formals.val # pega um vetor de idseqs e ids
+									 # ex: Any[Id("x"), IdSeq(Any[Id("y"), Id("a")])]
+	i = op.n
+	println(i)
+	actuals = []
+	while i > 0
+		actuals = push!(actuals, popfirst!(value_stack)) # coloca o resultado das expressoes escolhidas num vetor
+		i = i - 1
+	end
+
+	next = popfirst!(value_stack)
+	if typeof(next) <: Dict
+		next = matcher(formals, actuals, next)
+	end
+	value_stack = push(value_stack, next)
+	automaton(control_stack, value_stack, env, store, locations)
+end
+
+function matcher(formals_array, actuals_array, env)
+	i = 1
+	while i <= length(actuals_array)
+		if typeof(formals_array) <: Array
+			env[formals_array[1].val] = actuals_array[i]
+			formals_array = formals_array[2].val
+		else
+			env[formals_array] = actuals_array[i]
+		end
+		i = i + 1
+	end
+	return env
 end
