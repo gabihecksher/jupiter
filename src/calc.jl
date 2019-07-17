@@ -536,7 +536,14 @@ function calc_call(control_stack, value_stack, env, store, locations)
 	println(i)
 	actuals = []
 	while i > 0
-		actuals = push!(actuals, popfirst!(value_stack)) # coloca o resultado das expressoes escolhidas num vetor
+		item = popfirst!(value_stack)
+		if typeof(item) <: String
+			println("PASSANDO VARIAVEL COMO PARAMETRO")
+			item = get_value(item, env, store)
+		end
+		actuals = push!(actuals, item) # coloca o resultado das expressoes escolhidas num vetor
+
+		println("ACTUALS: ", actuals)
 		i = i - 1
 	end
 
@@ -547,7 +554,7 @@ function calc_call(control_stack, value_stack, env, store, locations)
 		env[op.id] = e
 	end
 	value_stack = push(value_stack, next)
-	#automaton(control_stack, value_stack, env, store, locations)
+	automaton(control_stack, value_stack, env, store, locations)
 end
 
 function reclose(current_env, fun_env)
@@ -561,7 +568,7 @@ function reclose(current_env, fun_env)
 			println(rec)
 			return rec
 		elseif typeof(value) <: Rec
-			new_rec = Rec(value.formals, value.blk, value.env, current_env)
+			new_rec = Rec(value.formals, value.blk, value.old_env, current_env)
 		end
 	end
 

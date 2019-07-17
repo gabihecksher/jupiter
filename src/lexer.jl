@@ -164,7 +164,7 @@ mutable struct RBnd<:Node val end
         
         abs.matcher = Nullable{Matcher}((E"(" + formals + E")" + spc + E"=" + spc + declaration)|>Abs)
         
-        exp_actual = expression| actuals
+        exp_actual = expression | identifier | actuals
         actuals.matcher = Nullable{Matcher}((exp_actual + E"," + exp_actual) |> ExpSeq)
         call.matcher = Nullable{Matcher}(identifier + E"(" + exp_actual + E")" |> Call)
         teste = cmd + Eos()
