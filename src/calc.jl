@@ -145,8 +145,12 @@ function calc(op, control_stack, value_stack, env, store, locations)
 end
 
 function get_value(id, env, store)
-	loc = env[id] #retorna o valor de uma variavel a partir de seu nome
-	return store[loc]
+	value = env[id] #retorna o valor de uma variavel a partir de seu nome
+	if typeof(value) <: Loc
+		return store[value]
+	else
+		return value
+	end
 end
 
 
@@ -382,6 +386,11 @@ end
 function calc_assign(control_stack, value_stack, env, store, locations)
 	value1 = popfirst!(value_stack) # retira os dois elementos do topo da pilha de valores
 	value2 = popfirst!(value_stack)
+
+	if typeof(value2) <: String # caso o valor seja o nome de uma variável, pega o valor associado a ela
+		value2 = get_value(value2, env, store)
+		
+	end
 
 	loc = env[value1]
 	store[loc] = value2 # associa o novo valor ao nome da variavel

@@ -50,7 +50,7 @@ mutable struct RBnd<:Node val end
         number = (E"(" + spc + PFloat64() + spc + E")") | PFloat64() > Num
 
         #definicao de identificador pela gramatica onde Word faz parte do Parser
-        identifier = (E"(" + spc + Word() + spc + E")") | Word() > Id
+        identifier = Word() | (E"(" + spc + Word() + spc + E")") > Id
 
         #unica coisa que eu achei no parser combinator que parseia true e false (nao sei o que significa isso, caso duvidas consultar biblioteca ParserCombinator)
         truth = (E"(" + spc + p"([Tt][Rr][Uu][Ee])|([Ff][Aa][Ll][Ss][Ee])" + spc + E")") | p"([Tt][Rr][Uu][Ee])|([Ff][Aa][Ll][Ss][Ee])" > Boo
@@ -115,13 +115,13 @@ mutable struct RBnd<:Node val end
         declaration = Delayed()
         
 
-        cmd =  declaration | assign | loop | expression | conditional | cseq
+        cmd =  atom | declaration | assign | loop | expression | conditional | cseq
 
         # conditional.matcher = Nullable{Matcher}((E"if" + spc + bool_expression + spc + E"then" + spc + cmd + spc + E"end") | (E"if" + spc + bool_expression + spc + E"then" + spc + cmd + spc + E"else" + spc + cmd + spc + E"end") |> Cond)
 
         conditional.matcher = Nullable{Matcher}((E"if" + spc + bool_expression + spc + E"then" + spc + cmd + spc + E"else" + spc + cmd + spc + E"end") |> Cond)
 
-        assign.matcher = Nullable{Matcher}((identifier + E":=" + expression) | (E"(" + identifier + E":=" + expression + E")") |> Assign)
+        assign.matcher = Nullable{Matcher}((identifier + E":=" + (call | expression | identifier)) | (E"(" + identifier + E":=" + (call | expression | identifier) + E")") |> Assign)
 
         loop.matcher = Nullable{Matcher}((E"while" + spc + expression + spc + E"do" + spc + cmd) | (E"(" + E"while" + spc + expression + spc + E"do" + spc + cmd + E")") |> Loop)
 
