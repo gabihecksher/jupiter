@@ -3,7 +3,7 @@ let var a = 1
     let rec fn f(x,y,z) = 
         let var t = 1 
         in 
-            t:=z+2
+            if z>2 then x:=0 else f(x,y,t+1) end
         end
     in f(2,4,1)
     end

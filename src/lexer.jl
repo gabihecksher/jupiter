@@ -115,7 +115,7 @@ mutable struct RBnd<:Node val end
         declaration = Delayed()
         
 
-        cmd =  atom | declaration | assign | loop | expression | conditional | cseq
+        cmd =  call | declaration | assign | loop | expression | conditional | cseq | atom
 
         # conditional.matcher = Nullable{Matcher}((E"if" + spc + bool_expression + spc + E"then" + spc + cmd + spc + E"end") | (E"if" + spc + bool_expression + spc + E"then" + spc + cmd + spc + E"else" + spc + cmd + spc + E"end") |> Cond)
 

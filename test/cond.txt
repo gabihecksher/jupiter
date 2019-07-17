@@ -1,0 +1,1 @@
+if z>2 then x:=0 y:=2+2 else f(x,y,t+1) end

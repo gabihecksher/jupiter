@@ -543,9 +543,33 @@ function calc_call(control_stack, value_stack, env, store, locations)
 	next = popfirst!(value_stack)
 	if typeof(next) <: Dict
 		next = matcher(formals, actuals, next)
+		e = reclose(env, next)
+		env[op.id] = e
 	end
 	value_stack = push(value_stack, next)
-	automaton(control_stack, value_stack, env, store, locations)
+	#automaton(control_stack, value_stack, env, store, locations)
+end
+
+function reclose(current_env, fun_env)
+	println("current_env = ", current_env, "\n\n\n")
+	println("fun_env = ", fun_env, "\n\n\n")
+	for (key, value) in current_env
+		if typeof(value) <: Closure
+			println("value_env = ", value.env, "\n\n\n")
+	
+			rec = Rec(value.formals, value.blk, value.env, current_env)
+			println(rec)
+			return rec
+		elseif typeof(value) <: Rec
+			new_rec = Rec(value.formals, value.blk, value.env, current_env)
+		end
+	end
+
+	# if typeof(fun_env) <: Closure
+	# 	rec = Rec(fun_env.formals, fun_env.blk, fun_env.env, current_env)
+	# 	return rec
+	# end
+	return 0
 end
 
 function matcher(formals_array, actuals_array, env)

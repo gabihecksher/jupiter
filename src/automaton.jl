@@ -7,24 +7,17 @@ mutable struct opCodeCall <: opCode
 	n :: Int64
 end
 
-
 mutable struct Closure
 	formals :: IdSeq
 	blk :: Blk
 	env :: Dict
 end
 
-
-mutable struct Unfold
-	relation :: Dict{SubString{String},Closure}
-end
-
-
 mutable struct Rec
 	formals :: IdSeq
 	blk :: Blk
-	E :: Dict
-	env :: Dict
+	old_env :: Dict
+	new_env :: Dict
 end
 
 function automaton(control_stack, value_stack, env, store, locations)
@@ -494,20 +487,10 @@ end
 
 function handle_RBnd(element, control_stack, value_stack, env, store, locations)
 	control_stack = push(control_stack, op_bind)  # coloca o opcode de bind na pilha de controle
-	control_stack = push(control_stack, op_unfold)  # coloca o opcode de bind na pilha de controle
-	value_stack = push(value_stack, element.val[1].val)
-	control_stack = push(control_stack, element.val[2])
+	value_stack = push(value_stack, element.val[1].val) # coloca o id da funcao na pilha de valores
+	control_stack = push(control_stack, element.val[2])  # coloca o Abs na pilha de controle
 
 	print_stacks(control_stack, value_stack, env, store, locations)
 	
-	# id_function = element.val[1]
-	# formals = element.val[2].val[1]
-	# blk = element.val[2].val[2]
-	# closure = Closure(formals, blk, env)
-	# relation = Dict(id_function=>closure)
-	# unfolding = Unfold(relation)
-	# println("unfold = ", unfolding)
-	
-	# value_stack = push(value_stack, unfo)
 	automaton(control_stack, value_stack, env, store, locations)
 end
