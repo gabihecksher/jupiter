@@ -17,7 +17,7 @@ function main(args)
                 env = Dict()
                 store = Dict()
                 locations = []
-                #automaton(control_stack, value_stack, env, store, locations)
+                automaton(control_stack, value_stack, env, store, locations)
             end
 
     elseif(isequal(args[1], "-i"))
@@ -30,7 +30,7 @@ function main(args)
          env = Dict()
          store = Dict()
          locations = []
-         #automaton(control_stack, value_stack, env, store, locations)
+         automaton(control_stack, value_stack, env, store, locations)
     end
 end
 

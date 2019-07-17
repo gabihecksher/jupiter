@@ -1,18 +1,31 @@
 include("calc.jl")
 include("lexer.jl")
 
-mutable struct Closure
-	formals :: IdSeq
-	blk :: Blk
-	env :: Dict
-end
-
 mutable struct opCodeCall <: opCode
 	val :: String
 	id :: String
 	n :: Int64
 end
 
+
+mutable struct Closure
+	formals :: IdSeq
+	blk :: Blk
+	env :: Dict
+end
+
+
+mutable struct Unfold
+	relation :: Dict{SubString{String},Closure}
+end
+
+
+mutable struct Rec
+	formals :: IdSeq
+	blk :: Blk
+	E :: Dict
+	env :: Dict
+end
 
 function automaton(control_stack, value_stack, env, store, locations)
 	print_stacks(control_stack, value_stack, env, store, locations)
@@ -95,6 +108,8 @@ function handle(op, control_stack, value_stack, env, store, locations)
 		handle_Abs(op, control_stack, value_stack, env, store, locations)
 	elseif typeof(op) <: ExpSeq
 		handle_ExpSeq(op, control_stack, value_stack, env, store, locations)
+	elseif typeof(op) <: RBnd
+		handle_RBnd(op, control_stack, value_stack, env, store, locations)
 	end
 end
 
@@ -474,5 +489,25 @@ function handle_Abs(element, control_stack, value_stack, env, store, locations)
 
 	closure = Closure(formals, blk, env)
 	value_stack = push(value_stack, closure)
+	automaton(control_stack, value_stack, env, store, locations)
+end
+
+function handle_RBnd(element, control_stack, value_stack, env, store, locations)
+	control_stack = push(control_stack, op_bind)  # coloca o opcode de bind na pilha de controle
+	control_stack = push(control_stack, op_unfold)  # coloca o opcode de bind na pilha de controle
+	value_stack = push(value_stack, element.val[1].val)
+	control_stack = push(control_stack, element.val[2])
+
+	print_stacks(control_stack, value_stack, env, store, locations)
+	
+	# id_function = element.val[1]
+	# formals = element.val[2].val[1]
+	# blk = element.val[2].val[2]
+	# closure = Closure(formals, blk, env)
+	# relation = Dict(id_function=>closure)
+	# unfolding = Unfold(relation)
+	# println("unfold = ", unfolding)
+	
+	# value_stack = push(value_stack, unfo)
 	automaton(control_stack, value_stack, env, store, locations)
 end

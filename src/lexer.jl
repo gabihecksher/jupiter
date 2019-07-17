@@ -121,7 +121,7 @@ mutable struct RBnd<:Node val end
 
         conditional.matcher = Nullable{Matcher}((E"if" + spc + bool_expression + spc + E"then" + spc + cmd + spc + E"else" + spc + cmd + spc + E"end") |> Cond)
 
-        assign.matcher = Nullable{Matcher}((identifier + E":=" + (call | expression | identifier)) | (E"(" + identifier + E":=" + (call | expression | identifier) + E")") |> Assign)
+        assign.matcher = Nullable{Matcher}((identifier + E":=" + (expression | identifier)) | (E"(" + identifier + E":=" + (expression | identifier) + E")") |> Assign)
 
         loop.matcher = Nullable{Matcher}((E"while" + spc + expression + spc + E"do" + spc + cmd) | (E"(" + E"while" + spc + expression + spc + E"do" + spc + cmd + E")") |> Loop)
 

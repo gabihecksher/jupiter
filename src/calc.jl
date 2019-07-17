@@ -76,6 +76,10 @@ mutable struct opCodeBlkCmd <: opCode
     val :: String
 end
 
+mutable struct opCodeUnfold <: opCode
+    val :: String
+end
+
 op_sum = opCodeSum("#SUM")
 op_mul = opCodeMul("#MUL")
 op_sub = opCodeSub("#SUB")
@@ -95,6 +99,7 @@ op_bind = opCodeBind("#BIND")
 op_ref = opCodeRef("#REF")
 op_blk = opCodeBlkDec("#BLKDEC")
 op_cmd = opCodeBlkCmd("#BLKCMD")
+op_unfold = opCodeUnfold("#UNFOLD")
 
 mutable struct Loc
 	val :: Int
@@ -140,6 +145,8 @@ function calc(op, control_stack, value_stack, env, store, locations)
 		calc_blkcmd(control_stack, value_stack, env, store, locations)
 	elseif typeof(op) <: opCodeCall
 		calc_call(control_stack, value_stack, env, store, locations)
+	elseif typeof(op) <: opCodeUnfold
+		calc_unfold(control_stack, value_stack, env, store, locations)
 	end
 
 end
@@ -554,3 +561,14 @@ function matcher(formals_array, actuals_array, env)
 	end
 	return env
 end
+
+function calc_unfold(control_stack, value_stack, env, store, locations)
+	closure = popfirst!(value_stack)
+	id_fun = popfirst!(value_stack)
+	rel = Dict(id_fun=>closure)
+	unfold = Unfold(rel)
+	println(unfold)
+	value_stack = push(value_stack, unfold)
+	# automaton(pop(control_stack), value_stack, env, store, locations)
+end
+
